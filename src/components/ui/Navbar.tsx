@@ -1,24 +1,33 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import motorent from '../../assets/motorent.jpeg'
 
 const Navbar: React.FC = () => {
     return (
-        <nav className="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+        <nav className="bg-teal-500 shadow-md py-4 px-6 flex justify-between items-center font-pop">
             {/* Logo */}
-            <div className="text-emerald-600 font-bold text-xl">
-                <a>MyLogo</a>
+            <div className="text-teal-500 font-bold text-xl">
+                <Link to="/">
+                    <div className='flex justify-center items-center gap-2'>
+                        <h1 className="text-2xl text-white">Mot</h1>
+                        <img className='w-10 h-10 shadow-xl shadow-teal-300 rounded-full' src={motorent} alt="motorent logo" />
+                        <h1 className="text-2xl text-white">Rent</h1>
+                    </div>
+                </Link>
             </div>
 
             {/* Menu Items */}
             <div className="hidden md:flex space-x-8">
-                <a className="text-gray-700 hover:text-emerald-600">Home</a>
-                <a className="text-gray-700 hover:text-emerald-600">About Us</a>
+                <Link to='/' className="text-gray-700 hover:text-teal-500">Home</Link>
+                <Link to='/about' className="text-gray-700 hover:text-teal-500">About Us</Link>
+                <Link to='/dashboard' className="text-gray-700 hover:text-teal-500">Dashboard</Link>
                 {/* Add conditional menu items based on user role here */}
             </div>
 
             {/* Authentication Links */}
-            <div className="hidden md:flex space-x-4">
-                <a className="text-gray-700 hover:text-emerald-600">Login</a>
-                <a className="bg-emerald-600 text-white px-4 py-2 rounded">Sign Up</a>
+            <div className="hidden md:flex justify-center items-center space-x-4">
+                <Link to='/login' className="text-gray-700 border border-teal-500 rounded px-4 py-2 hover:text-emerald-600">Login</Link>
+                <Link to='/register' className="bg-teal-500 text-white px-4 py-2 rounded">Sign Up</Link>
             </div>
 
             {/* Mobile Menu Icon */}

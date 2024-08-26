@@ -41,11 +41,11 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col md:flex-row h-screen">
+        <div className="flex flex-col md:flex-row h-screen font-pop bg-gray-200">
             {/* Left side - Form */}
-            <div className="w-full md:w-1/2 bg-white p-8 md:p-16 flex flex-col justify-center">
+            <div className="w-full md:w-1/2  p-8 md:p-16 flex flex-col justify-center">
                 <div className="mb-8">
-                    <h2 className="text-3xl font-bold text-emerald-600">Log in</h2>
+                    <h2 className="text-3xl font-bold text-teal-500">Log in</h2>
                     <p className="text-gray-600">Access your account.</p>
                 </div>
 
@@ -61,8 +61,7 @@ const Login: React.FC = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            className={`mt-1 block w-full p-3 border rounded-md ${errors.email ? 'border-red-500' : 'border-gray-300'
-                                }`}
+                            className={`mt-1 w-full p-3 border rounded-md ${errors.email ? 'border-red-500' : 'border-gray-300'} focus: outline-teal-500`}
                         />
                         {errors.email && (
                             <p className="mt-2 text-sm text-red-600">{errors.email}</p>
@@ -80,8 +79,8 @@ const Login: React.FC = () => {
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            className={`mt-1 block w-full p-3 border rounded-md ${errors.password ? 'border-red-500' : 'border-gray-300'
-                                }`}
+                            className={`mt-1 w-full p-3 border rounded-md ${errors.password ? 'border-red-500' : 'border-gray-300'
+                                } focus: outline-teal-500`}
                         />
                         {errors.password && (
                             <p className="mt-2 text-sm text-red-600">{errors.password}</p>
@@ -92,7 +91,7 @@ const Login: React.FC = () => {
 
                     <button
                         type="submit"
-                        className="w-full bg-emerald-600 text-white p-3 rounded-md hover:bg-emerald-700 transition-colors"
+                        className="w-full bg-teal-500 text-white p-3 rounded-md hover:bg-teal-600 transition-colors"
                     >
                         Log in
                     </button>
@@ -103,7 +102,7 @@ const Login: React.FC = () => {
                 <div className="mt-8 text-center">
                     <p className="text-sm text-gray-600">
                         Don't have an account?{' '}
-                        <a href="#" className="text-emerald-600 hover:text-emerald-700">
+                        <a href="#" className="text-teal-500 hover:text-teal-600">
                             Sign up
                         </a>
                     </p>
@@ -111,7 +110,7 @@ const Login: React.FC = () => {
             </div>
 
             {/* Right side - Image */}
-            <div className="hidden md:block md:w-1/2 bg-cover bg-center relative">
+            <div className="hidden md:block md:w-1/2 bg-cover bg-center relative ">
                 <img
                     src="/path-to-your-image.jpg"
                     alt="Astronaut"

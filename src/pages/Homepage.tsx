@@ -1,4 +1,5 @@
 import React from 'react';
+import Navbar from '../components/ui/Navbar';
 
 const HomePage: React.FC = () => {
     const bikes = [
@@ -20,6 +21,7 @@ const HomePage: React.FC = () => {
     ];
     return (
         <>
+            <Navbar />
             {/* // hero section starts */}
             <section className="relative bg-cover bg-center h-screen flex items-center justify-center" style={{ backgroundImage: `url('/path/to/your/banner-image.jpg')` }}>
                 <div className="bg-emerald-800 bg-opacity-50 w-full h-full absolute top-0 left-0"></div>
@@ -36,7 +38,7 @@ const HomePage: React.FC = () => {
             </section>
             {/* // hero section ends */}
             {/* // featured section starts */}
-            <section className="p-6 bg-white">
+            <section className="p-6 bg-gray-200">
                 <h2 className="text-3xl font-bold text-center mb-6">Available Bikes</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {bikes.map(bike => (
@@ -50,7 +52,7 @@ const HomePage: React.FC = () => {
             </section>
             {/* // featured section ends */}
             {/* testimonials section starts */}
-            <section className="p-6 bg-gray-100">
+            <section className="p-6 bg-gray-200">
                 <h2 className="text-3xl font-bold text-center mb-6">Customer Testimonials</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {testimonials.map(testimonial => (
@@ -63,7 +65,7 @@ const HomePage: React.FC = () => {
             </section>
             {/* testimonials section ends */}
             {/* why choose us section starts */}
-            <section className="p-6 bg-white">
+            <section className="p-6 bg-gray-200">
                 <h2 className="text-3xl font-bold text-center mb-6">Why Choose Us</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {benefits.map(benefit => (
@@ -85,7 +87,7 @@ const HomePage: React.FC = () => {
             </section>
             {/* Coupons and discounts ends */}
             {/* contact us section starts */}
-            <section className="p-6 bg-gray-100">
+            <section className="p-6 bg-gray-200">
                 <h2 className="text-3xl font-bold text-center mb-6">Contact Us</h2>
                 <form className="max-w-lg mx-auto bg-white p-6 rounded-md">
                     <div className="mb-4">

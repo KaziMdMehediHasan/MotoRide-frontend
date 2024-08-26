@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaBars } from "react-icons/fa6";
 import motorent from '../../assets/motorent.jpeg'
+import { Link, Outlet } from "react-router-dom";
 
 const Dashboard: React.FC = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -26,19 +27,19 @@ const Dashboard: React.FC = () => {
                 {/* Navigation */}
                 <h1 className="py-2.5 mt-6 px-4 text-2xl">Dashboard</h1>
                 <nav className="mt-6">
-                    <a href="#" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-700">
+                    <Link to="/dashboard/profile" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100 ">
                         Profile
-                    </a>
-                    <a href="#" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-700">
+                    </Link>
+                    <Link to="/dashboard/bikes" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100 ">
                         Bikes
-                    </a>
-                    <a href="#" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-700">
+                    </Link>
+                    <Link to="/dashboard/rent" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100 ">
                         Rent A Bike
-                    </a>
-                    <a href="#" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-700">
+                    </Link>
+                    <Link to="/dashboard/myrentals" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100 ">
                         My Rentals
-                    </a>
-                    <a href="#" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-700">
+                    </Link>
+                    <a href="#" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100 ">
                         Reports
                     </a>
                 </nav>
@@ -76,7 +77,8 @@ const Dashboard: React.FC = () => {
                 </header>
                 {/* Content */}
                 <div className="mt-6 bg-white border border-dashed border-gray-300 p-6 rounded-lg flex items-center justify-center">
-                    <span className="text-gray-400">Dashboard content goes here...</span>
+                    {/* <span className="text-gray-400">Dashboard content goes here...</span> */}
+                    <Outlet />
                 </div>
             </div>}
         </div>
