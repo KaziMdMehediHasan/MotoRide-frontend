@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from '../components/ui/Navbar';
+import { Link } from 'react-router-dom';
 
 const HomePage: React.FC = () => {
     const bikes = [
@@ -45,7 +46,9 @@ const HomePage: React.FC = () => {
                         <div key={bike.id} className="border p-4 rounded-md text-center">
                             <img src={bike.image} alt={bike.brand} className="mb-4 mx-auto" />
                             <h3 className="text-xl font-semibold">{bike.brand}</h3>
-                            <button className="mt-4 p-2 bg-emerald-600 hover:bg-emerald-700 rounded-md text-white">View Detail</button>
+                            <Link to={`/bikes/${bike.id}`}>
+                                <button className="mt-4 p-2 bg-emerald-600 hover:bg-emerald-700 rounded-md text-white">View Detail</button>
+                            </Link>
                         </div>
                     ))}
                 </div>

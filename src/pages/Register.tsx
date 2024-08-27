@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import register from '../assets/register.jpeg'
 
-const Register: React.FC = () => {
+export default function Register() {
     // State for form fields and validation errors
     const [formData, setFormData] = useState({
         name: '',
@@ -166,22 +168,24 @@ const Register: React.FC = () => {
                         Register
                     </button>
                 </form>
-
                 <div className="mt-8 text-center">
                     <p className="text-sm text-gray-600">
                         Already have an account?{' '}
-                        <a href="#" className="text-teal-600 hover:text-teal-700">
+                        <Link to="/login" className="text-teal-600 hover:text-teal-700">
                             Log in
-                        </a>
+                        </Link>
                     </p>
+                </div>
+                <div className="mt-8 text-center">
+                    <h1>Back to <Link to='/'><span className="text-teal-500 hover:text-teal-600 cursor-pointer">Homepage</span></Link></h1>
                 </div>
             </div>
 
             {/* Right side - Image */}
             <div className="hidden md:block md:w-1/2 bg-cover bg-center relative">
                 <img
-                    src="/path-to-your-image.jpg"
-                    alt="Astronaut"
+                    src={register}
+                    alt="create new account"
                     className="absolute inset-0 h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black opacity-40"></div>
@@ -190,4 +194,3 @@ const Register: React.FC = () => {
     );
 };
 
-export default Register;

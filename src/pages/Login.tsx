@@ -1,125 +1,128 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import login from '../assets/Login.jpeg';
 
-const Login: React.FC = () => {
+export default function Login() {
+    // login data type
+    type TLoginData = {
+        email: string,
+        password: string
+    }
     // State for form fields and validation errors
-    const [formData, setFormData] = useState({
+    const loginState: TLoginData = {
         email: '',
-        password: '',
-    });
+        password: ''
+    }
+    const [loginData, setLoginData] = useState(loginState);
+
+    // form error handling state
     const [errors, setErrors] = useState({
         email: '',
         password: '',
     });
 
-    // Handle input change
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
     // Handle form submission
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        let validationErrors = { ...errors };
-
-        // Basic validation rules
-        if (!formData.email) validationErrors.email = 'Email is required';
-        if (!formData.password) validationErrors.password = 'Password is required';
-
-        setErrors(validationErrors);
-
-        // Check if there are no errors before submission
-        const isValid = Object.values(validationErrors).every(
-            (error) => error === ''
-        );
-
-        if (isValid) {
-            console.log('Form data:', formData);
-            // Submit form or handle submission logic here
+        if (!loginData.email) {
+            setErrors({ ...errors, email: 'Email is required!' })
+        } else if (!loginData.password) {
+            setErrors({ ...errors, password: 'Password is required!' })
+        } else {
+            console.log(loginData);
         }
     };
 
     return (
-        <div className="flex flex-col md:flex-row h-screen font-pop bg-gray-200">
-            {/* Left side - Form */}
-            <div className="w-full md:w-1/2  p-8 md:p-16 flex flex-col justify-center">
-                <div className="mb-8">
-                    <h2 className="text-3xl font-bold text-teal-500">Log in</h2>
-                    <p className="text-gray-600">Access your account.</p>
+        <>
+            <div className="flex flex-col md:flex-row h-screen font-pop bg-gray-200">
+                {/* Left side - Form starts*/}
+                <div className="w-full md:w-1/2  p-8 md:p-16 flex flex-col justify-center">
+                    <div className="mb-8">
+                        <h2 className="text-3xl font-bold text-teal-500">Log in</h2>
+                        <p className="text-gray-600">Access your account.</p>
+                    </div>
+                    {/* input form starts */}
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* Email field*/}
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                Email*
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={loginData.email}
+                                onChange={(e) => {
+                                    setLoginData({ ...loginData, email: e.target.value });
+                                    setErrors({ ...errors, email: '' })
+                                }}
+                                className={`mt-1 w-full p-3 border rounded-md ${errors.email ? 'border-red-500' : 'border-gray-300'} focus: outline-teal-500`}
+                            />
+                            {errors.email && (
+                                <p className="mt-2 text-sm text-red-600">{errors.email}</p>
+                            )}
+                        </div>
+
+                        {/* Password field*/}
+                        <div>
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                Password*
+                            </label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                value={loginData.password}
+                                onChange={(e) => {
+                                    setLoginData({ ...loginData, password: e.target.value });
+                                    setErrors({ ...errors, password: '' })
+                                }}
+                                className={
+                                    `mt-1 w-full p-3 border rounded-md 
+                                    ${errors.password ? 'border-red-500' : 'border-gray-300'} 
+                                    focus: outline-teal-500`}
+                            />
+                            {errors.password && (
+                                <p className="mt-2 text-sm text-red-600">{errors.password}</p>
+                            )}
+                        </div>
+                        {/* Submit Button */}
+                        <button
+                            type="submit"
+                            className="w-full bg-teal-500 text-white p-3 rounded-md hover:bg-teal-600 transition-colors"
+                        >
+                            Log in
+                        </button>
+
+
+                    </form>
+                    {/* input form ends */}
+                    <div className="mt-8 text-center">
+                        <p className="text-sm text-gray-600">
+                            Don't have an account?{' '}
+                            <Link to="/register" className="text-teal-500 hover:text-teal-600">
+                                Sign up
+                            </Link>
+                        </p>
+                    </div>
+                    <div className="mt-8 text-center">
+                        <h1>Back to <Link to='/'><span className="text-teal-500 hover:text-teal-600 cursor-pointer">Homepage</span></Link></h1>
+                    </div>
                 </div>
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Email */}
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                            Email*
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className={`mt-1 w-full p-3 border rounded-md ${errors.email ? 'border-red-500' : 'border-gray-300'} focus: outline-teal-500`}
-                        />
-                        {errors.email && (
-                            <p className="mt-2 text-sm text-red-600">{errors.email}</p>
-                        )}
-                    </div>
-
-                    {/* Password */}
-                    <div>
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                            Password*
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className={`mt-1 w-full p-3 border rounded-md ${errors.password ? 'border-red-500' : 'border-gray-300'
-                                } focus: outline-teal-500`}
-                        />
-                        {errors.password && (
-                            <p className="mt-2 text-sm text-red-600">{errors.password}</p>
-                        )}
-                    </div>
-
-                    {/* Submit Button */}
-
-                    <button
-                        type="submit"
-                        className="w-full bg-teal-500 text-white p-3 rounded-md hover:bg-teal-600 transition-colors"
-                    >
-                        Log in
-                    </button>
-
-
-                </form>
-
-                <div className="mt-8 text-center">
-                    <p className="text-sm text-gray-600">
-                        Don't have an account?{' '}
-                        <a href="#" className="text-teal-500 hover:text-teal-600">
-                            Sign up
-                        </a>
-                    </p>
+                {/* Left side - Form ends*/}
+                {/* Right side - Image */}
+                <div className="hidden md:block md:w-1/2 bg-cover bg-center relative">
+                    <img src={login}
+                        alt="person-riding-bike"
+                        className="absolute inset-0 h-full w-full object-cover"
+                    />
+                    {/* image overlay div */}
+                    <div className="absolute inset-0 bg-black opacity-40"></div>
                 </div>
             </div>
-
-            {/* Right side - Image */}
-            <div className="hidden md:block md:w-1/2 bg-cover bg-center relative ">
-                <img
-                    src="/path-to-your-image.jpg"
-                    alt="Astronaut"
-                    className="absolute inset-0 h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black opacity-40"></div>
-            </div>
-        </div>
+        </>
     );
 };
 
-export default Login;

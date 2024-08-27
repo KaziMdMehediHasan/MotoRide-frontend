@@ -8,11 +8,16 @@ import Profile from "../pages/Profile";
 import Bikes from "../pages/Bikes";
 import RentBike from "../pages/RentBike";
 import MyRentals from "../pages/MyRentals";
+import BikeDetails from "../pages/BikeDetails";
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <HomePage />
+    },
+    {
+        path: '/bikes/:bikeId',
+        element: <BikeDetails />
     },
     {
         path: '/login',

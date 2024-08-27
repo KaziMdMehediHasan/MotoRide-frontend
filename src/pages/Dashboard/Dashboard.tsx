@@ -21,27 +21,38 @@ const Dashboard: React.FC = () => {
             {/* Sidebar */}
             <div className={`${isSidebarOpen ? "block" : "hidden"} lg:block bg-gray-100 sm:min-w-screen lg:w-64 min-h-screen p-4`}>
                 {/* Logo */}
-                <div className="hidden px-4 lg:block flex items-center space-x-2 ">
+                <div className="hidden px-4 lg:block items-center space-x-2 ">
                     <img src={motorent} alt="Logo" className="w-32 h-32 rounded-full shadow-xl" />
                 </div>
                 {/* Navigation */}
                 <h1 className="py-2.5 mt-6 px-4 text-2xl">Dashboard</h1>
                 <nav className="mt-6">
-                    <Link to="/dashboard/profile" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100 ">
+                    <Link to="/dashboard/profile" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                    // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                    >
                         Profile
                     </Link>
-                    <Link to="/dashboard/bikes" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100 ">
+                    <Link to="/dashboard/bikes"
+                        className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                    // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                    >
                         Bikes
                     </Link>
-                    <Link to="/dashboard/rent" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100 ">
+                    <Link to="/dashboard/rent"
+                        className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                    // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                    >
                         Rent A Bike
                     </Link>
-                    <Link to="/dashboard/myrentals" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100 ">
+                    <Link to="/dashboard/myrentals"
+                        className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                    // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                    >
                         My Rentals
                     </Link>
-                    <a href="#" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100 ">
-                        Reports
-                    </a>
+                    <Link to='/'
+                        className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                    >Home</Link>
                 </nav>
             </div>
 
