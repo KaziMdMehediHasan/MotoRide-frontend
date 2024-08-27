@@ -4,14 +4,13 @@ import motorent from '../../assets/motorent.jpeg'
 
 const Navbar: React.FC = () => {
     return (
-        <nav className="bg-teal-500 shadow-md py-4 px-6 flex justify-between items-center font-pop">
+        <nav className="bg-gray-200 py-2 px-6 flex justify-between items-center font-pop shadow-xl sticky top-0 z-50">
             {/* Logo */}
             <div className="text-teal-500 font-bold text-xl">
                 <Link to="/">
                     <div className='flex justify-center items-center gap-2'>
-                        <h1 className="text-2xl text-white">Mot</h1>
-                        <img className='w-10 h-10 shadow-xl shadow-teal-300 rounded-full' src={motorent} alt="motorent logo" />
-                        <h1 className="text-2xl text-white">Rent</h1>
+                        <img className='w-10 h-10 shadow-xl rounded-full' src={motorent} alt="motorent logo" />
+                        <h1 className="text-2xl text-teal-500">MotoRent</h1>
                     </div>
                 </Link>
             </div>

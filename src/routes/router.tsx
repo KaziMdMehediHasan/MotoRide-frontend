@@ -9,6 +9,7 @@ import Bikes from "../pages/Bikes";
 import RentBike from "../pages/RentBike";
 import MyRentals from "../pages/MyRentals";
 import BikeDetails from "../pages/BikeDetails";
+import ProtectedRoutes from "../components/layout/ProtectedRoutes";
 
 const router = createBrowserRouter([
     {
@@ -33,7 +34,11 @@ const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <Dashboard />,
+        element: (
+            <ProtectedRoutes>
+                <Dashboard />
+            </ProtectedRoutes>
+        ),
         children: [
             {
                 path: '/dashboard/profile',

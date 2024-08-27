@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import login from '../assets/Login.jpeg';
+import { Link, useNavigate } from 'react-router-dom';
+import loginImg from '../assets/Login.jpeg';
+import { TLoginData } from '../utils/Types';
+import { useLoginMutation } from '../redux/features/auth/authApi';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { setUser } from '../redux/features/auth/authSlice';
+import { verifyToken } from '../utils/verifyToken';
 
 export default function Login() {
-    // login data type
-    type TLoginData = {
-        email: string,
-        password: string
-    }
     // State for form fields and validation errors
+    const navigate = useNavigate();
     const loginState: TLoginData = {
         email: '',
         password: ''
     }
     const [loginData, setLoginData] = useState(loginState);
+    const [login, { data, error }] = useLoginMutation();
+
+    // redux states
+    const dispatch = useAppDispatch();
+    // console.log(loggedInUser);
+
 
     // form error handling state
     const [errors, setErrors] = useState({
@@ -22,16 +29,29 @@ export default function Login() {
     });
 
     // Handle form submission
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        const userInfo = {
+            email: loginData?.email,
+            password: loginData?.password
+        }
+        // error handling
         if (!loginData.email) {
             setErrors({ ...errors, email: 'Email is required!' })
         } else if (!loginData.password) {
             setErrors({ ...errors, password: 'Password is required!' })
         } else {
             console.log(loginData);
+            // sending credentials via redux auth api
+            const res = await login(userInfo);
+            // console.log(res);
+            const user = verifyToken(res.data.token);
+            console.log(user);
+            dispatch(setUser({ user, token: res.data.token }))
+            navigate('/dashboard');
         }
     };
+
 
     return (
         <>
@@ -95,8 +115,6 @@ export default function Login() {
                         >
                             Log in
                         </button>
-
-
                     </form>
                     {/* input form ends */}
                     <div className="mt-8 text-center">
@@ -114,7 +132,7 @@ export default function Login() {
                 {/* Left side - Form ends*/}
                 {/* Right side - Image */}
                 <div className="hidden md:block md:w-1/2 bg-cover bg-center relative">
-                    <img src={login}
+                    <img src={loginImg}
                         alt="person-riding-bike"
                         className="absolute inset-0 h-full w-full object-cover"
                     />
