@@ -21,7 +21,6 @@ export default function Login() {
     const dispatch = useAppDispatch();
     // console.log(loggedInUser);
 
-
     // form error handling state
     const [errors, setErrors] = useState({
         email: '',
@@ -48,10 +47,9 @@ export default function Login() {
             const user = verifyToken(res.data.token);
             console.log(user);
             dispatch(setUser({ user, token: res.data.token }))
-            navigate('/dashboard');
+            navigate('/');
         }
     };
-
 
     return (
         <>

@@ -1,9 +1,8 @@
-import React from 'react';
 import Navbar from '../components/ui/Navbar';
 import { Link } from 'react-router-dom';
 import homepageCover from '../assets/homepage-cover.jpg';
 
-const HomePage: React.FC = () => {
+export default function HomePage() {
     const bikes = [
         { id: 1, brand: 'Bike Brand A', image: '/path/to/image1.jpg' },
         { id: 2, brand: 'Bike Brand B', image: '/path/to/image2.jpg' },
@@ -26,7 +25,7 @@ const HomePage: React.FC = () => {
             <Navbar />
             {/* // hero section starts */}
             <div className="font-pop">
-                <section className="relative bg-cover bg-center h-screen flex items-center justify-center" style={{ backgroundImage: `url(${homepageCover})` }}>
+                <section className="relative bg-cover bg-center h-screen flex items-center justify-center shadow-xl" style={{ backgroundImage: `url(${homepageCover})` }}>
                     <div className="bg-slate-100 opacity-15 w-full h-full absolute top-0 left-0"></div>
                     <div className="text-center text-white p-20 bg-teal-800 backdrop-blur-md rounded-lg bg-opacity-40">
                         <h1 className="text-4xl font-bold mb-4">Best Bikes for You</h1>
@@ -133,4 +132,3 @@ const HomePage: React.FC = () => {
     );
 };
 
-export default HomePage;
