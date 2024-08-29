@@ -57,7 +57,6 @@ const Dashboard: React.FC = () => {
             </div>
 
             {/* Main Content */}
-
             {!isSidebarOpen && <div className="flex-1 p-6 bg-gray-50">
                 <header className="flex justify-between items-center">
                     {/* Search Bar */}
