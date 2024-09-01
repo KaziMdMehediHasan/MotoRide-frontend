@@ -24,7 +24,7 @@ export default function Profile() {
     const [error, setError] = useState('');
     const [updateUser, setUpdateUser] = useState(updateUserValues);
     // file upload state
-    const [imgFile, setImgFile] = useState('');
+    const [imgPath, setImgPath] = useState('');
     const ErrorMessage: string = 'Enter a valid email';
     // fetching user data with the help of redux
     const { data, isLoading } = useGetUserDetailsQuery({});
@@ -52,6 +52,8 @@ export default function Profile() {
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
             );
     };
+
+    // user update function
     const handleSubmit = async () => {
         let userInfo: TUserInfo = {};
         // formatting the data to send to the server
@@ -86,19 +88,19 @@ export default function Profile() {
         const file = e.target.files[0];
         if (file && file.type.startsWith('image/')) {
             console.log('compatible file');
-            setImgFile(URL.createObjectURL(e.target.files[0]));
+            setImgPath(URL.createObjectURL(e.target.files[0]));
             setError('');
         } else {
-            setImgFile('');
+            setImgPath('');
             setError('Please select a compatible image file (.jpg, .png or .jpeg).');
         }
     }
 
     const handlePhotoUpload = () => {
-        if (imgFile) {
-            console.log('Uploading file:', imgFile);
+        if (imgPath) {
+            console.log('Uploading file:', imgPath);
             setIsUpdatePhoto(false);
-            setImgFile('');
+            setImgPath('');
         } else {
             setError('No file selected or incorrect file type');
         }
@@ -106,21 +108,22 @@ export default function Profile() {
 
     return (
         <>
-            <div className="p-4 md:p-6 w-full shadow-lg border rounded-lg mx-auto">
-                <h2 className="text-xl text-center font-semibold mb-4">My profile</h2>
+            <div className="p-4 md:p-6 w-full bg-gray-100 shadow-lg border rounded-lg mx-auto">
+                <h2 className="text-xl text-gray-700 text-center font-semibold mb-4">My profile</h2>
                 <p className="text-gray-500 text-center mb-6">Manage your profile details.</p>
                 {/* profile information */}
                 {/* profile picture */}
                 <div className="w-1/3 mx-auto flex flex-col justify-center items-center m-6">
-                    <div className="flex flex-col items-center justify-center space-y-3">
-                        <img className='w-60 h-60 rounded-full shadow-lg' src={loginImg} alt="profile_picture" />
+                    <div className="flex flex-col relative group items-center justify-center">
+                        <img className='w-60 h-60 overflow-hidden rounded-full shadow-lg' src={loginImg} alt="profile_picture" />
+                        <div className='bg-gray-700 w-60 h-60 rounded-full opacity-0 group-hover:opacity-50 absolute duration-500 flex justify-center items-center text-xl text-white font-semibold'>Overlay</div>
                         <button
                             onClick={() => setIsUpdatePhoto(!isUpdatePhoto)}
-                            className="px-4 py-2 bg-teal-500 text-white rounded-md shadow-lg">Edit Photo
+                            className="px-4 py-2 bg-teal-500 text-white text-sm rounded-md shadow-lg opacity-0 transition-opacity group-hover:opacity-100 absolute duration-300 flex justify-center items-center">Edit Photo
                         </button>
                     </div>
                 </div>
-                <div className="bg-gray-100 flex justify-between p-6 rounded-lg shadow-md">
+                <div className="bg-gray-100 flex justify-between p-6">
                     {/* infos */}
                     <div>
                         <div className="mb-4">
@@ -146,7 +149,7 @@ export default function Profile() {
                             onClick={() => {
                                 setIsModalOpen(!isModalOpen);
                             }}
-                            className="px-4 py-2 bg-teal-500 text-white rounded-md shadow-lg transition-transform transform hover:scale-105">Update Information
+                            className="px-4 py-2 bg-teal-500 text-white text-sm rounded-md shadow-lg transition-transform transform hover:scale-105">Update Information
                         </button>
                     </div>
                 </div>
@@ -252,35 +255,38 @@ export default function Profile() {
                             onClick={() => setIsUpdatePhoto(false)}
                         ></div>
                         <div className='fixed inset-0 flex items-center justify-center'>
-                            <div className="p-4 md:p-6 w-1/2 mx-auto bg-gray-100 absolute shadow-lg border rounded-lg transform transition-all duration-300 ease-out scale-100">
+                            <div className="p-4 md:p-6 w-1/2 mx-auto bg-gray-200 absolute shadow-lg border rounded-lg transform transition-all duration-300 ease-out scale-100">
+                                {/* modal close icon starts*/}
                                 <span
-                                    className='absolute top-2 right-4 cursor-pointer text-xl text-gray-600 bg-gray-200 py-1 px-2 rounded-md hover:bg-gray-300'
+                                    className='absolute top-2 right-4 cursor-pointer text-xl text-gray-600 bg-gray-300 py-1 px-3 rounded-md hover:bg-red-400 hover:text-white'
                                     onClick={() => {
                                         setIsUpdatePhoto(false);
                                         setError('');
+                                        setImgPath('');
                                     }}
                                 >
                                     X
                                 </span>
+                                {/* modal close icon ends*/}
                                 <div className='flex flex-col items-center justify-center'>
-                                    <h1 className="block text-center text-xl text-gray-700 mb-4">Upload New Photo</h1>
+                                    <h1 className="block font-semibold text-center text-xl text-gray-700 mb-4">Upload New Photo</h1>
                                     <div className='w-64 h-64'>
                                         <img
-                                            className='w-64 h-64 rounded-full object-cover'
-                                            src={imgFile}
+                                            className='w-64 h-64 rounded-full object-cover object-center'
+                                            src={imgPath}
                                         />
                                     </div>
                                     <div>
                                         <input
                                             required
                                             accept='.png, .jpg, .jpeg'
-                                            className="mt-4 w-full text-sm text-slate-500 file:mr-8 file:ml-7 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-100 file:text-teal-700 hover:file:bg-teal-300"
+                                            className="mt-4 w-full file:cursor-pointer text-sm text-slate-500 file:mr-8 file:ml-7 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-200 file:text-teal-700 hover:file:bg-teal-300"
                                             type="file"
                                             onChange={handleImageSelect} />
                                     </div>
                                     {
                                         error && (
-                                            <div className="mt-4 bg-red-100 text-red-500 rounded-lg py-2 px-4">
+                                            <div className="mt-4 bg-red-200 text-red-600 rounded-md shadow-lg py-2 px-4">
                                                 {error}
                                             </div>
                                         )
@@ -289,7 +295,7 @@ export default function Profile() {
                                         <button
                                             onClick={handlePhotoUpload}
                                             type="button"
-                                            className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 text-sm rounded-md">
+                                            className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 text-sm rounded-md shadow-lg transition-transform transform hover:scale-105">
                                             Upload
                                         </button>
                                     </div>
