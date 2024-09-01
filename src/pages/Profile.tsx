@@ -9,6 +9,7 @@ export default function Profile() {
         email?: string;
         phone?: string;
         address?: string;
+        profileImg?: string;
     }
     type TUpdateUser = {
         [key: string]: string
@@ -18,13 +19,16 @@ export default function Profile() {
         email: '',
         phone: '',
         address: '',
+        profileImg: ''
     }
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isUpdatePhoto, setIsUpdatePhoto] = useState(false);
+    // setting error for failed operations
     const [error, setError] = useState('');
     const [updateUser, setUpdateUser] = useState(updateUserValues);
-    // file upload state
+    // file upload states
     const [imgPath, setImgPath] = useState('');
+    const [uploadImg, setUploadImg] = useState({ profileImg: '' });
     const ErrorMessage: string = 'Enter a valid email';
     // fetching user data with the help of redux
     const { data, isLoading } = useGetUserDetailsQuery({});
@@ -53,12 +57,47 @@ export default function Profile() {
             );
     };
 
+    // converting image file to base64 string
+    const convertImgToBase64 = (file: File) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file); //convert to base64
+            fileReader.onload = () => {
+                resolve(fileReader.result); //returns the successful result
+            };
+            fileReader.onerror = (error) => {
+                reject(error);
+            }
+        })
+    }
+
+    // select image function
+    const handleImageSelect = async (e) => {
+        console.log(e.target.files);
+        const file = e.target.files[0];
+        const imgBase64 = await convertImgToBase64(file);
+
+        setUploadImg({ ...uploadImg, profileImg: imgBase64 as string });
+        setUpdateUser({ ...updateUser, profileImg: imgBase64 as string });
+
+        if (file && file.type.startsWith('image/')) {
+            console.log('compatible file');
+            setImgPath(URL.createObjectURL(e.target.files[0]));
+            setError('');
+            // setUploadImg({ ...uploadImg, profileImg: '' });
+        } else {
+            setImgPath('');
+            setError('Please select a compatible image file (.jpg, .png or .jpeg).');
+        }
+
+    }
+
     // user update function
     const handleSubmit = async () => {
         let userInfo: TUserInfo = {};
         // formatting the data to send to the server
         for (const key in updateUser) {
-            console.log(updateUser[key]);
+            // console.log(updateUser[key]);
             if (updateUser[key]) {
                 userInfo = { ...userInfo, [key]: updateUser[key] }
             }
@@ -80,27 +119,18 @@ export default function Profile() {
             console.log("Failed to update user:", err)
         }
 
-    }
-    // console.log(updateFormValue);
+        console.log(userInfo);
 
-    function handleImageSelect(e) {
-        console.log(e.target.files);
-        const file = e.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            console.log('compatible file');
-            setImgPath(URL.createObjectURL(e.target.files[0]));
-            setError('');
-        } else {
-            setImgPath('');
-            setError('Please select a compatible image file (.jpg, .png or .jpeg).');
-        }
     }
+
+    console.log(uploadImg);
 
     const handlePhotoUpload = () => {
         if (imgPath) {
             console.log('Uploading file:', imgPath);
             setIsUpdatePhoto(false);
             setImgPath('');
+            handleSubmit();
         } else {
             setError('No file selected or incorrect file type');
         }
@@ -115,15 +145,15 @@ export default function Profile() {
                 {/* profile picture */}
                 <div className="w-1/3 mx-auto flex flex-col justify-center items-center m-6">
                     <div className="flex flex-col relative group items-center justify-center">
-                        <img className='w-60 h-60 overflow-hidden rounded-full shadow-lg' src={loginImg} alt="profile_picture" />
-                        <div className='bg-gray-700 w-60 h-60 rounded-full opacity-0 group-hover:opacity-50 absolute duration-500 flex justify-center items-center text-xl text-white font-semibold'>Overlay</div>
+                        <img className='w-60 h-60 object-cover overflow-hidden rounded-full shadow-lg' src={data?.data?.profileImg || ''} alt="profile_picture" />
+                        <div className='bg-gray-700 w-60 h-60 rounded-full opacity-0 group-hover:opacity-50 absolute duration-300 flex justify-center items-center text-xl text-white font-semibold'>Overlay</div>
                         <button
                             onClick={() => setIsUpdatePhoto(!isUpdatePhoto)}
                             className="px-4 py-2 bg-teal-500 text-white text-sm rounded-md shadow-lg opacity-0 transition-opacity group-hover:opacity-100 absolute duration-300 flex justify-center items-center">Edit Photo
                         </button>
                     </div>
                 </div>
-                <div className="bg-gray-100 flex justify-between p-6">
+                <div className="bg-gray-100 flex flex-col lg:flex-row justify-between p-6">
                     {/* infos */}
                     <div>
                         <div className="mb-4">
@@ -263,6 +293,7 @@ export default function Profile() {
                                         setIsUpdatePhoto(false);
                                         setError('');
                                         setImgPath('');
+                                        setUploadImg({ ...uploadImg, profileImg: '' });
                                     }}
                                 >
                                     X
@@ -270,12 +301,14 @@ export default function Profile() {
                                 {/* modal close icon ends*/}
                                 <div className='flex flex-col items-center justify-center'>
                                     <h1 className="block font-semibold text-center text-xl text-gray-700 mb-4">Upload New Photo</h1>
+                                    {/* view selected image */}
                                     <div className='w-64 h-64'>
                                         <img
                                             className='w-64 h-64 rounded-full object-cover object-center'
                                             src={imgPath}
                                         />
                                     </div>
+                                    {/* choose image field */}
                                     <div>
                                         <input
                                             required

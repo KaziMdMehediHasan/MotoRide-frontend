@@ -21,6 +21,7 @@ export type TUserDetail = {
     phone: string;
     address: string;
     role: string;
+    profileImg?: string;
     createdAt: string;
     updatedAt: string;
     __v?: number

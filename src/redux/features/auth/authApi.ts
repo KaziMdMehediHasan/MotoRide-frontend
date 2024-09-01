@@ -1,3 +1,4 @@
+import { Data } from "../../../utils/Types";
 import { baseApi } from "../../api/baseApi";
 
 const authApi = baseApi.injectEndpoints({
@@ -16,7 +17,7 @@ const authApi = baseApi.injectEndpoints({
                 body: userInfo
             })
         }),
-        getUserDetails: builder.query({
+        getUserDetails: builder.query<Data, unknown>({
             query: () => ({
                 url: '/users/me',
                 method: 'GET',
