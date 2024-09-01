@@ -20,7 +20,12 @@ export default function Profile() {
         address: '',
     }
     const [isModalOpen, setIsModalOpen] = useState(false);
+    console.log(isModalOpen);
+    const [isUpdatePhoto, setIsUpdatePhoto] = useState(false);
+    console.log(isUpdatePhoto);
     const [updateUser, setUpdateUser] = useState(updateUserValues);
+    // file upload state
+    const [imgFile, setImgFile] = useState('');
     const ErrorMessage: string = 'Enter a valid email';
     // fetching user data with the help of redux
     const { data, isLoading } = useGetUserDetailsQuery({});
@@ -77,6 +82,10 @@ export default function Profile() {
     }
     // console.log(updateFormValue);
 
+    function handleImageUpload(e) {
+        console.log(e.target.files);
+        setImgFile(URL.createObjectURL(e.target.files[0]));
+    }
     return (
         <>
             <div className="p-4 md:p-6 w-full shadow-lg border rounded-lg mx-auto">
@@ -88,6 +97,7 @@ export default function Profile() {
                     <div className="flex flex-col items-center justify-center space-y-3">
                         <img className='w-60 h-60 rounded-full shadow-lg' src={loginImg} alt="profile_picture" />
                         <button
+                            onClick={() => setIsUpdatePhoto(!isUpdatePhoto)}
                             className="px-4 py-2 bg-teal-500 text-white rounded-md shadow-lg">Edit Photo
                         </button>
                     </div>
@@ -115,7 +125,9 @@ export default function Profile() {
                     {/* update button to open modal */}
                     <div>
                         <button
-                            onClick={() => setIsModalOpen(!isModalOpen)}
+                            onClick={() => {
+                                setIsModalOpen(!isModalOpen);
+                            }}
                             className="px-4 py-2 bg-teal-500 text-white rounded-md shadow-lg transition-transform transform hover:scale-105">Update Information
                         </button>
                     </div>
@@ -214,6 +226,47 @@ export default function Profile() {
                 )
             }
             {/* update info modal ends */}
+            {
+                isUpdatePhoto && (
+                    <>
+                        <div
+                            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"
+                            onClick={() => setIsUpdatePhoto(false)}
+                        ></div>
+                        <div className='fixed inset-0 flex items-center justify-center'>
+                            <div className="p-4 md:p-6 w-1/2 mx-auto bg-gray-100 absolute shadow-lg border rounded-lg transform transition-all duration-300 ease-out scale-100">
+                                <div className='flex flex-col items-center justify-center'>
+                                    <h1 className="block text-center text-xl text-gray-700 mb-4">Upload New Photo</h1>
+                                    <div className='w-64 h-64'>
+                                        <img
+                                            className='w-64 h-64 rounded-full object-cover'
+                                            src={imgFile}
+                                        />
+                                    </div>
+                                    <div>
+                                        <input
+                                            accept='/image*'
+                                            className="mt-4 w-full text-sm text-slate-500 file:mr-8 file:ml-7 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-100 file:text-teal-700 hover:file:bg-teal-300"
+                                            type="file"
+                                            onChange={handleImageUpload} />
+                                    </div>
+                                    <div className="mt-4">
+                                        <button
+                                            onClick={() => {
+                                                setIsUpdatePhoto(!isUpdatePhoto);
+                                                setImgFile('');
+                                            }}
+                                            type="button"
+                                            className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 text-sm rounded-md">
+                                            Upload
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )
+            }
         </>
     );
 }
