@@ -3,10 +3,10 @@ import { FaBars } from "react-icons/fa6";
 import motorent from '../../assets/motorent.jpeg'
 import { Link, Outlet } from "react-router-dom";
 
-const Dashboard: React.FC = () => {
+export default function Dashboard() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     return (
-        <div className="flex flex-col lg:flex-row h-screen font-pop">
+        <div className="flex flex-col lg:flex-row min-h-screen font-pop">
             {/* Mobile Menu Toggle */}
             <div className="lg:hidden flex justify-between p-4">
                 <button
@@ -94,5 +94,3 @@ const Dashboard: React.FC = () => {
         </div>
     )
 }
-
-export default Dashboard

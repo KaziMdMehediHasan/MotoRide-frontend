@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import loginImg from '../assets/Login.jpeg';
 import { TLoginData } from '../utils/Types';
 import { useLoginMutation } from '../redux/features/auth/authApi';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { useAppDispatch } from '../redux/hooks';
 import { setUser } from '../redux/features/auth/authSlice';
 import { verifyToken } from '../utils/verifyToken';
 

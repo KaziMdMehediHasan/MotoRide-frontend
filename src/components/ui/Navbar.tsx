@@ -2,17 +2,19 @@ import { Link, NavLink } from 'react-router-dom';
 import { FaMotorcycle } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/features/auth/authSlice';
+import { TLoggedInUser } from '../../utils/Types';
 
 export default function Navbar() {
     const dispatch = useAppDispatch();
-    const user = useAppSelector((state) => state.auth.user);
+    const user: TLoggedInUser | null = useAppSelector((state) => state.auth.user);
     let role: string = '';
-    let userEmail: string = ''
+    let userEmail: string = '';
+
     console.log(user);
 
     if (user !== null) {
         role = user?.role as string;
-        userEmail = user?.email as string;
+        userEmail = user?.userEmail as string;
     }
 
     return (
