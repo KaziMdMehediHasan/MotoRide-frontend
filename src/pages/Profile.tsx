@@ -1,19 +1,10 @@
 import { useState } from "react";
-import loginImg from '../assets/Login.jpeg';
 import { useGetUserDetailsQuery, useUpdateUserDetailsMutation } from "../redux/features/auth/authApi";
 import Loader from "../components/ui/Loader";
+import { TUpdateUser, TUserInfo } from "../utils/Types";
 
 export default function Profile() {
-    type TUserInfo = {
-        name?: string;
-        email?: string;
-        phone?: string;
-        address?: string;
-        profileImg?: string;
-    }
-    type TUpdateUser = {
-        [key: string]: string
-    }
+
     const updateUserValues: TUpdateUser = {
         name: '',
         email: '',
@@ -29,7 +20,7 @@ export default function Profile() {
     // file upload states
     const [imgPath, setImgPath] = useState('');
     const [uploadImg, setUploadImg] = useState({ profileImg: '' });
-    const ErrorMessage: string = 'Enter a valid email';
+    // const ErrorMessage: string = 'Enter a valid email';
     // fetching user data with the help of redux
     const { data, isLoading } = useGetUserDetailsQuery({});
     console.log('user data fetching', data)
@@ -72,18 +63,22 @@ export default function Profile() {
     }
 
     // select image function
-    const handleImageSelect = async (e) => {
+    const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(e.target.files);
-        const file = e.target.files[0];
+        // type guard to avoid type error
+        if (!e.target.files || e.target.files.length === 0) {
+            setError('Please select a compatible image file (.jpg, .png or .jpeg).');
+            return;
+        }
+        const file = e.target.files[0]
         const imgBase64 = await convertImgToBase64(file);
-
-        setUploadImg({ ...uploadImg, profileImg: imgBase64 as string });
-        setUpdateUser({ ...updateUser, profileImg: imgBase64 as string });
 
         if (file && file.type.startsWith('image/')) {
             console.log('compatible file');
             setImgPath(URL.createObjectURL(e.target.files[0]));
             setError('');
+            setUploadImg({ ...uploadImg, profileImg: imgBase64 as string });
+            setUpdateUser({ ...updateUser, profileImg: imgBase64 as string });
             // setUploadImg({ ...uploadImg, profileImg: '' });
         } else {
             setImgPath('');
@@ -93,7 +88,7 @@ export default function Profile() {
     }
 
     // user update function
-    const handleSubmit = async () => {
+    const handleUpdateDataSubmit = async () => {
         let userInfo: TUserInfo = {};
         // formatting the data to send to the server
         for (const key in updateUser) {
@@ -123,14 +118,12 @@ export default function Profile() {
 
     }
 
-    console.log(uploadImg);
-
     const handlePhotoUpload = () => {
         if (imgPath) {
             console.log('Uploading file:', imgPath);
             setIsUpdatePhoto(false);
             setImgPath('');
-            handleSubmit();
+            handleUpdateDataSubmit();
         } else {
             setError('No file selected or incorrect file type');
         }
@@ -253,7 +246,7 @@ export default function Profile() {
                                         <button
                                             onClick={() => {
                                                 setIsModalOpen(false);
-                                                handleSubmit();
+                                                handleUpdateDataSubmit();
                                             }}
                                             type='button'
                                             className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md"

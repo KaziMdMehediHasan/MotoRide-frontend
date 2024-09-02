@@ -13,6 +13,16 @@ export type TRegisterData = {
 }
 
 //authentication data type
+export type TUserInfo = {
+    name?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+    profileImg?: string;
+}
+export type TUpdateUser = {
+    [key: string]: string
+}
 
 export type TUserDetail = {
     _id: string;
@@ -67,3 +77,6 @@ export type TBike = {
     year: 2021,
     bikeImg?: string;
 }
+
+// event types
+export type FormEvent = React.InputHTMLAttributes<HTMLInputElement>
