@@ -13,6 +13,6 @@ export const baseApi = createApi({
             }
         }
     }),
-    tagTypes: ['TUpdatedUser'],
+    tagTypes: ['User'],
     endpoints: () => ({})
 })
