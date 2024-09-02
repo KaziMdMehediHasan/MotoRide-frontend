@@ -1,12 +1,28 @@
 import ProductCard from "../components/ProductCard";
+import { useGetBikesQuery } from "../redux/features/bikes/bikeApi";
+import Loader from "../components/ui/Loader";
+import { TBike } from "../utils/Types";
 
 export default function Bikes() {
-    const iterator = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    let bikeData: TBike[] = [];
+
+    const { data, isLoading } = useGetBikesQuery({});
+    // loader placed if data is still not fetched properly
+    if (isLoading) {
+        return <Loader />
+    }
+
+    // using the type guard
+    if (data && data.data) {
+        bikeData = [...data.data];
+    }
+    console.log(bikeData);
     return (
         <>
             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 font-pop gap-4 2xl:gap-6 items-center'>
                 {
-                    iterator.map(item => <ProductCard key={item} />)
+                    bikeData.map((item: TBike) => <ProductCard bike={item} key={item._id} />)
                 }
             </div>
         </>

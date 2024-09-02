@@ -53,3 +53,17 @@ export type TLoggedInUser = {
     iat?: number;
     exp?: number;
 }
+
+// bike types
+export type TBike = {
+    _id: string;
+    brand: string;
+    cc: number;
+    description: string;
+    isAvailable: boolean;
+    model: string;
+    name: string;
+    pricePerHour: number;
+    year: 2021,
+    bikeImg?: string;
+}
