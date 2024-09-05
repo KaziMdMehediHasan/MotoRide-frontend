@@ -22,7 +22,16 @@ export default function Bikes() {
         <>
             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 font-pop gap-4 2xl:gap-6 items-center'>
                 {
-                    bikeData.map((item: TBike) => <ProductCard bike={item} key={item._id} />)
+                    bikeData.map((item) => (
+                        <ProductCard
+                            key={item?._id}
+                            name={item.name}
+                            description={item.description}
+                            cc={item.cc}
+                            _id={item._id}
+                            pricePerHour={item.pricePerHour}
+                        />
+                    ))
                 }
             </div>
         </>
