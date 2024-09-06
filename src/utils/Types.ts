@@ -76,7 +76,7 @@ export type TBike = {
     name?: string;
     pricePerHour?: number;
     year?: number,
-    img?: string;
+    img?: unknown;
 }
 
 // event types

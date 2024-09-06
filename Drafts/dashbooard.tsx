@@ -136,3 +136,37 @@
     )
 }
 {/* update info modal ends */ }
+
+// Append other fields from updateData only if they exist
+// Object.keys(updateData).forEach((key) => {
+//     const value = updateData[key as keyof TUpdateBike];
+//     if (value !== undefined && value !== null) {
+//         bikeInfo.append(key, value.toString()); // Convert all values to strings
+//     }
+// });
+
+// const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+//     console.log(e.target.files);
+//     // type guard to avoid type error
+//     if (!e.target.files || e.target.files.length === 0) {
+//         setError('Please select a compatible image file (.jpg, .png or .jpeg).');
+//         return;
+//     }
+//     const file = e.target.files[0]
+//     console.log(file);
+//     // const imgBase64 = await convertImgToBase64(file);
+
+//     if (file && file.type.startsWith('image/')) {
+//         console.log('compatible file');
+//         setImgPath(URL.createObjectURL(e.target.files[0]));
+//         setError('');
+//         // setUpdateBike({ ...updateBike, img: e.target.files[0] });
+//         // setUploadImg({ ...uploadImg, profileImg: imgBase64 as string });
+//         // setUpdateUser({ ...updateUser, profileImg: imgBase64 as string });
+//         // setUploadImg({ ...uploadImg, profileImg: '' });
+//     } else {
+//         setImgPath('');
+//         setError('Please select a compatible image file (.jpg, .png or .jpeg).');
+//     }
+
+// }

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import { useGetSingleBikeQuery } from "../redux/features/bikes/bikeApi";
+import { useGetSingleBikeQuery, useUpdateBikeDataMutation } from "../redux/features/bikes/bikeApi";
 import Loader from "../components/ui/Loader";
 import { TBike, TLoggedInUser } from "../utils/Types";
 import { useAppSelector } from "../redux/hooks";
@@ -9,6 +9,7 @@ export default function BikeDetails() {
     const { bikeId } = useParams();
     // modal opening or closing state
     const updateBikeValues: TBike = {
+        _id: '',
         name: '',
         description: '',
         pricePerHour: 0,
@@ -16,13 +17,18 @@ export default function BikeDetails() {
         cc: 0,
         model: '',
         brand: '',
-        year: 0
+        year: 0,
+        // img: {}
     }
+    // new code starts here
     const [updateBike, setUpdateBike] = useState(updateBikeValues);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [error, setError] = useState('');
     const [imgPath, setImgPath] = useState('');
     const { data: bikeDetail, isLoading } = useGetSingleBikeQuery(bikeId as string, {});
+    const [updateBikeData, { data: updatedBikeData, error: bikeUpdateError }] = useUpdateBikeDataMutation();
+    // new code ends here
+
     const user: TLoggedInUser | null = useAppSelector((state) => state.auth.user);
     let role;
     let name, description, brand, isAvailable, model, pricePerHour, year, cc;
@@ -49,12 +55,14 @@ export default function BikeDetails() {
             return;
         }
         const file = e.target.files[0]
+        console.log(file);
         // const imgBase64 = await convertImgToBase64(file);
 
         if (file && file.type.startsWith('image/')) {
             console.log('compatible file');
             setImgPath(URL.createObjectURL(e.target.files[0]));
             setError('');
+            // setUpdateBike({ ...updateBike, img: e.target.files[0] });
             // setUploadImg({ ...uploadImg, profileImg: imgBase64 as string });
             // setUpdateUser({ ...updateUser, profileImg: imgBase64 as string });
             // setUploadImg({ ...uploadImg, profileImg: '' });
@@ -75,7 +83,9 @@ export default function BikeDetails() {
                 bikeInfo = { ...bikeInfo, [key]: updateBike[key as keyof TBike] }
             }
         }
+        bikeInfo = { ...bikeInfo, _id: bikeId };
         console.log(bikeInfo);
+        // updateBikeData(bikeInfo);
         // checking email
         // if (userInfo.email) {
         //     if (validateEmail(userInfo.email)) {
@@ -180,7 +190,8 @@ export default function BikeDetails() {
                         {/* main modal content */}
                         <div className="fixed inset-0 flex items-center justify-center">
                             <div className='p-4 md:p-6 w-1/2 mx-auto bg-gray-100 absolute shadow-lg border rounded-lg transform transition-all duration-300 ease-out scale-100'>
-                                <div>
+                                <form encType='multipart/form-data' onSubmit={uploadFile}>
+                                    {/* bike name field */}
                                     <div className="mb-4">
                                         <label className="block text-gray-700">Bike Name</label>
                                         <div className="flex items-center space-x-2">
@@ -194,14 +205,14 @@ export default function BikeDetails() {
                                             {/* conditionally rendering save buttons */}
                                         </div>
                                     </div>
-                                    {/* name field div ends */}
+                                    {/* bike name field div ends */}
+                                    {/* description field starts */}
                                     <div className="mb-4">
                                         <label className="block text-gray-700">Description</label>
                                         <div className="flex items-center space-x-2">
                                             <input
                                                 name="email"
                                                 id="email"
-                                                pattern='/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/'
                                                 type="email"
                                                 placeholder={description}
                                                 onChange={(e) => setUpdateBike({ ...updateBike, description: e.target.value })}
@@ -209,7 +220,8 @@ export default function BikeDetails() {
                                             />
                                         </div>
                                     </div>
-                                    {/* brand field */}
+                                    {/* description field ends */}
+                                    {/* brand field starts*/}
                                     <div className="mb-4">
                                         <label className="block text-gray-700">Brand</label>
                                         <div className="flex items-center space-x-2">
@@ -221,6 +233,8 @@ export default function BikeDetails() {
                                             />
                                         </div>
                                     </div>
+                                    {/* brand field ends*/}
+                                    {/* cc field starts */}
                                     <div className="mb-4">
                                         <label className="block text-gray-700">CC</label>
                                         <div className="flex items-center space-x-2">
@@ -232,7 +246,8 @@ export default function BikeDetails() {
                                             />
                                         </div>
                                     </div>
-                                    {/* model field */}
+                                    {/* cc field ends */}
+                                    {/* model field starts*/}
                                     <div>
                                         <div className="mb-4">
                                             <label className="block text-gray-700">Model</label>
@@ -246,6 +261,25 @@ export default function BikeDetails() {
                                             </div>
                                         </div>
                                     </div>
+                                    {/* model field starts*/}
+                                    {/* year field starts */}
+                                    <div>
+                                        <div className="mb-4">
+                                            <label className="block text-gray-700">Year</label>
+                                            <div className="flex items-center space-x-2">
+                                                <input
+                                                    type='number'
+                                                    placeholder={`${year}`}
+                                                    onChange={(e) => {
+                                                        setUpdateBike({ ...updateBike, year: Number(e.target.value) });
+
+                                                    }}
+                                                    className=" border p-2 rounded-md w-full focus:outline-teal-500"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* year field ends */}
                                     {/* availability radio */}
                                     <div className="flex items-center space-x-4 mb-4">
                                         <div className="flex items-center">
@@ -283,16 +317,18 @@ export default function BikeDetails() {
                                     <div className='w-full h-64 '>
                                         <img
                                             className='w-full rounded-lg h-64 object-cover'
-                                        // src={imgPath}
+                                            src={imgPath}
                                         />
                                     </div>
                                     {/* image upload field */}
                                     <div>
                                         <input
-                                            required
-                                            accept='.png, .jpg, .jpeg'
-                                            className="mt-4 w-full file:cursor-pointer text-sm text-slate-500 file:mr-8 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-200 file:text-teal-700 hover:file:bg-teal-300"
                                             type="file"
+                                            id="file"
+                                            name="file"
+                                            onChange={handleFileChange} // Update state when file is selected
+                                            required
+                                            className="mt-4 w-full file:cursor-pointer text-sm text-slate-500 file:mr-8 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-200 file:text-teal-700 hover:file:bg-teal-300"
                                         // onChange={handleImageSelect}
                                         />
                                     </div>
@@ -306,11 +342,11 @@ export default function BikeDetails() {
                                     {/* form buttons */}
                                     <div className="space-x-2 mt-4">
                                         <button
-                                            onClick={() => {
-                                                setIsModalOpen(false);
-                                                handleUpdateDataSubmit();
-                                            }}
-                                            type='button'
+                                            type="submit"
+                                            // onClick={() => {
+                                            //     setIsModalOpen(false);
+                                            //     // handleUpdateDataSubmit();
+                                            // }}
                                             className="bg-teal-500 hover:bg-teal-600 text-sm text-white px-4 py-2 rounded-md"
                                         >
                                             Save
@@ -325,7 +361,7 @@ export default function BikeDetails() {
                                             Cancel
                                         </button>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </>

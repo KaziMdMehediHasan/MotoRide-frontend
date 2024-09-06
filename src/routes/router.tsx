@@ -10,6 +10,8 @@ import RentBike from "../pages/RentBike";
 import MyRentals from "../pages/MyRentals";
 import BikeDetails from "../pages/BikeDetails";
 import ProtectedRoutes from "../components/layout/ProtectedRoutes";
+import SampleForm from '../../Drafts/SampleForm';
+import FormSubmission from "../pages/FormSubmission";
 
 const router = createBrowserRouter([
     {
@@ -48,9 +50,13 @@ const router = createBrowserRouter([
                 path: '/dashboard/bikes',
                 element: <Bikes />
             },
+            // {
+            //     path: '/dashboard/bikes/bike/:bikeId',
+            //     element: <BikeDetails />
+            // },
             {
                 path: '/dashboard/bikes/bike/:bikeId',
-                element: <BikeDetails />
+                element: <FormSubmission />
             },
             {
                 path: '/dashboard/rent',
