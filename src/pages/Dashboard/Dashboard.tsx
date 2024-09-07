@@ -38,6 +38,12 @@ export default function Dashboard() {
                     >
                         Bikes
                     </Link>
+                    <Link to="/dashboard/manage-bikes"
+                        className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                    // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                    >
+                        Manage Bikes
+                    </Link>
                     <Link to="/dashboard/rent"
                         className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
                     // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
