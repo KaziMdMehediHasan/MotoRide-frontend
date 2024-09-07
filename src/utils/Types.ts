@@ -79,5 +79,16 @@ export type TBike = {
     img?: unknown;
 }
 
+export type TUpdateBike = {
+    _id?: string;
+    brand?: string;
+    cc?: number;
+    description?: string;
+    isAvailable?: string;
+    model?: string;
+    name?: string;
+    pricePerHour?: number;
+    year?: number,
+}
 // event types
 export type FormEvent = React.InputHTMLAttributes<HTMLInputElement>

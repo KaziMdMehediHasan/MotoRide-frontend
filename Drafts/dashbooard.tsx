@@ -170,3 +170,35 @@
 //     }
 
 // }
+
+// update data submit to the server
+// const handleUpdateDataSubmit = async () => {
+//     let bikeInfo: TBike = {};
+//     // formatting the data to send to the server
+//     for (const key in updateBike) {
+//         // console.log(updateUser[key]);
+//         if (updateBike[key as keyof TBike]) {
+//             bikeInfo = { ...bikeInfo, [key]: updateBike[key as keyof TBike] }
+//         }
+//     }
+//     bikeInfo = { ...bikeInfo, _id: bikeId };
+//     console.log(bikeInfo);
+// updateBikeData(bikeInfo);
+// checking email
+// if (userInfo.email) {
+//     if (validateEmail(userInfo.email)) {
+//         await updateUserDetails(userInfo);
+//     } else {
+//         // return <Warning message={ErrorMessage} />;
+//         return (toast('Invalid email'));
+//     };
+// }
+
+// try {
+//     await updateUserDetails(userInfo);
+//     console.log('User updated successfully')
+// } catch (err) {
+//     console.log("Failed to update user:", err)
+// }
+// console.log(bikeInfo);
+// }

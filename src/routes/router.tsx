@@ -50,14 +50,14 @@ const router = createBrowserRouter([
                 path: '/dashboard/bikes',
                 element: <Bikes />
             },
-            // {
-            //     path: '/dashboard/bikes/bike/:bikeId',
-            //     element: <BikeDetails />
-            // },
             {
                 path: '/dashboard/bikes/bike/:bikeId',
-                element: <FormSubmission />
+                element: <BikeDetails />
             },
+            // {
+            //     path: '/dashboard/bikes/bike/:bikeId',
+            //     element: <FormSubmission />
+            // },
             {
                 path: '/dashboard/rent',
                 element: <RentBike />

@@ -1,34 +1,18 @@
 import { useParams } from "react-router-dom"
-import { useGetSingleBikeQuery, useUpdateBikeDataMutation } from "../redux/features/bikes/bikeApi";
+import { useGetSingleBikeQuery } from "../redux/features/bikes/bikeApi";
 import Loader from "../components/ui/Loader";
-import { TBike, TLoggedInUser } from "../utils/Types";
+import { TLoggedInUser } from "../utils/Types";
 import { useAppSelector } from "../redux/hooks";
 import { useState } from "react";
+import FormSubmission from "./FormSubmission";
 
 export default function BikeDetails() {
     const { bikeId } = useParams();
     // modal opening or closing state
-    const updateBikeValues: TBike = {
-        _id: '',
-        name: '',
-        description: '',
-        pricePerHour: 0,
-        isAvailable: false,
-        cc: 0,
-        model: '',
-        brand: '',
-        year: 0,
-        // img: {}
-    }
-    // new code starts here
-    const [updateBike, setUpdateBike] = useState(updateBikeValues);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [error, setError] = useState('');
-    const [imgPath, setImgPath] = useState('');
     const { data: bikeDetail, isLoading } = useGetSingleBikeQuery(bikeId as string, {});
-    const [updateBikeData, { data: updatedBikeData, error: bikeUpdateError }] = useUpdateBikeDataMutation();
-    // new code ends here
 
+    // new code ends here
     const user: TLoggedInUser | null = useAppSelector((state) => state.auth.user);
     let role;
     let name, description, brand, isAvailable, model, pricePerHour, year, cc;
@@ -44,65 +28,6 @@ export default function BikeDetails() {
 
     if (bikeDetail && bikeDetail.data) {
         ({ name, description, brand, isAvailable, model, pricePerHour, year, cc } = bikeDetail.data);
-    }
-
-    // handling image select function
-    const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.files);
-        // type guard to avoid type error
-        if (!e.target.files || e.target.files.length === 0) {
-            setError('Please select a compatible image file (.jpg, .png or .jpeg).');
-            return;
-        }
-        const file = e.target.files[0]
-        console.log(file);
-        // const imgBase64 = await convertImgToBase64(file);
-
-        if (file && file.type.startsWith('image/')) {
-            console.log('compatible file');
-            setImgPath(URL.createObjectURL(e.target.files[0]));
-            setError('');
-            // setUpdateBike({ ...updateBike, img: e.target.files[0] });
-            // setUploadImg({ ...uploadImg, profileImg: imgBase64 as string });
-            // setUpdateUser({ ...updateUser, profileImg: imgBase64 as string });
-            // setUploadImg({ ...uploadImg, profileImg: '' });
-        } else {
-            setImgPath('');
-            setError('Please select a compatible image file (.jpg, .png or .jpeg).');
-        }
-
-    }
-
-    // update data submit to the server
-    const handleUpdateDataSubmit = async () => {
-        let bikeInfo: TBike = {};
-        // formatting the data to send to the server
-        for (const key in updateBike) {
-            // console.log(updateUser[key]);
-            if (updateBike[key as keyof TBike]) {
-                bikeInfo = { ...bikeInfo, [key]: updateBike[key as keyof TBike] }
-            }
-        }
-        bikeInfo = { ...bikeInfo, _id: bikeId };
-        console.log(bikeInfo);
-        // updateBikeData(bikeInfo);
-        // checking email
-        // if (userInfo.email) {
-        //     if (validateEmail(userInfo.email)) {
-        //         await updateUserDetails(userInfo);
-        //     } else {
-        //         // return <Warning message={ErrorMessage} />;
-        //         return (toast('Invalid email'));
-        //     };
-        // }
-
-        // try {
-        //     await updateUserDetails(userInfo);
-        //     console.log('User updated successfully')
-        // } catch (err) {
-        //     console.log("Failed to update user:", err)
-        // }
-        // console.log(bikeInfo);
     }
     // getting the user role 
 
@@ -188,182 +113,7 @@ export default function BikeDetails() {
                             onClick={() => setIsModalOpen(false)}
                         ></div>
                         {/* main modal content */}
-                        <div className="fixed inset-0 flex items-center justify-center">
-                            <div className='p-4 md:p-6 w-1/2 mx-auto bg-gray-100 absolute shadow-lg border rounded-lg transform transition-all duration-300 ease-out scale-100'>
-                                <form encType='multipart/form-data' onSubmit={uploadFile}>
-                                    {/* bike name field */}
-                                    <div className="mb-4">
-                                        <label className="block text-gray-700">Bike Name</label>
-                                        <div className="flex items-center space-x-2">
-                                            {/* conditionally rendering name input field */}
-                                            <input
-                                                type="text"
-                                                placeholder={name}
-                                                onChange={(e) => setUpdateBike({ ...updateBike, name: e.target.value })}
-                                                className=" border p-2 rounded-md w-full focus:outline-teal-500"
-                                            />
-                                            {/* conditionally rendering save buttons */}
-                                        </div>
-                                    </div>
-                                    {/* bike name field div ends */}
-                                    {/* description field starts */}
-                                    <div className="mb-4">
-                                        <label className="block text-gray-700">Description</label>
-                                        <div className="flex items-center space-x-2">
-                                            <input
-                                                name="email"
-                                                id="email"
-                                                type="email"
-                                                placeholder={description}
-                                                onChange={(e) => setUpdateBike({ ...updateBike, description: e.target.value })}
-                                                className=" border p-2 rounded-md w-full focus:outline-teal-500"
-                                            />
-                                        </div>
-                                    </div>
-                                    {/* description field ends */}
-                                    {/* brand field starts*/}
-                                    <div className="mb-4">
-                                        <label className="block text-gray-700">Brand</label>
-                                        <div className="flex items-center space-x-2">
-                                            <input
-                                                type="number"
-                                                placeholder={brand}
-                                                onChange={(e) => setUpdateBike({ ...updateBike, brand: (e.target.value) })}
-                                                className=" border p-2 rounded-md w-full focus:outline-teal-500"
-                                            />
-                                        </div>
-                                    </div>
-                                    {/* brand field ends*/}
-                                    {/* cc field starts */}
-                                    <div className="mb-4">
-                                        <label className="block text-gray-700">CC</label>
-                                        <div className="flex items-center space-x-2">
-                                            <input
-                                                type="number"
-                                                placeholder={`${cc}`}
-                                                onChange={(e) => setUpdateBike({ ...updateBike, cc: Number(e.target.value) })}
-                                                className=" border p-2 rounded-md w-full focus:outline-teal-500"
-                                            />
-                                        </div>
-                                    </div>
-                                    {/* cc field ends */}
-                                    {/* model field starts*/}
-                                    <div>
-                                        <div className="mb-4">
-                                            <label className="block text-gray-700">Model</label>
-                                            <div className="flex items-center space-x-2">
-                                                <input
-                                                    type="text"
-                                                    placeholder={model}
-                                                    onChange={(e) => setUpdateBike({ ...updateBike, model: e.target.value })}
-                                                    className=" border p-2 rounded-md w-full focus:outline-teal-500"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/* model field starts*/}
-                                    {/* year field starts */}
-                                    <div>
-                                        <div className="mb-4">
-                                            <label className="block text-gray-700">Year</label>
-                                            <div className="flex items-center space-x-2">
-                                                <input
-                                                    type='number'
-                                                    placeholder={`${year}`}
-                                                    onChange={(e) => {
-                                                        setUpdateBike({ ...updateBike, year: Number(e.target.value) });
-
-                                                    }}
-                                                    className=" border p-2 rounded-md w-full focus:outline-teal-500"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/* year field ends */}
-                                    {/* availability radio */}
-                                    <div className="flex items-center space-x-4 mb-4">
-                                        <div className="flex items-center">
-                                            <input
-                                                id="default-checkbox"
-                                                type="checkbox"
-                                                value=""
-                                                onClick={(e) => {
-                                                    console.log(e.currentTarget.checked);
-                                                    if (e.currentTarget.checked) {
-                                                        setUpdateBike({ ...updateBike, isAvailable: true })
-                                                    }
-                                                    // setUpdateBike({ ...updateBike, isAvailable: e.currentTarget.checked })
-                                                }}
-                                                className="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500" />
-                                            <label htmlFor="default-checkbox" className="ms-2 text-md text-gray-700">Available</label>
-                                        </div>
-                                        <div className="flex items-center">
-                                            <input
-                                                id="default-checkbox"
-                                                type="checkbox"
-                                                value=""
-                                                onClick={(e) => {
-                                                    console.log(e.currentTarget.checked);
-                                                    if (e.currentTarget.checked) {
-                                                        setUpdateBike({ ...updateBike, isAvailable: false });
-                                                    }
-                                                }}
-                                                className="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500" />
-                                            <label htmlFor="default-checkbox" className="ms-2 text-md text-gray-700">Not Available</label>
-                                        </div>
-                                    </div>
-                                    {/* availability radio end */}
-                                    {/* view the selected image */}
-                                    <div className='w-full h-64 '>
-                                        <img
-                                            className='w-full rounded-lg h-64 object-cover'
-                                            src={imgPath}
-                                        />
-                                    </div>
-                                    {/* image upload field */}
-                                    <div>
-                                        <input
-                                            type="file"
-                                            id="file"
-                                            name="file"
-                                            onChange={handleFileChange} // Update state when file is selected
-                                            required
-                                            className="mt-4 w-full file:cursor-pointer text-sm text-slate-500 file:mr-8 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-200 file:text-teal-700 hover:file:bg-teal-300"
-                                        // onChange={handleImageSelect}
-                                        />
-                                    </div>
-                                    {
-                                        error && (
-                                            <div className="mt-4 bg-red-200 text-red-600 rounded-md shadow-lg py-2 px-4">
-                                                {error}
-                                            </div>
-                                        )
-                                    }
-                                    {/* form buttons */}
-                                    <div className="space-x-2 mt-4">
-                                        <button
-                                            type="submit"
-                                            // onClick={() => {
-                                            //     setIsModalOpen(false);
-                                            //     // handleUpdateDataSubmit();
-                                            // }}
-                                            className="bg-teal-500 hover:bg-teal-600 text-sm text-white px-4 py-2 rounded-md"
-                                        >
-                                            Save
-                                        </button>
-                                        <button
-                                            onClick={() => {
-                                                setIsModalOpen(!isModalOpen);
-                                                // setUpdateUser(updateUserValues);
-                                            }}
-                                            className="bg-gray-300 px-4 text-sm py-2 rounded-md"
-                                        >
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        <FormSubmission setIsModalOpen={setIsModalOpen} bikeData={bikeDetail?.data} />
                     </>
                 )
             }

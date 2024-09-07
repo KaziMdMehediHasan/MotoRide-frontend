@@ -1,24 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useUpdateBikeDataMutation } from '../redux/features/bikes/bikeApi';
+import { TUpdateBike } from '../utils/Types';
 
-type TUpdateBike = {
-    _id?: string;
-    brand?: string;
-    cc?: number;
-    description?: string;
-    isAvailable?: boolean;
-    model?: string;
-    name?: string;
-    pricePerHour?: number;
-    year?: number,
+const initialUpdateData = {
+    _id: '',
+    name: '',
+    description: '',
+    pricePerHour: 0,
+    isAvailable: '',
+    cc: 0,
+    model: '',
+    brand: '',
+    year: 0,
 }
 
-const FormSubmission = () => {
+interface props {
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    bikeData: TUpdateBike
+}
+
+const FormSubmission = ({ setIsModalOpen, bikeData }: props) => {
     const { bikeId } = useParams();
+    console.log(bikeData);
     const [updateBikeData, { data: updatedBikeData, error: bikeUpdateError }] = useUpdateBikeDataMutation();
     const [selectedFile, setSelectedFile] = useState<File | null>(null); // Make the type explicit
-    const [updateData, setUpdateData] = useState<TUpdateBike>({});
+    const [updateData, setUpdateData] = useState<TUpdateBike>(initialUpdateData);
     const [error, setError] = useState('');
     const [imgPath, setImgPath] = useState('');
 
@@ -37,19 +44,18 @@ const FormSubmission = () => {
             return;
         }
         const file = e.target.files[0]
-        setSelectedFile(file); // Select
-        console.log('selected image:', selectedFile);
 
         if (file && file.type.startsWith('image/')) {
             console.log('compatible file');
+            setSelectedFile(file);
             setImgPath(URL.createObjectURL(e.target.files[0]));
             setError('');
-
         } else {
             setImgPath('');
             setError('Please select a compatible image file (.jpg, .png or .jpeg).');
         }
-
+        // watch which file is selected
+        console.log('selected image:', selectedFile);
     }
 
     // Function to handle form submission
@@ -73,8 +79,9 @@ const FormSubmission = () => {
         }
 
         // Pass form data and bikeId to the mutation
-        updateBikeData({ bikeInfo, bikeId });
-        setUpdateData({});
+        await updateBikeData({ bikeInfo, bikeId });
+        // clearing all the states
+        setUpdateData(initialUpdateData);
         setError('');
         setImgPath('');
         setSelectedFile(null);
@@ -84,6 +91,20 @@ const FormSubmission = () => {
         <>
             <div className="fixed inset-0 flex items-center justify-center">
                 <div className='p-4 md:p-6 w-1/2 mx-auto bg-gray-100 absolute shadow-lg border rounded-lg transform transition-all duration-300 ease-out scale-100'>
+                    {/* modal close icon starts*/}
+                    <span
+                        className='absolute top-2 right-4 cursor-pointer text-xl text-gray-600 bg-gray-300 py-1 px-3 rounded-md hover:bg-red-400 hover:text-white'
+                        onClick={() => {
+                            setError('');
+                            setImgPath('');
+                            setIsModalOpen(false);
+                            setUpdateData(initialUpdateData);
+                            setSelectedFile(null);
+                        }}
+                    >
+                        X
+                    </span>
+                    {/* modal close icon ends*/}
                     <form encType="multipart/form-data" onSubmit={uploadFile}>
                         {/* name field starts */}
                         <div>
@@ -94,6 +115,7 @@ const FormSubmission = () => {
                                 id="name"
                                 name="name"
                                 placeholder="Enter bike name"
+                                value={updateData.name || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, name: e.target.value })} // Update state
                             />
                         </div>
@@ -107,6 +129,7 @@ const FormSubmission = () => {
                                 id="description"
                                 name="description"
                                 placeholder="Enter bike description"
+                                value={updateData.description || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, description: e.target.value })} // Update state
                             />
                         </div>
@@ -120,6 +143,7 @@ const FormSubmission = () => {
                                 id="brand"
                                 name="brand"
                                 placeholder="Enter bike brand"
+                                value={updateData.brand || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, brand: e.target.value })} // Update state
                             />
                         </div>
@@ -133,6 +157,7 @@ const FormSubmission = () => {
                                 id="model"
                                 name="model"
                                 placeholder="Enter bike model"
+                                value={updateData.model || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, model: e.target.value })} // Update state
                             />
                         </div>
@@ -146,23 +171,56 @@ const FormSubmission = () => {
                                 id="year"
                                 name="year"
                                 placeholder="Enter bike year"
+                                value={updateData.year || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, year: Number(e.target.value) })} // Update state
                             />
                         </div>
                         {/* year field ends */}
                         {/* cc field starts */}
                         <div>
-                            <label htmlFor="brand" className="block text-gray-700">CC</label>
+                            <label htmlFor="cc" className="block text-gray-700">CC</label>
                             <input
                                 className="border p-2 rounded-md w-full focus:outline-teal-500"
                                 type="number"
                                 id="cc"
                                 name="cc"
                                 placeholder="Enter bike cc"
+                                value={updateData.cc || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, cc: Number(e.target.value) })} // Update state
                             />
                         </div>
                         {/* cc field ends */}
+                        {/* availability field starts */}
+                        {/* availability checkbox */}
+                        <div className="flex items-center space-x-4 mb-4">
+                            <div className="flex items-center">
+                                <input
+                                    id="default-checkbox"
+                                    type="checkbox"
+                                    onClick={(e) => {
+                                        console.log(e.currentTarget.checked);
+                                        if (e.currentTarget.checked) {
+                                            setUpdateData({ ...updateData, isAvailable: 'true' })
+                                        }
+                                    }}
+                                    className="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500" />
+                                <label htmlFor="default-checkbox" className="ms-2 text-md text-gray-700">Available</label>
+                            </div>
+                            <div className="flex items-center">
+                                <input
+                                    id="default-checkbox"
+                                    type="checkbox"
+                                    onClick={(e) => {
+                                        if (e.currentTarget.checked) {
+                                            setUpdateData({ ...updateData, isAvailable: 'false' });
+                                        }
+                                    }}
+                                    className="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500" />
+                                <label htmlFor="default-checkbox" className="ms-2 text-md text-gray-700">Not Available</label>
+                            </div>
+                        </div>
+                        {/* availability checkbox end */}
+                        {/* availability field ends */}
                         {/* view uploaded image starts */}
                         <div className='w-full h-64 '>
                             <img
