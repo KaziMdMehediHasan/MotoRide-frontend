@@ -15,7 +15,7 @@ export default function BikeDetails() {
     // new code ends here
     const user: TLoggedInUser | null = useAppSelector((state) => state.auth.user);
     let role;
-    let name, description, brand, isAvailable, model, pricePerHour, year, cc;
+    let name, description, brand, isAvailable, model, pricePerHour, year, cc, img;
 
     if (user !== null) {
         role = user?.role as string;
@@ -27,7 +27,7 @@ export default function BikeDetails() {
     }
 
     if (bikeDetail && bikeDetail.data) {
-        ({ name, description, brand, isAvailable, model, pricePerHour, year, cc } = bikeDetail.data);
+        ({ name, description, brand, isAvailable, model, pricePerHour, year, cc, img } = bikeDetail.data);
     }
     // getting the user role 
 
@@ -67,7 +67,7 @@ export default function BikeDetails() {
                     {/* Image section */}
                     <div className="bg-gray-100 p-6 rounded-lg">
                         <img
-                            src="https://via.placeholder.com/400" // Placeholder for the bike image
+                            src={img} // Placeholder for the bike image
                             alt={name}
                             className="w-full h-auto"
                         />

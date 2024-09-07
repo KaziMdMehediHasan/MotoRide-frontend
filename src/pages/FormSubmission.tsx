@@ -85,6 +85,7 @@ const FormSubmission = ({ setIsModalOpen, bikeData }: props) => {
         setError('');
         setImgPath('');
         setSelectedFile(null);
+        setIsModalOpen(false);
     };
 
     return (

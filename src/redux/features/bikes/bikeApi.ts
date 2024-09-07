@@ -25,7 +25,7 @@ const bikeApi = baseApi.injectEndpoints({
                     body: bikeInfo,
                 }
             },
-            invalidatesTags: ['User'],
+            invalidatesTags: ['Bikes'],
         })
     })
 })
