@@ -1,18 +1,31 @@
 import { useParams } from "react-router-dom"
 import { useGetSingleBikeQuery } from "../redux/features/bikes/bikeApi";
 import Loader from "../components/ui/Loader";
-import { TLoggedInUser } from "../utils/Types";
+import { TLoggedInUser, TUpdateBike } from "../utils/Types";
 import { useAppSelector } from "../redux/hooks";
 import { useState } from "react";
 import FormSubmission from "./FormSubmission";
 
-export default function BikeDetails() {
-    const { bikeId } = useParams();
-    // modal opening or closing state
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const { data: bikeDetail, isLoading } = useGetSingleBikeQuery(bikeId as string, {});
+interface props {
+    setIsDetailModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+    bikeData?: TUpdateBike,
+    isDetailModalOpen?: true | false
+}
 
-    // new code ends here
+export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailModalOpen }: props) {
+    // codes for opening the component as a modal on manage bikes page
+    let idFromManagePage: string = '';
+    if (isDetailModalOpen) {
+        idFromManagePage = bikeData?._id as string;
+    }
+    console.log('from bike details page:', bikeData);
+    // codes for opening the component as a regular page
+    const { bikeId } = useParams();
+    // form modal opening or closing state
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { data: bikeDetail, isLoading } = useGetSingleBikeQuery(isDetailModalOpen ? (idFromManagePage) : (bikeId as string), {});
+
+    // getting user role for customised buttons and layout
     const user: TLoggedInUser | null = useAppSelector((state) => state.auth.user);
     let role;
     let name, description, brand, isAvailable, model, pricePerHour, year, cc, img;
@@ -22,10 +35,12 @@ export default function BikeDetails() {
         // userEmail = user?.userEmail as string;
     }
 
+    // loader for fetching Bike data from server
     if (isLoading) {
         return <Loader />
     }
 
+    // destructuring bike information 
     if (bikeDetail && bikeDetail.data) {
         ({ name, description, brand, isAvailable, model, pricePerHour, year, cc, img } = bikeDetail.data);
     }
@@ -34,6 +49,21 @@ export default function BikeDetails() {
     return (
         <>
             <div className="max-w-4xl mx-auto p-6">
+                {/* modal close button section starts*/}
+                {
+                    isDetailModalOpen && (
+                        <span
+                            className='absolute top-2 right-4 cursor-pointer text-xl text-gray-600 bg-gray-300 py-1 px-3 rounded-md hover:bg-red-400 hover:text-white'
+                            onClick={() => {
+                                if (setIsDetailModalOpen) setIsDetailModalOpen(false);
+                            }}
+                        >
+                            X
+                        </span>
+                    )
+                }
+                {/* modal close button section ends*/}
+
                 {/* Breadcrumbs */}
                 {/* <nav className="text-gray-600 text-sm">
                     <ol className="list-reset flex">
@@ -53,7 +83,7 @@ export default function BikeDetails() {
                     </ol>
                 </nav> */}
                 {
-                    role === 'admin' &&
+                    (!isDetailModalOpen && role === 'admin') &&
                     (
                         <button
                             onClick={() => setIsModalOpen(!isModalOpen)}

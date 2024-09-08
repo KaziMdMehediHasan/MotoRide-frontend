@@ -202,3 +202,10 @@
 // }
 // console.log(bikeInfo);
 // }
+
+// Handle file input changes
+// const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     if (event.target.files && event.target.files[0]) {
+//         setSelectedFile(event.target.files[0]); // Store the selected file
+//     }
+// };

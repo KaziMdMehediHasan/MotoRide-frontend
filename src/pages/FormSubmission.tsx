@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
 import { useUpdateBikeDataMutation } from '../redux/features/bikes/bikeApi';
 import { TUpdateBike } from '../utils/Types';
+import Loader from '../components/ui/Loader';
 
 const initialUpdateData = {
     _id: '',
@@ -17,24 +17,20 @@ const initialUpdateData = {
 
 interface props {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    bikeData: TUpdateBike
+    bikeData: TUpdateBike,
+    fromBikeManage?: true | false
 }
 
-const FormSubmission = ({ setIsModalOpen, bikeData }: props) => {
-    const { bikeId } = useParams();
-    console.log(bikeData);
-    const [updateBikeData, { data: updatedBikeData, error: bikeUpdateError }] = useUpdateBikeDataMutation();
+const FormSubmission = ({ setIsModalOpen, bikeData, fromBikeManage }: props) => {
+    // const { bikeId } = useParams();
+    console.log(fromBikeManage);
+    const bikeId = bikeData._id;
+    console.log(bikeId);
+    const [updateBikeData, { data: updatedBikeData, isLoading, isSuccess, error: bikeUpdateError }] = useUpdateBikeDataMutation();
     const [selectedFile, setSelectedFile] = useState<File | null>(null); // Make the type explicit
     const [updateData, setUpdateData] = useState<TUpdateBike>(initialUpdateData);
     const [error, setError] = useState('');
     const [imgPath, setImgPath] = useState('');
-
-    // Handle file input changes
-    // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     if (event.target.files && event.target.files[0]) {
-    //         setSelectedFile(event.target.files[0]); // Store the selected file
-    //     }
-    // };
 
     const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(e.target.files);
@@ -92,6 +88,11 @@ const FormSubmission = ({ setIsModalOpen, bikeData }: props) => {
         <>
             <div className="fixed inset-0 flex items-center justify-center">
                 <div className='p-4 md:p-6 w-1/2 mx-auto bg-gray-100 absolute shadow-lg border rounded-lg transform transition-all duration-300 ease-out scale-100'>
+                    {
+                        isLoading && (
+                            <Loader />
+                        )
+                    }
                     {/* modal close icon starts*/}
                     <span
                         className='absolute top-2 right-4 cursor-pointer text-xl text-gray-600 bg-gray-300 py-1 px-3 rounded-md hover:bg-red-400 hover:text-white'
@@ -115,7 +116,7 @@ const FormSubmission = ({ setIsModalOpen, bikeData }: props) => {
                                 type="text"
                                 id="name"
                                 name="name"
-                                placeholder="Enter bike name"
+                                placeholder={bikeData?.name}
                                 value={updateData.name || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, name: e.target.value })} // Update state
                             />
@@ -129,7 +130,7 @@ const FormSubmission = ({ setIsModalOpen, bikeData }: props) => {
                                 type="text"
                                 id="description"
                                 name="description"
-                                placeholder="Enter bike description"
+                                placeholder={bikeData?.description}
                                 value={updateData.description || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, description: e.target.value })} // Update state
                             />
@@ -143,7 +144,7 @@ const FormSubmission = ({ setIsModalOpen, bikeData }: props) => {
                                 type="text"
                                 id="brand"
                                 name="brand"
-                                placeholder="Enter bike brand"
+                                placeholder={bikeData?.brand}
                                 value={updateData.brand || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, brand: e.target.value })} // Update state
                             />
@@ -157,7 +158,7 @@ const FormSubmission = ({ setIsModalOpen, bikeData }: props) => {
                                 type="text"
                                 id="model"
                                 name="model"
-                                placeholder="Enter bike model"
+                                placeholder={bikeData?.model}
                                 value={updateData.model || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, model: e.target.value })} // Update state
                             />
@@ -171,7 +172,7 @@ const FormSubmission = ({ setIsModalOpen, bikeData }: props) => {
                                 type="number"
                                 id="year"
                                 name="year"
-                                placeholder="Enter bike year"
+                                placeholder={bikeData?.year !== undefined ? `${bikeData?.year}` : 'Not available'}
                                 value={updateData.year || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, year: Number(e.target.value) })} // Update state
                             />
@@ -185,7 +186,7 @@ const FormSubmission = ({ setIsModalOpen, bikeData }: props) => {
                                 type="number"
                                 id="cc"
                                 name="cc"
-                                placeholder="Enter bike cc"
+                                placeholder={`${bikeData?.cc}`}
                                 value={updateData.cc || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, cc: Number(e.target.value) })} // Update state
                             />

@@ -1,4 +1,3 @@
-import { TBike } from "../../../utils/Types";
 import { baseApi } from "../../api/baseApi";
 
 const bikeApi = baseApi.injectEndpoints({
@@ -17,6 +16,14 @@ const bikeApi = baseApi.injectEndpoints({
             }),
             providesTags: ['Bikes']
         }),
+        createBike: builder.mutation({
+            query: (bikeInfo) => ({
+                url: '/bikes',
+                method: 'POST',
+                body: bikeInfo
+            }),
+            invalidatesTags: ['Bikes']
+        }),
         updateBikeData: builder.mutation({
             query: ({ bikeInfo, bikeId }) => {
                 console.log('from update mutation', bikeInfo);
@@ -27,8 +34,17 @@ const bikeApi = baseApi.injectEndpoints({
                 }
             },
             invalidatesTags: ['Bikes'],
+        }),
+        deleteBike: builder.mutation({
+            query: (bikeId) => {
+                return {
+                    url: `/bikes/${bikeId}`,
+                    method: 'DELETE',
+                }
+            },
+            invalidatesTags: ['Bikes']
         })
     })
 })
 
-export const { useGetBikesQuery, useGetSingleBikeQuery, useUpdateBikeDataMutation } = bikeApi;
+export const { useGetBikesQuery, useGetSingleBikeQuery, useUpdateBikeDataMutation, useDeleteBikeMutation, useCreateBikeMutation } = bikeApi;
