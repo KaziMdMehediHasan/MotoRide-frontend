@@ -72,10 +72,8 @@ const FormSubmission = ({ setIsModalOpen, setIsCreateModalOpen, bikeData, fromBi
         // dynamically creating a form data for input fields
         for (const key in updateData) {
             const formValue = updateData[key as keyof TUpdateBike];
-            if (updateData[key as keyof TUpdateBike]) {
-                if (formValue) {
-                    bikeInfo.append(key, formValue.toString());
-                }
+            if (formValue) {
+                bikeInfo.append(key, formValue.toString());
             }
         }
 
@@ -103,6 +101,11 @@ const FormSubmission = ({ setIsModalOpen, setIsCreateModalOpen, bikeData, fromBi
                 <div className='p-4 md:p-6 w-1/2 mx-auto bg-gray-100 absolute shadow-lg border rounded-lg transform transition-all duration-300 ease-out scale-100'>
                     {
                         isLoading && (
+                            <Loader />
+                        )
+                    }
+                    {
+                        bikeCreationLoading && (
                             <Loader />
                         )
                     }
