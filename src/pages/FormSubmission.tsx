@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useUpdateBikeDataMutation } from '../redux/features/bikes/bikeApi';
+import { useCreateBikeMutation, useUpdateBikeDataMutation } from '../redux/features/bikes/bikeApi';
 import { TUpdateBike } from '../utils/Types';
 import Loader from '../components/ui/Loader';
 
@@ -16,16 +16,21 @@ const initialUpdateData = {
 }
 
 interface props {
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    bikeData: TUpdateBike,
-    fromBikeManage?: true | false
+    setIsModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsCreateModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+    bikeData?: TUpdateBike,
+    fromBikeManage?: true | false,
+    isCreateBike?: true | false,
 }
 
-const FormSubmission = ({ setIsModalOpen, bikeData, fromBikeManage }: props) => {
+const FormSubmission = ({ setIsModalOpen, setIsCreateModalOpen, bikeData, fromBikeManage, isCreateBike }: props) => {
     // const { bikeId } = useParams();
-    console.log(fromBikeManage);
-    const bikeId = bikeData._id;
+    console.log('coming from bike manage page:', fromBikeManage);
+    console.log('coming from create bike page:', isCreateBike);
+    const bikeId = bikeData?._id;
     console.log(bikeId);
+    const [createBike, { isLoading: bikeCreationLoading, error: bikeCreationError }] = useCreateBikeMutation();
+    // update bike rtk query mutation function
     const [updateBikeData, { data: updatedBikeData, isLoading, isSuccess, error: bikeUpdateError }] = useUpdateBikeDataMutation();
     const [selectedFile, setSelectedFile] = useState<File | null>(null); // Make the type explicit
     const [updateData, setUpdateData] = useState<TUpdateBike>(initialUpdateData);
@@ -66,22 +71,30 @@ const FormSubmission = ({ setIsModalOpen, bikeData, fromBikeManage }: props) => 
 
         // dynamically creating a form data for input fields
         for (const key in updateData) {
+            const formValue = updateData[key as keyof TUpdateBike];
             if (updateData[key as keyof TUpdateBike]) {
-                const formValue = updateData[key as keyof TUpdateBike];
                 if (formValue) {
                     bikeInfo.append(key, formValue.toString());
                 }
             }
         }
 
+        // Check if data is being properly appended to form
+        console.log('Form Data from client:', [...bikeInfo.entries()]); // Log the form data entries to check if it's correct
         // Pass form data and bikeId to the mutation
-        await updateBikeData({ bikeInfo, bikeId });
+        if (isCreateBike) {
+            console.log('Enters create mode');
+            await createBike(bikeInfo);
+        } else {
+            await updateBikeData({ bikeInfo, bikeId });
+        }
         // clearing all the states
         setUpdateData(initialUpdateData);
         setError('');
         setImgPath('');
         setSelectedFile(null);
-        setIsModalOpen(false);
+        if (setIsModalOpen) setIsModalOpen(false);
+        if (setIsCreateModalOpen) setIsCreateModalOpen(false);
     };
 
     return (
@@ -99,9 +112,10 @@ const FormSubmission = ({ setIsModalOpen, bikeData, fromBikeManage }: props) => 
                         onClick={() => {
                             setError('');
                             setImgPath('');
-                            setIsModalOpen(false);
                             setUpdateData(initialUpdateData);
                             setSelectedFile(null);
+                            if (setIsModalOpen) setIsModalOpen(false);
+                            if (setIsCreateModalOpen) setIsCreateModalOpen(false);
                         }}
                     >
                         X
@@ -116,7 +130,7 @@ const FormSubmission = ({ setIsModalOpen, bikeData, fromBikeManage }: props) => 
                                 type="text"
                                 id="name"
                                 name="name"
-                                placeholder={bikeData?.name}
+                                placeholder={bikeData?.name || 'Enter bike name'}
                                 value={updateData.name || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, name: e.target.value })} // Update state
                             />
@@ -130,7 +144,7 @@ const FormSubmission = ({ setIsModalOpen, bikeData, fromBikeManage }: props) => 
                                 type="text"
                                 id="description"
                                 name="description"
-                                placeholder={bikeData?.description}
+                                placeholder={bikeData?.description || 'Describe your bike'}
                                 value={updateData.description || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, description: e.target.value })} // Update state
                             />
@@ -144,7 +158,7 @@ const FormSubmission = ({ setIsModalOpen, bikeData, fromBikeManage }: props) => 
                                 type="text"
                                 id="brand"
                                 name="brand"
-                                placeholder={bikeData?.brand}
+                                placeholder={bikeData?.brand || 'Enter a brand'}
                                 value={updateData.brand || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, brand: e.target.value })} // Update state
                             />
@@ -158,7 +172,7 @@ const FormSubmission = ({ setIsModalOpen, bikeData, fromBikeManage }: props) => 
                                 type="text"
                                 id="model"
                                 name="model"
-                                placeholder={bikeData?.model}
+                                placeholder={bikeData?.model || 'Enter a model'}
                                 value={updateData.model || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, model: e.target.value })} // Update state
                             />
@@ -172,7 +186,7 @@ const FormSubmission = ({ setIsModalOpen, bikeData, fromBikeManage }: props) => 
                                 type="number"
                                 id="year"
                                 name="year"
-                                placeholder={bikeData?.year !== undefined ? `${bikeData?.year}` : 'Not available'}
+                                placeholder={bikeData?.year !== undefined ? `${bikeData?.year}` : 'Enter a year'}
                                 value={updateData.year || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, year: Number(e.target.value) })} // Update state
                             />
@@ -186,12 +200,26 @@ const FormSubmission = ({ setIsModalOpen, bikeData, fromBikeManage }: props) => 
                                 type="number"
                                 id="cc"
                                 name="cc"
-                                placeholder={`${bikeData?.cc}`}
+                                placeholder={bikeData?.cc ? `${bikeData?.cc}` : 'Enter CC value'}
                                 value={updateData.cc || ''}
                                 onChange={(e) => setUpdateData({ ...updateData, cc: Number(e.target.value) })} // Update state
                             />
                         </div>
                         {/* cc field ends */}
+                        {/* price per hour field starts */}
+                        <div>
+                            <label htmlFor="cc" className="block text-gray-700">Price Per Hour</label>
+                            <input
+                                className="border p-2 rounded-md w-full focus:outline-teal-500"
+                                type="number"
+                                id="cc"
+                                name="cc"
+                                placeholder={bikeData?.pricePerHour ? `${bikeData?.pricePerHour}` : 'Enter price per hour value'}
+                                value={updateData.pricePerHour || ''}
+                                onChange={(e) => setUpdateData({ ...updateData, pricePerHour: Number(e.target.value) })} // Update state
+                            />
+                        </div>
+                        {/* price per hour field ends */}
                         {/* availability field starts */}
                         {/* availability checkbox */}
                         <div className="flex items-center space-x-4 mb-4">

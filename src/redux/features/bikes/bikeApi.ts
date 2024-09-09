@@ -17,11 +17,21 @@ const bikeApi = baseApi.injectEndpoints({
             providesTags: ['Bikes']
         }),
         createBike: builder.mutation({
-            query: (bikeInfo) => ({
-                url: '/bikes',
-                method: 'POST',
-                body: bikeInfo
-            }),
+            query: (bikeInfo) => {
+                // checking the form data
+                // for (const key in bikeInfo) {
+                //     console.log('form data key-value pair in mutation:', key, bikeInfo[key]);
+                // }
+
+                // console.log('received mutation body:', bikeInfo);
+                console.log('Form Data from rtk mutation:', [...bikeInfo.entries()]);
+                return {
+                    url: '/bikes/',
+                    method: 'POST',
+                    body: bikeInfo
+                }
+
+            },
             invalidatesTags: ['Bikes']
         }),
         updateBikeData: builder.mutation({

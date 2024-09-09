@@ -13,6 +13,7 @@ const ManageBikes = () => {
     const { data: bikes, isLoading } = useGetBikesQuery({});
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isDetailModalOpen, setIsDetailModalOpen] = useState<boolean>(false);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
     const [singleBikeData, setSingleBikeData] = useState<TUpdateBike>({});
 
     const [deleteBike, { isLoading: bikeDeleteLoader }] = useDeleteBikeMutation();
@@ -26,13 +27,16 @@ const ManageBikes = () => {
                 {/* Header section */}
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-xl font-semibold">Manage Bikes</h1>
-                    <button className="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600 text-sm transition-all">
+                    <button
+                        onClick={() => setIsCreateModalOpen(true)}
+                        className="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600 text-sm transition-all">
                         Create New Bike
                     </button>
                 </div>
 
                 {/* Table section */}
                 <div className="overflow-x-auto">
+                    {isLoading && (<Loader />)}
                     <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
                         <thead className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                             <tr>
@@ -99,6 +103,18 @@ const ManageBikes = () => {
                     </table>
                 </div>
             </div>
+            {/* create bike modal starts */}
+            {
+                isCreateModalOpen && (
+                    <>
+                        <div
+                            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"
+                        ></div>
+                        <FormSubmission setIsCreateModalOpen={setIsCreateModalOpen} isCreateBike={true} />
+                    </>
+                )
+            }
+            {/* create bike modal ends */}
             {/* update modal */}
             {
                 isModalOpen && (
