@@ -5,6 +5,7 @@ import { TLoggedInUser, TUpdateBike } from "../utils/Types";
 import { useAppSelector } from "../redux/hooks";
 import { useState } from "react";
 import FormSubmission from "./FormSubmission";
+import DateTimePicker from "../components/ui/DateTimePicker";
 
 interface props {
     setIsDetailModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,6 +24,7 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
     const { bikeId } = useParams();
     // form modal opening or closing state
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
     const { data: bikeDetail, isLoading } = useGetSingleBikeQuery(isDetailModalOpen ? (idFromManagePage) : (bikeId as string), {});
 
     // getting user role for customised buttons and layout
@@ -126,8 +128,9 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
                                 <strong>Model Year:</strong>{year || ' Not available'}
                             </li>
                         </ul>
-
-                        <button className="mt-6 w-full bg-teal-500 text-white font-bold py-2 px-4 text-sm rounded-md hover:bg-teal-600 transition duration-300">
+                        <button
+                            onClick={() => setIsBookingModalOpen(true)}
+                            className="mt-6 w-full bg-teal-500 text-white font-bold py-2 px-4 text-sm rounded-md hover:bg-teal-600 transition duration-300">
                             Book Now
                         </button>
                     </div>
@@ -140,10 +143,24 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
                         {/* background overlay effect */}
                         <div
                             className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"
-                            onClick={() => setIsModalOpen(false)}
                         ></div>
                         {/* main modal content */}
                         <FormSubmission setIsModalOpen={setIsModalOpen} bikeData={bikeDetail?.data} />
+                    </>
+                )
+            }
+            {/* booking modal */}
+            {
+                isBookingModalOpen && (
+                    <>
+                        {/* background overlay effect */}
+                        <div
+                            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"
+                        ></div>
+                        <div className="fixed inset-0 flex items-center justify-center">
+                            <DateTimePicker setIsBookingModalOpen={setIsBookingModalOpen} />
+                        </div>
+
                     </>
                 )
             }

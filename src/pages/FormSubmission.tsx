@@ -24,11 +24,7 @@ interface props {
 }
 
 const FormSubmission = ({ setIsModalOpen, setIsCreateModalOpen, bikeData, fromBikeManage, isCreateBike }: props) => {
-    // const { bikeId } = useParams();
-    console.log('coming from bike manage page:', fromBikeManage);
-    console.log('coming from create bike page:', isCreateBike);
     const bikeId = bikeData?._id;
-    console.log(bikeId);
     const [createBike, { isLoading: bikeCreationLoading, error: bikeCreationError }] = useCreateBikeMutation();
     // update bike rtk query mutation function
     const [updateBikeData, { data: updatedBikeData, isLoading, isSuccess, error: bikeUpdateError }] = useUpdateBikeDataMutation();
@@ -66,7 +62,7 @@ const FormSubmission = ({ setIsModalOpen, setIsCreateModalOpen, bikeData, fromBi
 
         // Dynamically append image file FormData
         if (selectedFile) {
-            bikeInfo.append('img', selectedFile); // Add the image file to FormData
+            bikeInfo.append('img', selectedFile); // Adding the image file to FormData
         }
 
         // dynamically creating a form data for input fields

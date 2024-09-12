@@ -2,9 +2,17 @@ import { useState } from "react";
 import { FaBars } from "react-icons/fa6";
 import motorent from '../../assets/motorent.jpeg'
 import { Link, Outlet } from "react-router-dom";
+import { TLoggedInUser } from "../../utils/Types";
+import { useAppSelector } from "../../redux/hooks";
 
 export default function Dashboard() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const user: TLoggedInUser | null = useAppSelector((state) => state.auth.user);
+    let role: string = '';
+    if (user !== null) {
+        role = user?.role as string;
+    }
+
     return (
         <div className="flex flex-col lg:flex-row min-h-screen font-pop">
             {/* Mobile Menu Toggle */}
@@ -38,12 +46,17 @@ export default function Dashboard() {
                     >
                         Bikes
                     </Link>
-                    <Link to="/dashboard/manage-bikes"
-                        className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
-                    // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    >
-                        Manage Bikes
-                    </Link>
+                    {
+                        role === 'admin' && (
+                            <Link to="/dashboard/manage-bikes"
+                                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                            // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                            >
+                                Manage Bikes
+                            </Link>
+                        )
+                    }
+
                     <Link to="/dashboard/rent"
                         className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
                     // onClick={() => setIsSidebarOpen(!isSidebarOpen)}

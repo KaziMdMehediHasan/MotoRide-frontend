@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import register from '../assets/register.jpeg'
+import { useSignupMutation } from '../redux/features/auth/authApi';
+import Loader from '../components/ui/Loader';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function Register() {
     // State for form fields and validation errors
-    const [formData, setFormData] = useState({
+    const [registrationData, setRegistrationData] = useState({
         name: '',
         email: '',
         password: '',
@@ -19,35 +22,55 @@ export default function Register() {
         address: '',
     });
 
+    // password watching states
+    const [inputType, setInputType] = useState('password');
+    const [visibility, setVisibility] = useState(false);
+    const navigate = useNavigate();
+    // signup mutation function 
+    const [signup, { isLoading, isSuccess }] = useSignupMutation();
+
     // Handle input change
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setRegistrationData({ ...registrationData, [e.target.name]: e.target.value });
     };
 
+    //handle password watching toggle
+    const handlePasswordToggle = () => {
+        if (inputType === 'password') {
+            setInputType('text');
+            setVisibility(true);
+        } else if (inputType === 'text') {
+            setInputType('password');
+            setVisibility(false);
+        }
+    }
     // Handle form submission
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        let validationErrors = { ...errors };
+        const validationErrors = { ...errors };
         // Basic validation rules
-        if (!formData.name) validationErrors.name = 'Name is required';
-        if (!formData.email) validationErrors.email = 'Email is required';
-        if (!formData.password || formData.password.length < 8)
-            validationErrors.password = 'Password must be at least 8 characters';
-        if (!formData.phone) validationErrors.phone = 'Phone number is required';
-        if (!formData.address) validationErrors.address = 'Address is required';
+        if (!registrationData.name) validationErrors.name = 'Name is required';
+        if (!registrationData.email) validationErrors.email = 'Email is required';
+        if (!registrationData.password)
+            //  || formData.password.length < 8
+            validationErrors.password = 'You must provide a password';
+        if (!registrationData.phone) validationErrors.phone = 'Phone number is required';
+        if (!registrationData.address) validationErrors.address = 'Address is required';
 
         setErrors(validationErrors);
 
-        // Check if there are no errors before submission
+        // Checking if there are no errors before submission
         const isValid = Object.values(validationErrors).every(
             (error) => error === ''
         );
 
         if (isValid) {
-            console.log('Form data:', formData);
+            console.log('Form data:', registrationData);
             // Submit form or handle submission logic here
+            await signup(registrationData);
+            navigate('/login');
         }
     };
 
@@ -59,7 +82,11 @@ export default function Register() {
                     <h2 className="text-3xl font-bold text-teal-500">Sign up</h2>
                     <p className="text-gray-600">Start your 30-day free trial.</p>
                 </div>
-
+                {
+                    isLoading && (
+                        <Loader />
+                    )
+                }
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Name */}
                     <div>
@@ -71,7 +98,7 @@ export default function Register() {
                             id="name"
                             name="name"
                             placeholder='Enter your name'
-                            value={formData.name}
+                            value={registrationData.name}
                             onChange={handleChange}
                             className={`mt-1 block w-full p-3 border rounded-md ${errors.name ? 'border-red-500' : 'border-gray-300'
                                 } focus: outline-teal-500`}
@@ -90,7 +117,7 @@ export default function Register() {
                             type="email"
                             id="email"
                             name="email"
-                            value={formData.email}
+                            value={registrationData.email}
                             placeholder='Enter your email'
                             onChange={handleChange}
                             className={`mt-1 w-full p-3 border rounded-md ${errors.email ? 'border-red-500' : 'border-gray-300'
@@ -106,16 +133,28 @@ export default function Register() {
                         <label htmlFor="password" className="text-sm font-medium text-gray-700">
                             Password*
                         </label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder='Enter your password'
-                            value={formData.password}
-                            onChange={handleChange}
-                            className={`mt-1 w-full p-3 border rounded-md ${errors.password ? 'border-red-500' : 'border-gray-300'
-                                } focus: outline-teal-500`}
-                        />
+                        <div className='flex relative items-center'>
+                            <input
+                                type={inputType}
+                                id="password"
+                                name="password"
+                                placeholder='Enter your password'
+                                value={registrationData.password}
+                                onChange={handleChange}
+                                autoComplete="current-password"
+                                className={`mt-1 w-full p-3 border rounded-md ${errors.password ? 'border-red-500' : 'border-gray-300'
+                                    } focus: outline-teal-500`}
+                            />
+                            <span
+                                onClick={handlePasswordToggle}
+                                className='absolute right-5 cursor-pointer'>
+                                {
+                                    visibility === true ? (<FaEye size={25} />) : (<FaEyeSlash size={25} />)
+                                }
+                            </span>
+                        </div>
+
+
                         {errors.password && (
                             <p className="mt-2 text-sm text-red-600">{errors.password}</p>
                         )}
@@ -131,7 +170,7 @@ export default function Register() {
                             id="phone"
                             name="phone"
                             placeholder='Enter your phone number'
-                            value={formData.phone}
+                            value={registrationData.phone}
                             onChange={handleChange}
                             className={`mt-1  w-full p-3 border rounded-md ${errors.phone ? 'border-red-500' : 'border-gray-300'
                                 } focus: outline-teal-500`}
@@ -149,7 +188,7 @@ export default function Register() {
                         <textarea
                             id="address"
                             name="address"
-                            value={formData.address}
+                            value={registrationData.address}
                             placeholder='Enter your address'
                             onChange={handleChange}
                             className={`mt-1 block w-full p-3 border rounded-md ${errors.address ? 'border-red-500' : 'border-gray-300'

@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import { TBike } from "../utils/Types";
 
-export default function ProductCard({ name, description, cc, _id, pricePerHour }: TBike) {
-    console.log(name);
+export default function ProductCard({ name, description, cc, _id, pricePerHour, img }: TBike) {
     return (
         <>
             <div className="max-w-sm md:max-w-md lg:w-80 xl:w-72 2xl:w-[23rem] mx-auto bg-gray-100 rounded-lg shadow-md overflow-hidden">
-                <div className="relative">
+                <div className="relative h-40 overflow-hidden">
                     <img
-                        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/26438/shoe.png"
+                        src={img as string || ''}
                         alt="Product"
                         className="w-full object-cover"
                     />
@@ -18,10 +17,10 @@ export default function ProductCard({ name, description, cc, _id, pricePerHour }
                 </div>
                 <div className="p-4">
                     <h2 className="text-xl md:text-2xl font-bold text-gray-600">
-                        {name}
+                        {name?.slice(0, 20)}
                     </h2>
                     <p className="mt-2 text-gray-600 text-sm">
-                        {description}
+                        {description?.slice(0, 30)}
                     </p>
                     <p className="mt-2 text-gray-400 font-semibold text-lg">
                         {cc} CC

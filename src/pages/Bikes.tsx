@@ -25,11 +25,12 @@ export default function Bikes() {
                     bikeData.map((item) => (
                         <ProductCard
                             key={item?._id}
-                            name={item.name}
-                            description={item.description}
-                            cc={item.cc}
-                            _id={item._id}
-                            pricePerHour={item.pricePerHour}
+                            name={item?.name}
+                            description={item?.description}
+                            cc={item?.cc}
+                            _id={item?._id}
+                            pricePerHour={item?.pricePerHour}
+                            img={item?.img}
                         />
                     ))
                 }
