@@ -34,14 +34,14 @@
 
 // </>
 {/* profile picture */ }
-<div className="w-1/3 mx-auto flex flex-col justify-center items-center m-6">
+{/* <div className="w-1/3 mx-auto flex flex-col justify-center items-center m-6">
     <div className="flex flex-col items-center justify-center space-y-3">
         <img className='w-60 h-60 rounded-full shadow-lg' src={loginImg} alt="profile_picture" />
         <button
             className="px-4 py-2 bg-teal-500 text-white rounded-md shadow-lg">Edit Photo
         </button>
     </div>
-</div>
+</div> */}
 
 {/* update info modal starts*/ }
 {
@@ -209,3 +209,60 @@
 //         setSelectedFile(event.target.files[0]); // Store the selected file
 //     }
 // };
+
+// rentals frontend codes
+
+// {
+//     bikes.data.map((bike: TRent) => (
+//         <tr
+//             key={bike._id}
+//             className="border-b border-gray-200 hover:bg-gray-100 transition-colors"
+//         >
+//             <td className="py-3 px-6 text-left whitespace-nowrap">
+//                 <span className="font-medium">{bike.bikeId.name}</span>
+//             </td>
+//             <td className="py-3 px-6 text-center">
+//                 <span
+//                     className={`px-2 py-1 font-semibold leading-tight rounded-full ${bike.isReturned ? 'bg-green-200 text-green-700' : 'bg-pink-200 text-pink-700'
+//                         }`}
+//                 >
+//                     {bike.isReturned ? 'No' : 'Yes'}
+//                 </span>
+//             </td>
+//             <td className="py-3 px-6 text-center">{bike.startTime}</td>
+//             <td className="py-3 px-6 text-center">{bike.returnTime}</td>
+//             <td className="py-3 px-6 text-center">
+//                 <button
+//                     onClick={() => {
+//                         setIsModalOpen(true);
+//                         setSingleBikeData(bike);
+//                     }}
+//                     className="bg-indigo-500 text-white px-2 py-1 rounded-md hover:bg-indigo-600 mx-1">
+//                     <LuClipboardEdit size={18} />
+//                     Return Bike
+//                 </button>
+//                 {
+// !bikeDeleteLoader && (<button
+//                         onClick={() => deleteBike(bike._id)}
+//                         className="bg-pink-500 text-white px-2 py-1 rounded-md hover:bg-red-600 mx-1">
+//                         <FaRegTrashCan size={18} />
+//                     </button>)
+//                 }
+//                 {
+//                     bikeDeleteLoader && (
+//                         <Loader />
+//                     )
+//                 }
+
+//                 <button
+//                     onClick={() => {
+//                         setIsDetailModalOpen(true);
+//                         setSingleBikeData(bike);
+//                     }}
+//                     className="bg-teal-500 text-white px-2 py-1 rounded-md hover:bg-teal-600 mx-1">
+//                     <MdOpenInBrowser size={18} />
+//                 </button>
+//             </td>
+//         </tr>
+//     ))
+// }

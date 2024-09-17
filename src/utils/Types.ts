@@ -28,6 +28,7 @@ export type TUserDetail = {
     _id: string;
     name: string;
     email: string;
+    password?: string;
     phone: string;
     address: string;
     role: string;
@@ -88,7 +89,17 @@ export type TUpdateBike = {
     model?: string;
     name?: string;
     pricePerHour?: number;
-    year?: number,
+    year?: number;
+    img?: string;
+}
+export type TRent = {
+    _id: string;
+    userId: TUserDetail;
+    bikeId: TUpdateBike;
+    startTime: string;
+    returnTime?: string | null;
+    totalCost: number;
+    isReturned: boolean;
 }
 // event types
 export type FormEvent = React.InputHTMLAttributes<HTMLInputElement>

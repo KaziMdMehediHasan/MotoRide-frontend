@@ -30,7 +30,7 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
     // getting user role for customised buttons and layout
     const user: TLoggedInUser | null = useAppSelector((state) => state.auth.user);
     let role;
-    let name, description, brand, isAvailable, model, pricePerHour, year, cc, img;
+    let _id, name, description, brand, isAvailable, model, pricePerHour, year, cc, img;
 
     if (user !== null) {
         role = user?.role as string;
@@ -44,7 +44,7 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
 
     // destructuring bike information 
     if (bikeDetail && bikeDetail.data) {
-        ({ name, description, brand, isAvailable, model, pricePerHour, year, cc, img } = bikeDetail.data);
+        ({ _id, name, description, brand, isAvailable, model, pricePerHour, year, cc, img } = bikeDetail.data);
     }
     // getting the user role 
 
@@ -129,8 +129,10 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
                             </li>
                         </ul>
                         <button
-                            onClick={() => setIsBookingModalOpen(true)}
-                            className="mt-6 w-full bg-teal-500 text-white font-bold py-2 px-4 text-sm rounded-md hover:bg-teal-600 transition duration-300">
+                            onClick={() => {
+                                if (isAvailable) setIsBookingModalOpen(true);
+                            }}
+                            className={`${isAvailable === true ? 'mt-6 w-full bg-teal-500 text-white font-bold py-2 px-4 text-sm rounded-md hover:bg-teal-600 transition duration-300' : 'mt-6 w-full bg-teal-500 text-white font-bold py-2 px-4 text-sm rounded-md opacity-50 cursor-not-allowed'} `}>
                             Book Now
                         </button>
                     </div>
@@ -158,7 +160,7 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
                             className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"
                         ></div>
                         <div className="fixed inset-0 flex items-center justify-center">
-                            <DateTimePicker setIsBookingModalOpen={setIsBookingModalOpen} />
+                            <DateTimePicker setIsBookingModalOpen={setIsBookingModalOpen} bikeId={_id} />
                         </div>
 
                     </>
