@@ -7,10 +7,12 @@ interface Time {
 }
 interface props {
     setIsBookingModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsPaymentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    isPaymentModalOpen?: boolean;
     bikeId: string;
 }
 
-const DateTimePicker = ({ setIsBookingModalOpen, bikeId }: props) => {
+const DateTimePicker = ({ setIsBookingModalOpen, bikeId, setIsPaymentModalOpen }: props) => {
     const [pickedDateAndTime, setPickedDateAndTime] = useState('');
     const [selectedDate, setSelectedDate] = useState("");
     const [time, setTime] = useState({ hours: 0, minutes: 0 });
@@ -131,7 +133,9 @@ const DateTimePicker = ({ setIsBookingModalOpen, bikeId }: props) => {
             {/* Select Button */}
             <div className="mt-4 flex justify-center">
                 <button
-                    onClick={rentBike}
+                    onClick={() => {
+                        setIsPaymentModalOpen(true);
+                    }}
                     className="px-4 py-2 bg-teal-500 text-white font-semibold text-sm rounded-md hover:bg-teal-600 transition">
                     Select
                 </button>

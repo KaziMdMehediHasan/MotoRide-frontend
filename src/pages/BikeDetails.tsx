@@ -6,6 +6,7 @@ import { useAppSelector } from "../redux/hooks";
 import { useState } from "react";
 import FormSubmission from "./FormSubmission";
 import DateTimePicker from "../components/ui/DateTimePicker";
+import Payment from "./Payment";
 
 interface props {
     setIsDetailModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,6 +26,7 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
     // form modal opening or closing state
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
     const { data: bikeDetail, isLoading } = useGetSingleBikeQuery(isDetailModalOpen ? (idFromManagePage) : (bikeId as string), {});
 
     // getting user role for customised buttons and layout
@@ -160,9 +162,27 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
                             className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"
                         ></div>
                         <div className="fixed inset-0 flex items-center justify-center">
-                            <DateTimePicker setIsBookingModalOpen={setIsBookingModalOpen} bikeId={_id} />
+                            <DateTimePicker
+                                bikeId={_id}
+                                setIsBookingModalOpen={setIsBookingModalOpen}
+                                setIsPaymentModalOpen={setIsPaymentModalOpen}
+                                isPaymentModalOpen={isPaymentModalOpen} />
                         </div>
+                    </>
+                )
+            }
 
+            {/* payment modal */}
+            {
+                isPaymentModalOpen && (
+                    <>
+                        {/* background overlay effect */}
+                        <div
+                            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"
+                        ></div>
+                        <div className="fixed inset-0 flex items-center justify-center">
+                            <Payment setIsPaymentModalOpen={setIsPaymentModalOpen} pricePerHour={pricePerHour} />
+                        </div>
                     </>
                 )
             }
