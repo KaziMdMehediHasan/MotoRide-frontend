@@ -6,12 +6,21 @@ import router from './routes/router.tsx'
 import { persistor, store } from './redux/store.ts'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
+
+const stripePromise = loadStripe(`${process.env.STRIPE_PUBLISHABLE_KEY}`);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    {/* redux provider */}
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <RouterProvider router={router} />
+        {/* stripe provider */}
+        <Elements stripe={stripePromise}>
+          {/* route provider */}
+          <RouterProvider router={router} />
+        </Elements>
       </PersistGate>
     </Provider>
   </StrictMode>,

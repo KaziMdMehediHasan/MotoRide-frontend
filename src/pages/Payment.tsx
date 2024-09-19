@@ -1,40 +1,51 @@
 import { useState } from "react";
+import { useCreateRentMutation } from "../redux/features/rent/rentApi";
+import { CardCvcElement, CardExpiryElement, CardNumberElement } from "@stripe/react-stripe-js";
 
-interface PaymentFormData {
-    fullName: string;
-    cardNumber: string;
-    expiration: string;
-    cvv: string;
-}
 interface props {
     setIsPaymentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     pricePerHour: number;
+    finalDateTime: string;
+    bikeId: string;
 
 }
-const Payment = ({ setIsPaymentModalOpen, pricePerHour }: props) => {
-    const [formData, setFormData] = useState<PaymentFormData>({
-        fullName: '',
-        cardNumber: '',
-        expiration: '',
-        cvv: '',
-    });
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
+const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, bikeId }: props) => {
+    // create rent request send through redux toolkit
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [createRent, { data, isLoading, isError, isSuccess, error }] = useCreateRentMutation();
+
+    const rentBike = async () => {
+        // console.log('captured time from the modal:', pickedDateAndTime);
+        const rentInfo = {
+            bikeId: bikeId,
+            startTime: finalDateTime
+        }
+        console.log('from rentBike function:', rentInfo);
+        try {
+            await createRent(rentInfo).unwrap();
+        } catch (error) {
+            // const errorMessage = error.error.data.message
+            console.log(error);
+        }
+
+    }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // handle the form submission
-        console.log('Form Data: ', formData);
+        rentBike();
+        // console.log('Form Data: ', formData);
+
     };
+
+    console.log('from payment page:', bikeId, finalDateTime);
+
+
 
     return (
         <>
-            <div className="flex flex-col lg:flex-row justify-center items-center lg:space-x-10 space-y-10 lg:space-y-0 p-6 bg-gray-100 bg-opacity-50 rounded-lg relative">
-                <div className="bg-white p-8 shadow-lg rounded-lg max-w-md w-full ">
+            <div className="flex flex-col lg:flex-row justify-center items-center lg:space-x-10 space-y-10 lg:space-y-0 p-6 bg-gray-100 bg-opacity-50 rounded-lg w-[50%] relative">
+                <div className="bg-white p-8 shadow-lg rounded-lg max-w-md w-full">
                     <form onSubmit={handleSubmit}>
                         <h2 className="text-2xl font-bold mb-6">Payment</h2>
                         {/* modal close button */}
@@ -47,68 +58,26 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour }: props) => {
                             X
                         </span>
                         {/* modal close button ends*/}
+                        {/* cardElement input starts*/}
                         <div className="mb-4">
-                            <label className="block mb-1 text-sm font-medium text-gray-700 " htmlFor="fullName">
-                                Full name (as displayed on card)*
+                            <label className="block mb-1 text-sm font-medium text-gray-700">
+                                Card details*
                             </label>
-                            <input
-                                id="fullName"
-                                name="fullName"
-                                type="text"
-                                value={formData.fullName}
-                                onChange={handleChange}
-                                className="w-full p-2 border border-gray-300 rounded focus:outline-teal-500"
-                                placeholder="Bonnie Green"
-                                required
-                            />
+                            <CardNumberElement className="w-full p-2 border border-gray-300 rounded focus:outline-teal-500" />
                         </div>
                         <div className="mb-4">
-                            <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="cardNumber">
-                                Card number*
+                            <label className="block mb-1 text-sm font-medium text-gray-700">
+                                Card details*
                             </label>
-                            <input
-                                id="cardNumber"
-                                name="cardNumber"
-                                type="text"
-                                value={formData.cardNumber}
-                                onChange={handleChange}
-                                className="w-full p-2 border border-gray-300 rounded focus:outline-teal-500"
-                                placeholder="xxxx-xxxx-xxxx-xxxx"
-                                required
-                            />
+                            <CardExpiryElement className="w-full p-2 border border-gray-300 rounded focus:outline-teal-500" />
                         </div>
-                        <div className="grid grid-cols-2 gap-4 mb-6">
-                            <div>
-                                <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="expiration">
-                                    Card expiration*
-                                </label>
-                                <input
-                                    id="expiration"
-                                    name="expiration"
-                                    type="date"
-                                    value={formData.expiration}
-                                    onChange={handleChange}
-                                    className="w-full p-2 border border-gray-300 rounded focus:outline-teal-500"
-                                    placeholder="12/23"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="cvv">
-                                    CVV*
-                                </label>
-                                <input
-                                    id="cvv"
-                                    name="cvv"
-                                    type="text"
-                                    value={formData.cvv}
-                                    onChange={handleChange}
-                                    className="w-full p-2 border border-gray-300 rounded focus:outline-teal-500"
-                                    placeholder="•••"
-                                    required
-                                />
-                            </div>
+                        <div className="mb-4">
+                            <label className="block mb-1 text-sm font-medium text-gray-700">
+                                Card details*
+                            </label>
+                            <CardCvcElement className="w-full p-2 border border-gray-300 rounded focus:outline-teal-500" />
                         </div>
+                        {/* cardElement input ends*/}
                         <button
                             type="submit"
                             className="w-full bg-teal-500 text-white p-3 rounded hover:bg-teal-600 transition-colors"

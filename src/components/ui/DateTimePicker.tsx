@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useCreateRentMutation } from "../../redux/features/rent/rentApi";
-import Loader from "./Loader";
 interface Time {
     hours: number;
     minutes: number;
@@ -9,16 +7,12 @@ interface props {
     setIsBookingModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setIsPaymentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     isPaymentModalOpen?: boolean;
-    bikeId: string;
+    setFinalDateTime: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const DateTimePicker = ({ setIsBookingModalOpen, bikeId, setIsPaymentModalOpen }: props) => {
-    const [pickedDateAndTime, setPickedDateAndTime] = useState('');
+const DateTimePicker = ({ setIsBookingModalOpen, setIsPaymentModalOpen, setFinalDateTime }: props) => {
     const [selectedDate, setSelectedDate] = useState("");
     const [time, setTime] = useState({ hours: 0, minutes: 0 });
-    const [createRent, { data, isLoading, isError, isSuccess, error }] = useCreateRentMutation();
-    console.log('error:', JSON.stringify(error));
-    console.log('success:', JSON.stringify(data));
 
     // const rentInfo = {
     //     bikeId: bikeId,
@@ -48,28 +42,25 @@ const DateTimePicker = ({ setIsBookingModalOpen, bikeId, setIsPaymentModalOpen }
         if (String(time.minutes).length === 1) minutes = String(time.minutes).padStart(2, '0');
         const dateAndTime = `${date}T${hours}:${minutes}:00Z`;
 
-        setPickedDateAndTime(dateAndTime);
-
         return dateAndTime;
     }
 
-    const rentBike = async () => {
-        // console.log('captured time from the modal:', pickedDateAndTime);
-        const finalDateTime = constructDateAndTime(selectedDate, time); //another variable makes sure we get the date properly
+    // const rentBike = async () => {
+    //     const finalDateTime = constructDateAndTime(selectedDate, time); //another variable makes sure we get the date properly
+    //     // console.log('captured time from the modal:', pickedDateAndTime);
+    //     const rentInfo = {
+    //         bikeId: bikeId,
+    //         startTime: finalDateTime
+    //     }
+    //     console.log('from rentBike function:', rentInfo);
+    //     try {
+    //         await createRent(rentInfo).unwrap();
+    //     } catch (error) {
+    //         // const errorMessage = error.error.data.message
+    //         console.log(error);
+    //     }
 
-        const rentInfo = {
-            bikeId: bikeId,
-            startTime: finalDateTime
-        }
-        console.log('from rentBike function:', rentInfo);
-        try {
-            await createRent(rentInfo).unwrap();
-        } catch (error) {
-            // const errorMessage = error.error.data.message
-            console.log(error);
-        }
-
-    }
+    // }
 
 
     console.log('time:', time);
@@ -77,15 +68,15 @@ const DateTimePicker = ({ setIsBookingModalOpen, bikeId, setIsPaymentModalOpen }
 
     return (
         <div className="p-10 text-gray-800 bg-white bg-opacity-50 rounded-md shadow-lg max-w-sm md:max-w-md lg:max-w-lg mx-auto w-1/2 relative">
-            {
+            {/* {
                 isLoading && (<Loader />)
-            }
-            {
+            } */}
+            {/* {
                 isError && (<h1 className="text-xl font-semibold mb-4 text-center text-red-500">{error?.status} {error?.data?.message}</h1>)
             }
             {
                 isSuccess && (<h1 className="text-xl font-semibold mb-4 text-center text-green-500">Booking Successful</h1>)
-            }
+            } */}
             <h2 className="text-xl font-semibold mb-4 text-center">Select Date and Time</h2>
             {/* modal close button */}
             <span
@@ -135,6 +126,8 @@ const DateTimePicker = ({ setIsBookingModalOpen, bikeId, setIsPaymentModalOpen }
                 <button
                     onClick={() => {
                         setIsPaymentModalOpen(true);
+                        const finalDateTime = constructDateAndTime(selectedDate, time);
+                        setFinalDateTime(finalDateTime);
                     }}
                     className="px-4 py-2 bg-teal-500 text-white font-semibold text-sm rounded-md hover:bg-teal-600 transition">
                     Select

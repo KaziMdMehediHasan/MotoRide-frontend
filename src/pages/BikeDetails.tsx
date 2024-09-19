@@ -27,6 +27,8 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+    // to get the date inside the payment page we need the following date state
+    const [finalDateTime, setFinalDateTime] = useState('');
     const { data: bikeDetail, isLoading } = useGetSingleBikeQuery(isDetailModalOpen ? (idFromManagePage) : (bikeId as string), {});
 
     // getting user role for customised buttons and layout
@@ -163,7 +165,7 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
                         ></div>
                         <div className="fixed inset-0 flex items-center justify-center">
                             <DateTimePicker
-                                bikeId={_id}
+                                setFinalDateTime={setFinalDateTime}
                                 setIsBookingModalOpen={setIsBookingModalOpen}
                                 setIsPaymentModalOpen={setIsPaymentModalOpen}
                                 isPaymentModalOpen={isPaymentModalOpen} />
@@ -181,7 +183,7 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
                             className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"
                         ></div>
                         <div className="fixed inset-0 flex items-center justify-center">
-                            <Payment setIsPaymentModalOpen={setIsPaymentModalOpen} pricePerHour={pricePerHour} />
+                            <Payment setIsPaymentModalOpen={setIsPaymentModalOpen} pricePerHour={pricePerHour} finalDateTime={finalDateTime} bikeId={_id as string} />
                         </div>
                     </>
                 )

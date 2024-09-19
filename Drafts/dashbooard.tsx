@@ -266,3 +266,82 @@
 //         </tr>
 //     ))
 // }
+
+// const [formData, setFormData] = useState<PaymentFormData>({
+//     fullName: '',
+//     cardNumber: '',
+//     expiration: '',
+//     cvv: '',
+// });
+// card element form
+// const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     setFormData({
+//         ...formData,
+//         [e.target.name]: e.target.value,
+//     });
+// };
+
+// <>
+// <div className="mb-4">
+//     <label className="block mb-1 text-sm font-medium text-gray-700 " htmlFor="fullName">
+//         Full name (as displayed on card)*
+//     </label>
+//     <input
+//         id="fullName"
+//         name="fullName"
+//         type="text"
+//         value={formData.fullName}
+//         onChange={handleChange}
+//         className="w-full p-2 border border-gray-300 rounded focus:outline-teal-500"
+//         placeholder="Bonnie Green"
+//         required
+//     />
+// </div>
+// <div className="mb-4">
+//     <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="cardNumber">
+//         Card number*
+//     </label>
+//     <input
+//         id="cardNumber"
+//         name="cardNumber"
+//         type="text"
+//         value={formData.cardNumber}
+//         onChange={handleChange}
+//         className="w-full p-2 border border-gray-300 rounded focus:outline-teal-500"
+//         placeholder="xxxx-xxxx-xxxx-xxxx"
+//         required
+//     />
+// </div>
+// <div className="grid grid-cols-2 gap-4 mb-6">
+//     <div>
+//         <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="expiration">
+//             Card expiration*
+//         </label>
+//         <input
+//             id="expiration"
+//             name="expiration"
+//             type="date"
+//             value={formData.expiration}
+//             onChange={handleChange}
+//             className="w-full p-2 border border-gray-300 rounded focus:outline-teal-500"
+//             placeholder="12/23"
+//             required
+//         />
+//     </div>
+//     <div>
+//         <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="cvv">
+//             CVV*
+//         </label>
+//         <input
+//             id="cvv"
+//             name="cvv"
+//             type="text"
+//             value={formData.cvv}
+//             onChange={handleChange}
+//             className="w-full p-2 border border-gray-300 rounded focus:outline-teal-500"
+//             placeholder="•••"
+//             required
+//         />
+//     </div>
+// </div>
+// </>
