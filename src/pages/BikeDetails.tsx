@@ -182,7 +182,7 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
                         <div
                             className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"
                         ></div>
-                        <div className="fixed inset-0 flex items-center justify-center">
+                        <div className="fixed inert inset-0 flex items-center justify-center">
                             <Payment setIsPaymentModalOpen={setIsPaymentModalOpen} pricePerHour={pricePerHour} finalDateTime={finalDateTime} bikeId={_id as string} />
                         </div>
                     </>
