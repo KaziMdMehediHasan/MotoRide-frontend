@@ -7,7 +7,7 @@ const rentApi = baseApi.injectEndpoints({
                 url: '/rentals',
                 method: 'GET',
             }),
-            providesTags: ['Rents']
+            providesTags: ['Rents', 'Bikes']
         }),
         createRent: builder.mutation({
             query: (rentInfo) => {
@@ -18,7 +18,7 @@ const rentApi = baseApi.injectEndpoints({
                     body: rentInfo
                 }
             },
-            invalidatesTags: ['Rents']
+            invalidatesTags: ['Rents', 'Bikes']
         })
     })
 });

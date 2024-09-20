@@ -4,10 +4,8 @@ import { TRent } from "../utils/Types";
 
 export default function MyRentals() {
     const { data, isLoading } = useGetRentalsQuery({});
-    if (isLoading) {
-        <Loader />
-    }
     const bikes = data?.data;
+
     return (
         <>
             <div className="container mx-auto p-4">
@@ -30,8 +28,9 @@ export default function MyRentals() {
                             </tr>
                         </thead>
                         <tbody className="text-gray-600 text-sm font-light">
+                            {isLoading && <Loader />}
                             {
-                                bikes.map((bike: TRent) => (
+                                bikes?.map((bike: TRent) => (
                                     <tr
                                         key={bike._id}
                                         className="border-b border-gray-200 hover:bg-gray-100 transition-colors"

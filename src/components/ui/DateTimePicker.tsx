@@ -128,6 +128,7 @@ const DateTimePicker = ({ setIsBookingModalOpen, setIsPaymentModalOpen, setFinal
                         setIsPaymentModalOpen(true);
                         const finalDateTime = constructDateAndTime(selectedDate, time);
                         setFinalDateTime(finalDateTime);
+                        setIsBookingModalOpen(false);
                     }}
                     className="px-4 py-2 bg-teal-500 text-white font-semibold text-sm rounded-md hover:bg-teal-600 transition">
                     Select
