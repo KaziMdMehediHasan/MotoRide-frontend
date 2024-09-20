@@ -32,23 +32,23 @@ export default function Navbar() {
 
             {/* Menu Items */}
             <div className="hidden md:flex space-x-8">
-                <NavLink to='/' className="text-gray-700 hover:text-teal-500">Home</NavLink>
-                <NavLink to='/about' className="text-gray-700 hover:text-teal-500">About Us</NavLink>
-                <NavLink to='/dashboard' className="text-gray-700 hover:text-teal-500">Dashboard</NavLink>
-                <NavLink to='/bikes' className="text-gray-700 hover:text-teal-500">Bikes</NavLink>
+                <NavLink to='/' className="text-gray-700 hover:text-teal-500 text-sm">Home</NavLink>
+                <NavLink to='/about' className="text-gray-700 hover:text-teal-500 text-sm">About Us</NavLink>
+                <NavLink to='/dashboard' className="text-gray-700 hover:text-teal-500 text-sm">Dashboard</NavLink>
+                <NavLink to='/bikes' className="text-gray-700 hover:text-teal-500 text-sm">Bikes</NavLink>
                 {/* Add conditional menu items based on user role here */}
             </div>
 
             {/* Authentication Links */}
             {!role && <div className="hidden md:flex justify-center items-center space-x-4">
-                <Link to='/login' className="text-gray-700 border border-teal-500 rounded px-4 py-2 hover:text-white hover:bg-teal-500">Login</Link>
-                <Link to='/register' className="bg-teal-500 border border-teal-500 text-white px-4 py-2 rounded hover:bg-gray-200 hover:text-gray-700 hover:border-teal-500 hover:border">Sign Up</Link>
+                <Link to='/login' className="text-gray-700 border border-teal-500 rounded px-4 py-2 hover:text-white hover:bg-teal-500 text-sm">Login</Link>
+                <Link to='/register' className="bg-teal-500 border border-teal-500 text-white px-4 py-2 rounded hover:bg-gray-200 hover:text-gray-700 hover:border-teal-500 hover:border text-sm">Sign Up</Link>
             </div>}
 
             {role && <div className="hidden md:flex justify-center items-center space-x-4">
                 <button
                     onClick={() => dispatch(logout())}
-                    className="bg-teal-500 border border-teal-500 text-white px-4 py-2 rounded hover:bg-gray-200 hover:text-gray-700 hover:border-teal-500 hover:border">
+                    className="bg-teal-500 border border-teal-500 text-white px-4 py-2 rounded hover:bg-gray-200 hover:text-gray-700 hover:border-teal-500 hover:border text-sm">
                     Logout
                 </button>
             </div>}

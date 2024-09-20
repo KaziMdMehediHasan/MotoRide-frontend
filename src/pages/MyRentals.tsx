@@ -1,9 +1,14 @@
+import { useState } from "react";
 import Loader from "../components/ui/Loader";
 import { useGetRentalsQuery } from "../redux/features/rent/rentApi";
 import { TRent } from "../utils/Types";
 
 export default function MyRentals() {
     const { data, isLoading } = useGetRentalsQuery({});
+    const [revealId, setRevealId] = useState(false);
+    if (isLoading) {
+        return <Loader />
+    }
     const bikes = data?.data;
 
     return (
@@ -22,6 +27,8 @@ export default function MyRentals() {
                             <tr>
                                 <th className="py-3 px-6 text-left">Bike Name</th>
                                 <th className="py-3 px-6 text-center">Returned</th>
+                                <th className="py-3 px-6 text-center">Adv. Payment ID</th>
+                                <th className="py-3 px-6 text-center">Final Payment ID</th>
                                 <th className="py-3 px-6 text-center">Start Time</th>
                                 <th className="py-3 px-6 text-center">Return Time</th>
                                 <th className="py-3 px-6 text-center">Actions</th>
@@ -45,6 +52,14 @@ export default function MyRentals() {
                                             >
                                                 {bike.isReturned ? 'Yes' : 'No'}
                                             </span>
+                                        </td>
+                                        <td
+                                            onClick={() => setRevealId(!revealId)}
+                                            className="py-3 px-6 text-center cursor-pointer">{revealId ? `${bike.advancePaymentId}` : `${bike.advancePaymentId.slice(0, 5)}...`}
+                                        </td>
+                                        <td
+                                            onClick={() => setRevealId(!revealId)}
+                                            className="py-3 px-6 text-center">{revealId ? `${bike.finalPaymentId}` : `${bike.finalPaymentId.slice(0, 5)}...`}
                                         </td>
                                         <td className="py-3 px-6 text-center">{`${bike.startTime.slice(0, 10)} at ${bike.startTime.slice(11, 16)}`}</td>
                                         <td className="py-3 px-6 text-center">{bike.returnTime ? bike.returnTime : 'Not Returned Yet'}</td>

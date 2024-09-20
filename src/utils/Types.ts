@@ -100,6 +100,8 @@ export type TRent = {
     returnTime?: string | null;
     totalCost: number;
     isReturned: boolean;
+    advancePaymentId: string;
+    finalPaymentId: string;
 }
 // event types
 export type FormEvent = React.InputHTMLAttributes<HTMLInputElement>

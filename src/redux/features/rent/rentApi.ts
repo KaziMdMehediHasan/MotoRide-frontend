@@ -20,7 +20,8 @@ const rentApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ['Rents', 'Bikes']
         })
-    })
+    }),
+    overrideExisting: true,
 });
 
 export const { useCreateRentMutation, useGetRentalsQuery } = rentApi;
