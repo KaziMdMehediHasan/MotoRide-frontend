@@ -1,14 +1,15 @@
 import Navbar from '../components/ui/Navbar';
 import { Link } from 'react-router-dom';
 import homepageCover from '../assets/homepage-cover.jpg';
+import { useGetBikesQuery } from '../redux/features/bikes/bikeApi';
+import Loader from '../components/ui/Loader';
+import { TBike } from '../utils/Types';
 
 export default function HomePage() {
-    const bikes = [
-        { id: 1, brand: 'Bike Brand A', image: '/path/to/image1.jpg' },
-        { id: 2, brand: 'Bike Brand B', image: '/path/to/image2.jpg' },
-        { id: 3, brand: 'Bike Brand C', image: '/path/to/image3.jpg' },
-        // Add more bike details as needed
-    ];
+    const { data: bikeData, isLoading } = useGetBikesQuery({});
+    if (isLoading) {
+        return <Loader />
+    }
     const testimonials = [
         { id: 1, name: 'John Doe', review: 'Great service and amazing bikes!' },
         { id: 2, name: 'Jane Smith', review: 'I love my new bike!' },
@@ -24,7 +25,7 @@ export default function HomePage() {
         <>
             <Navbar />
             {/* // hero section starts */}
-            <div className="font-pop">
+            <div className="font-pop bg-gray-200">
                 <section className="relative bg-cover bg-center h-screen flex items-center justify-center shadow-xl" style={{ backgroundImage: `url(${homepageCover})` }}>
                     <div className="bg-slate-100 opacity-15 w-full h-full absolute top-0 left-0"></div>
                     <div className="text-center text-white p-20 bg-teal-800 backdrop-blur-md rounded-lg bg-opacity-40">
@@ -40,23 +41,37 @@ export default function HomePage() {
                 </section>
                 {/* // hero section ends */}
                 {/* // featured section starts */}
-                <section className="p-6 bg-gray-200">
-                    <h2 className="text-3xl font-bold text-center mb-6">Available Bikes</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {bikes.map(bike => (
-                            <div key={bike.id} className="border p-4 rounded-md text-center">
-                                <img src={bike.image} alt={bike.brand} className="mb-4 mx-auto" />
-                                <h3 className="text-xl font-semibold">{bike.brand}</h3>
-                                <Link to={`/bikes/${bike.id}`}>
-                                    <button className="mt-4 p-2 bg-emerald-600 hover:bg-emerald-700 rounded-md text-white">View Detail</button>
+                <section className="container mx-auto px-8 mt-12 flex flex-col items-center gap-8">
+                    <h1 className="text-3xl font-bold text-gray-600 text-center mb-6">Ride The Hottest Bikes Now</h1>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {isLoading && (<Loader />)}
+                        {bikeData?.data.slice(0, 4).map((bike: TBike) => (
+                            <div key={bike._id} className="border border-teal-400 rounded-lg p-4 relative bg-gray-50 shadow-xl">
+                                <span className="absolute top-2 left-2 bg-pink-500 text-white text-xs px-2 py-1 rounded">Discount</span>
+                                <img
+                                    src={bike.img as string || ''}
+                                    alt={bike.name}
+                                    className="w-full h-40 object-cover mb-4 rounded-lg"
+                                />
+                                <h3 className="text-lg font-semibold mb-2 text-gray-600">{bike.name}</h3>
+                                <p className="text-sm line-through text-gray-400">${Number(bike.pricePerHour) + 10}</p>
+                                <p className="text-xl font-semibold text-gray-600">${bike.pricePerHour}</p>
+                                <Link to={`bikes/bike/${bike._id}`}>
+                                    <p className="text-sm mt-2 font-semibold text-teal-500 hover:text-teal-600">See Details</p>
                                 </Link>
                             </div>
                         ))}
                     </div>
+                    <div>
+                        <Link to='/bikes'>
+                            <button className='px-4 py-2 text-sm text-white rounded-lg shadow-xl bg-teal-500 hover:bg-teal-600'>See All</button>
+                        </Link>
+                    </div>
+
                 </section>
                 {/* // featured section ends */}
                 {/* testimonials section starts */}
-                <section className="p-6 bg-gray-200">
+                <section className="px-8 mt-12">
                     <h2 className="text-3xl font-bold text-center mb-6">Customer Testimonials</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {testimonials.map(testimonial => (

@@ -25,7 +25,7 @@ export default function MyRentals() {
             <div className="container mx-auto p-4">
                 {/* Header section */}
                 <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-xl font-semibold">Manage Bikes</h1>
+                    <h1 className="text-xl font-semibold text-gray-600">User Rental Management</h1>
                 </div>
 
                 {/* Table section */}
@@ -36,10 +36,11 @@ export default function MyRentals() {
                             <tr>
                                 <th className="py-3 px-6 text-left">Bike Name</th>
                                 <th className="py-3 px-6 text-center">Returned</th>
-                                <th className="py-3 px-6 text-center">Adv. Payment ID</th>
-                                <th className="py-3 px-6 text-center">Final Payment ID</th>
+                                {/* <th className="py-3 px-6 text-center">Adv. Payment ID</th> */}
+                                {/* <th className="py-3 px-6 text-center">Final Payment ID</th> */}
                                 <th className="py-3 px-6 text-center">Start Time</th>
                                 <th className="py-3 px-6 text-center">Return Time</th>
+                                <th className="py-3 px-6 text-center">Payable</th>
                                 <th className="py-3 px-6 text-center">Actions</th>
                             </tr>
                         </thead>
@@ -71,7 +72,8 @@ export default function MyRentals() {
                                             className="py-3 px-6 text-center">{revealId ? `${bike.finalPaymentId}` : `${bike.finalPaymentId.slice(0, 5)}...`}
                                         </td>
                                         <td className="py-3 px-6 text-center">{`${bike.startTime.slice(0, 10)} at ${bike.startTime.slice(11, 16)}`}</td>
-                                        <td className="py-3 px-6 text-center">{bike.returnTime ? bike.returnTime : 'Not Returned Yet'}</td>
+                                        <td className="py-3 px-6 text-center">{bike.returnTime ? `${bike.returnTime.slice(0, 10)} at ${bike.startTime.slice(11, 16)}` : 'Not Returned Yet'}</td>
+                                        <td className="py-3 px-6 text-center">{bike.returnTime ? `${bike.totalCost}` : 'Yet to calculate'}</td>
                                         <td className="py-3 px-6 text-center">
                                             <button
                                                 onClick={() => {
@@ -83,7 +85,11 @@ export default function MyRentals() {
 
                                                     const elapsedTime = ((returnDateMilliSeconds - startDateMilliSeconds) / (1000 * 60 * 60)).toFixed(2); //elapsed time in hours
 
-                                                    const totalCost = Number(elapsedTime) * Number(bike?.bikeId?.pricePerHour);
+                                                    let totalCost = Number(elapsedTime) * Number(bike?.bikeId?.pricePerHour);
+
+                                                    if (totalCost < Number(bike?.bikeId?.pricePerHour)) {
+                                                        totalCost = Number(bike?.bikeId?.pricePerHour);
+                                                    }
 
                                                     // console.log('bike id:', bike.bikeId._id);
                                                     setReturnData({ ...returnData, returnTime: currentTimeString, totalCost: Number(totalCost.toFixed(2)), rentalId: bike._id as string, pricePerHour: Number(bike.bikeId.pricePerHour) });
@@ -91,7 +97,7 @@ export default function MyRentals() {
                                                     // setSingleBikeData(bike);
                                                 }}
                                                 disabled={bike.isReturned}
-                                                className={`${bike.isReturned ? 'cursor-not-allowed bg-gray-500 hover:bg-gray-400' : 'cursor-pointer '} bg-teal-500 text-white px-2 py-1 rounded-md hover:bg-teal-600 mx-1`}>
+                                                className={`${bike.isReturned ? 'cursor-not-allowed bg-gray-300 hover:bg-gray-400' : 'cursor-pointer'} bg-teal-500 text-white px-2 py-1 rounded-md hover:bg-teal-600 mx-1`}>
                                                 {/* <LuClipboardEdit size={18} /> */}
                                                 Return Bike
                                             </button>

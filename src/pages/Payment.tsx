@@ -4,6 +4,7 @@ import { CardCvcElement, CardExpiryElement, CardNumberElement, useElements, useS
 import { useCreatePaymentMutation } from "../redux/features/payment/paymentApi";
 import Loader from "../components/ui/Loader";
 import { TBikeReturnData } from "../utils/Types";
+import Confirmation from "../components/ui/Confirmation";
 
 interface props {
     setIsPaymentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,16 +19,17 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
     console.log('coming from bike return page:', isReturning);
     const [isProcessing, setIsProcessing] = useState(false);
     const [message, setMessage] = useState('');
+    const [isPaymentSuccess, setIsPaymentSuccess] = useState(false);
     // const [advancePaymentId, setAdvancedPaymentId] = useState('');
     let advancePaymentId: string;
     let finalPaymentId: string;
     const stripe = useStripe(); //hook provided by stripe
     const elements = useElements(); //elements hook
     // redux functions
-    const [createRent, { isLoading, isSuccess, }] = useCreateRentMutation();
-    const [createPayment, { data: clientSecret, isLoading: paymentLoader, isError: isPaymentError, isSuccess: isPaymentSuccess, error: paymentError }] = useCreatePaymentMutation();
+    const [createRent, { isLoading, isSuccess }] = useCreateRentMutation();
+    const [createPayment, { data: clientSecret, isLoading: paymentLoader, isError: isPaymentError, error: paymentError }] = useCreatePaymentMutation();
 
-    const [bikeReturn, { isLoading: bikeReturnLoader, isSuccess: bikeLoaderSuccess }] = useBikeReturnMutation();
+    const [bikeReturn, { isLoading: bikeReturnLoader, isSuccess: bikeReturnSuccess }] = useBikeReturnMutation();
 
     // card form validation state
     const [isCardComplete, setIsCardComplete] = useState({
@@ -83,11 +85,6 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
     }
     console.log('Created payment intent:', clientSecret);
 
-
-    // const testSubmit = async (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     await returnBike();
-    // }
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         // handle the form submission
@@ -143,6 +140,7 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
                 setIsProcessing(false);
             } else if (paymentIntent && paymentIntent.status === 'succeeded') {
                 setMessage('Payment successful!');
+                setIsPaymentSuccess(true);
                 setIsProcessing(false);
             }
 
@@ -163,7 +161,7 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
     return (
         <>
             {
-                !isSuccess && (<div className="flex flex-col lg:flex-row justify-center items-center lg:space-x-10 space-y-10 lg:space-y-0 p-6 bg-gray-100 bg-opacity-50 rounded-lg w-[50%] relative">
+                (!isPaymentSuccess) && (<div className="flex flex-col lg:flex-row justify-center items-center lg:space-x-10 space-y-10 lg:space-y-0 p-6 bg-gray-100 bg-opacity-50 rounded-lg w-[50%] relative">
                     <div className="bg-white p-8 shadow-lg rounded-lg max-w-md w-full">
                         <form onSubmit={handleSubmit}>
                             <h2 className="text-2xl font-bold mb-6">Payment</h2>
@@ -208,7 +206,7 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
                                 type="submit"
                                 className="w-full bg-teal-500 text-white p-3 rounded hover:bg-teal-600 transition-colors"
                             >
-                                {isProcessing ? 'Processing...' : 'Pay Now'}
+                                {isProcessing ? <Loader /> : 'Pay Now'}
                             </button>
                             {/* showing the error message */}
                             {message && <p className="mt-4 text-red-500">{message}</p>}
@@ -224,7 +222,7 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
                             </li>
                             {isReturning && (
                                 <li className="flex justify-between">
-                                    <span className="text-gray-700">Advance Payment</span>
+                                    <span className="text-gray-700">Paid</span>
                                     <span className="text-red-500">-${10}</span>
                                 </li>
                             )}
@@ -233,29 +231,21 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
                                 <span className="text-gray-700">Hourly Rate</span>
                                 <span className="text-gray-700">${returnData?.pricePerHour || pricePerHour}</span>
                             </li>
-                            {/* <li className="flex justify-between">
-                            <span className="text-gray-700">Store Pickup</span>
-                            <span>$99</span>
-                        </li> */}
-                            {/* <li className="flex justify-between">
-                            <span className="text-gray-700">Tax</span>
-                            <span>$799</span>
-                        </li> */}
                         </ul>
                         <hr className="mb-4" />
                         <div className="flex justify-between text-gray-600 text-lg font-bold">
                             <span>Total</span>
-                            <span className=''>${Number(returnData?.totalCost) - 10}</span>
+                            <span className=''>${Number(returnData?.totalCost.toFixed(2)) - 10 || 10}</span>
                         </div>
                     </div>
                 </div>)
             }
-
+            {/* when payment and rentals is being processed the following loader will show */}
             {
-                isLoading && <Loader />
+                (isLoading || bikeReturnLoader) && (<Loader />)
             }
             {
-                isSuccess && <>
+                isPaymentSuccess && <>
                     <div className="flex flex-col lg:flex-row justify-center items-center lg:space-x-10 space-y-10 lg:space-y-0 p-6 bg-gray-100 bg-opacity-50 rounded-lg w-[50%] relative">
                         <span
                             className='absolute top-2 right-4 cursor-pointer text-xl text-gray-600 bg-gray-300 py-1 px-3 rounded-md hover:bg-red-400 hover:text-white'
@@ -265,7 +255,7 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
                         >
                             X
                         </span>
-                        <h1 className="text-3xl text-green-500">Bike booking confirmed!</h1>
+                        <Confirmation />
                     </div>
                 </>
             }
