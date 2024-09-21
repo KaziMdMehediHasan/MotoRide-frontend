@@ -1,16 +1,25 @@
 import { useState } from "react";
 import Loader from "../components/ui/Loader";
 import { useGetRentalsQuery } from "../redux/features/rent/rentApi";
-import { TRent } from "../utils/Types";
+import { TBikeReturnData, TRent } from "../utils/Types";
+import Payment from "./Payment";
+import { convertDateToBDTimeZone } from "../utils/convertDate";
 
 export default function MyRentals() {
     const { data, isLoading } = useGetRentalsQuery({});
     const [revealId, setRevealId] = useState(false);
+    const [returnData, setReturnData] = useState<TBikeReturnData>({
+        returnTime: '',
+        totalCost: 0,
+        rentalId: '',
+        pricePerHour: 0,
+    });
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
     if (isLoading) {
         return <Loader />
     }
     const bikes = data?.data;
-
+    console.log(returnData);
     return (
         <>
             <div className="container mx-auto p-4">
@@ -66,34 +75,26 @@ export default function MyRentals() {
                                         <td className="py-3 px-6 text-center">
                                             <button
                                                 onClick={() => {
+                                                    setIsPaymentModalOpen(!isPaymentModalOpen);
+                                                    const startDateMilliSeconds = Date.parse(bike.startTime); //getting the time in milliseconds
+                                                    const currentTimeString = convertDateToBDTimeZone();
+                                                    const returnDateMilliSeconds = Date.parse(currentTimeString);
+                                                    // console.log(returnDateMilliSeconds - startDateMilliSeconds);
+
+                                                    const elapsedTime = ((returnDateMilliSeconds - startDateMilliSeconds) / (1000 * 60 * 60)).toFixed(2); //elapsed time in hours
+
+                                                    const totalCost = Number(elapsedTime) * Number(bike?.bikeId?.pricePerHour);
+
+                                                    // console.log('bike id:', bike.bikeId._id);
+                                                    setReturnData({ ...returnData, returnTime: currentTimeString, totalCost: Number(totalCost.toFixed(2)), rentalId: bike._id as string, pricePerHour: Number(bike.bikeId.pricePerHour) });
                                                     // setIsModalOpen(true);
                                                     // setSingleBikeData(bike);
                                                 }}
-                                                className="bg-indigo-500 text-white px-2 py-1 rounded-md hover:bg-indigo-600 mx-1">
+                                                disabled={bike.isReturned}
+                                                className={`${bike.isReturned ? 'cursor-not-allowed bg-gray-500 hover:bg-gray-400' : 'cursor-pointer '} bg-teal-500 text-white px-2 py-1 rounded-md hover:bg-teal-600 mx-1`}>
                                                 {/* <LuClipboardEdit size={18} /> */}
                                                 Return Bike
                                             </button>
-                                            {/* {
-                                            !bikeDeleteLoader && (<button
-                                                onClick={() => deleteBike(bike._id)}
-                                                className="bg-pink-500 text-white px-2 py-1 rounded-md hover:bg-red-600 mx-1">
-                                                <FaRegTrashCan size={18} />
-                                            </button>)
-                                        }
-                                        {
-                                            bikeDeleteLoader && (
-                                                <Loader />
-                                            )
-                                        } */}
-
-                                            {/* <button
-                                            onClick={() => {
-                                                setIsDetailModalOpen(true);
-                                                setSingleBikeData(bike);
-                                            }}
-                                            className="bg-teal-500 text-white px-2 py-1 rounded-md hover:bg-teal-600 mx-1">
-                                            <MdOpenInBrowser size={18} />
-                                        </button> */}
                                         </td>
                                     </tr>
                                 ))
@@ -102,6 +103,19 @@ export default function MyRentals() {
                     </table>
                 </div>
             </div>
+            {
+                isPaymentModalOpen && (
+                    <>
+                        {/* background overlay */}
+                        <div
+                            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"
+                        ></div>
+                        <div className="fixed inert inset-0 flex items-center justify-center">
+                            <Payment setIsPaymentModalOpen={setIsPaymentModalOpen} returnData={returnData} isReturning={true} />
+                        </div>
+                    </>
+                )
+            }
         </>
     )
 }

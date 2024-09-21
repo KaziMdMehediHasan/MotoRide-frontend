@@ -103,5 +103,12 @@ export type TRent = {
     advancePaymentId: string;
     finalPaymentId: string;
 }
+
+export type TBikeReturnData = {
+    returnTime: string,
+    totalCost: number,
+    rentalId: string,
+    pricePerHour: number
+}
 // event types
 export type FormEvent = React.InputHTMLAttributes<HTMLInputElement>

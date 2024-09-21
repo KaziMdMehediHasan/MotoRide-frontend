@@ -19,9 +19,21 @@ const rentApi = baseApi.injectEndpoints({
                 }
             },
             invalidatesTags: ['Rents', 'Bikes']
+        }),
+        bikeReturn: builder.mutation({
+            query: (returnInfo) => {
+                console.log('from rtk query', returnInfo);
+                // console.log('backend hitting link:', `/rentals/${returnInfo.rentalId}/return`);
+                return {
+                    url: `/rentals/${returnInfo.rentalId}/return`,
+                    method: 'PUT',
+                    body: returnInfo
+                }
+            },
+            invalidatesTags: ['Rents', 'Bikes']
         })
     }),
     overrideExisting: true,
 });
 
-export const { useCreateRentMutation, useGetRentalsQuery } = rentApi;
+export const { useCreateRentMutation, useGetRentalsQuery, useBikeReturnMutation } = rentApi;
