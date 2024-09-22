@@ -4,18 +4,20 @@ import homepageCover from '../assets/homepage-cover.jpg';
 import { useGetBikesQuery } from '../redux/features/bikes/bikeApi';
 import Loader from '../components/ui/Loader';
 import { TBike } from '../utils/Types';
+import TestimonialCard from '../components/TestimonialCard';
+import { testimonials } from '../utils/data';
 
 export default function HomePage() {
     const { data: bikeData, isLoading } = useGetBikesQuery({});
     if (isLoading) {
         return <Loader />
     }
-    const testimonials = [
-        { id: 1, name: 'John Doe', review: 'Great service and amazing bikes!' },
-        { id: 2, name: 'Jane Smith', review: 'I love my new bike!' },
-        { id: 3, name: 'William Hannah', review: 'I love MotoRent service!' },
-        // Add more testimonials as needed
-    ];
+    // const testimonials = [
+    //     { id: 1, name: 'John Doe', review: 'Great service and amazing bikes!' },
+    //     { id: 2, name: 'Jane Smith', review: 'I love my new bike!' },
+    //     { id: 3, name: 'William Hannah', review: 'I love MotoRent service!' },
+    //     // Add more testimonials as needed
+    // ];
     const benefits = [
         { id: 1, title: 'Best Prices', description: 'We offer competitive pricing.' },
         { id: 2, title: 'Wide Selection', description: 'Choose from a variety of brands and models.' },
@@ -71,21 +73,18 @@ export default function HomePage() {
                 </section>
                 {/* // featured section ends */}
                 {/* testimonials section starts */}
-                <section className="px-8 mt-12">
-                    <h2 className="text-3xl font-bold text-center mb-6">Customer Testimonials</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {testimonials.map(testimonial => (
-                            <div key={testimonial.id} className="border p-4 rounded-md bg-white">
-                                <p className="italic">"{testimonial.review}"</p>
-                                <p className="mt-4 font-semibold">- {testimonial.name}</p>
-                            </div>
+                <section className="px-8 mt-12 w-[75%] mx-auto">
+                    <h1 className="text-3xl font-bold text-gray-600 text-center mb-6">Customer Testimonials</h1>
+                    <div className="grid grid-cols-1 md:grid-cols-2 justify-items-center lg:grid-cols-3 gap-6">
+                        {testimonials.map((testimonial, index) => (
+                            <TestimonialCard key={index} {...testimonial} />
                         ))}
                     </div>
                 </section>
                 {/* testimonials section ends */}
                 {/* why choose us section starts */}
-                <section className="p-6 bg-gray-200">
-                    <h2 className="text-3xl font-bold text-center mb-6">Why Choose Us</h2>
+                <section className="px-6 mt-12 bg-gray-200">
+                    <h2 className="text-3xl font-bold text-gray-600 text-center mb-6">Why Choose Us</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {benefits.map(benefit => (
                             <div key={benefit.id} className="border p-4 rounded-md text-center bg-gray-100">
