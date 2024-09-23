@@ -5,24 +5,14 @@ import { useGetBikesQuery } from '../redux/features/bikes/bikeApi';
 import Loader from '../components/ui/Loader';
 import { TBike } from '../utils/Types';
 import TestimonialCard from '../components/TestimonialCard';
-import { testimonials } from '../utils/data';
+import { services, testimonials } from '../utils/data';
+import WhyChooseUsCard from '../components/WhyChooseUsCard';
 
 export default function HomePage() {
     const { data: bikeData, isLoading } = useGetBikesQuery({});
     if (isLoading) {
         return <Loader />
     }
-    // const testimonials = [
-    //     { id: 1, name: 'John Doe', review: 'Great service and amazing bikes!' },
-    //     { id: 2, name: 'Jane Smith', review: 'I love my new bike!' },
-    //     { id: 3, name: 'William Hannah', review: 'I love MotoRent service!' },
-    //     // Add more testimonials as needed
-    // ];
-    const benefits = [
-        { id: 1, title: 'Best Prices', description: 'We offer competitive pricing.' },
-        { id: 2, title: 'Wide Selection', description: 'Choose from a variety of brands and models.' },
-        { id: 3, title: 'Excellent Service', description: 'Our customer support is top-notch.' },
-    ];
     return (
         <>
             <Navbar />
@@ -83,15 +73,17 @@ export default function HomePage() {
                 </section>
                 {/* testimonials section ends */}
                 {/* why choose us section starts */}
-                <section className="px-6 mt-12 bg-gray-200">
-                    <h2 className="text-3xl font-bold text-gray-600 text-center mb-6">Why Choose Us</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {benefits.map(benefit => (
-                            <div key={benefit.id} className="border p-4 rounded-md text-center bg-gray-100">
-                                <h3 className="text-xl font-semibold">{benefit.title}</h3>
-                                <p className="mt-2">{benefit.description}</p>
-                            </div>
-                        ))}
+                <section className="px-8 py-12 w-[75%] mx-auto">
+                    <h2 className=" text-3xl font-bold text-gray-600 text-center mb-6">Why Choose Us?</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 justify-items-center lg:grid-cols-3 gap-6">
+                        {
+                            services.map(service => (
+                                <WhyChooseUsCard
+                                    icon={<service.icon className='text-primary' size={50} />}
+                                    title={service.title}
+                                    description={service.description}
+                                />))
+                        }
                     </div>
                 </section>
                 {/* why choose us section ends */}

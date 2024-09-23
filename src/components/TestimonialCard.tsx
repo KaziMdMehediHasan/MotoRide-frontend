@@ -4,12 +4,11 @@ interface TestimonialProps {
     name: string;
     location: string;
     date: string;
-    rating: number;
 }
 
-const TestimonialCard = ({ avatar, quote, name, location, date, rating }: TestimonialProps) => {
+const TestimonialCard = ({ avatar, quote, name, location, date }: TestimonialProps) => {
     return (
-        <div className="w-96 rounded-xl overflow-hidden shadow-xl border border-teal-400 bg-gray-50 p-6 m-4">
+        <div className="w-96 rounded-xl overflow-hidden shadow-xl border-2 border-primary bg-gray-50 p-6 m-4">
             <img className="w-40 h-40 object-cover shadow-lg shadow-teal-100 rounded-full mx-auto" src={avatar} alt={`${name}'s avatar`} />
             <div className="text-center space-y-4">
                 <svg fill="currentColor" viewBox="0 0 20 20" className="w-6 h-6 mx-auto text-blue-500">
