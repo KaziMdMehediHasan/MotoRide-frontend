@@ -7,6 +7,8 @@ import { TBike } from '../utils/Types';
 import TestimonialCard from '../components/TestimonialCard';
 import { services, testimonials } from '../utils/data';
 import WhyChooseUsCard from '../components/WhyChooseUsCard';
+import Coupon from '../components/ui/Coupon';
+import ContactUs from '../components/ui/ContactUs';
 
 export default function HomePage() {
     const { data: bikeData, isLoading } = useGetBikesQuery({});
@@ -20,7 +22,7 @@ export default function HomePage() {
             <div className="font-pop bg-gray-200">
                 <section className="relative bg-cover bg-center h-screen flex items-center justify-center shadow-xl" style={{ backgroundImage: `url(${homepageCover})` }}>
                     <div className="bg-slate-100 opacity-15 w-full h-full absolute top-0 left-0"></div>
-                    <div className="text-center text-white p-20 bg-teal-800 backdrop-blur-md rounded-lg bg-opacity-40">
+                    <div className="text-center text-white p-10 lg:p-20 bg-primary backdrop-blur-md rounded-lg bg-opacity-40">
                         <h1 className="text-4xl font-bold mb-4">Best Bikes for You</h1>
                         <p className="text-xl mb-8">Find your perfect ride from our wide selection of top brands.</p>
                         <input
@@ -63,7 +65,7 @@ export default function HomePage() {
                 </section>
                 {/* // featured section ends */}
                 {/* testimonials section starts */}
-                <section className="px-8 mt-12 w-[75%] mx-auto">
+                <section className="container px-8 mt-12 mx-auto">
                     <h1 className="text-3xl font-bold text-gray-600 text-center mb-6">Customer Testimonials</h1>
                     <div className="grid grid-cols-1 md:grid-cols-2 justify-items-center lg:grid-cols-3 gap-6">
                         {testimonials.map((testimonial, index) => (
@@ -73,7 +75,7 @@ export default function HomePage() {
                 </section>
                 {/* testimonials section ends */}
                 {/* why choose us section starts */}
-                <section className="px-8 py-12 w-[75%] mx-auto">
+                <section className="container px-8 py-12 mx-auto">
                     <h2 className=" text-3xl font-bold text-gray-600 text-center mb-6">Why Choose Us?</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 justify-items-center lg:grid-cols-3 gap-6">
                         {
@@ -88,48 +90,13 @@ export default function HomePage() {
                 </section>
                 {/* why choose us section ends */}
                 {/* Coupons and discounts starts */}
-                <section className="p-6 bg-emerald-600 text-white">
-                    <h2 className="text-3xl font-bold text-center mb-6">Coupons & Discounts</h2>
-                    <div className="text-center">
-                        <p className="text-xl">Use code <strong>BIKE20</strong> for 20% off!</p>
-                        <p className="mt-2">Apply this code at checkout to get your discount.</p>
-                    </div>
+                <section className="text-white">
+                    <Coupon />
                 </section>
                 {/* Coupons and discounts ends */}
                 {/* contact us section starts */}
-                <section className="p-6 bg-gray-200">
-                    <h2 className="text-3xl font-bold text-center mb-6">Contact Us</h2>
-                    <form className="max-w-lg mx-auto bg-white p-6 rounded-md">
-                        <div className="mb-4">
-                            <label className="block text-sm font-bold mb-2" htmlFor="name">Name</label>
-                            <input
-                                type="text"
-                                id="name"
-                                className="w-full p-2 border rounded-md"
-                                placeholder="Your Name"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-sm font-bold mb-2" htmlFor="email">Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                className="w-full p-2 border rounded-md"
-                                placeholder="Your Email"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-sm font-bold mb-2" htmlFor="message">Message</label>
-                            <textarea
-                                id="message"
-                                className="w-full p-2 border rounded-md"
-                                placeholder="Your Message"
-                            />
-                        </div>
-                        <button type="submit" className="w-full p-2 bg-emerald-600 hover:bg-emerald-700 rounded-md text-white">
-                            Send Message
-                        </button>
-                    </form>
+                <section className="bg-gray-200">
+                    <ContactUs />
                 </section>
                 {/* contact us section ends */}
             </div>
