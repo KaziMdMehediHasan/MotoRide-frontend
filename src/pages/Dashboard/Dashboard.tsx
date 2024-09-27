@@ -7,6 +7,7 @@ import { useAppSelector } from "../../redux/hooks";
 
 export default function Dashboard() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
     const user: TLoggedInUser | null = useAppSelector((state) => state.auth.user);
     let role: string = '';
     if (user !== null) {
@@ -53,6 +54,16 @@ export default function Dashboard() {
                             // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                             >
                                 Manage Bikes
+                            </Link>
+                        )
+                    }
+                    {
+                        role === 'admin' && (
+                            <Link to="/dashboard/manage-users"
+                                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                            // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                            >
+                                Manage Users
                             </Link>
                         )
                     }

@@ -31,8 +31,40 @@ const authApi = baseApi.injectEndpoints({
                 body: userInfo,
             }),
             invalidatesTags: ['User'],
-        })
+        }),
+        getAllUsers: builder.query({
+            query: () => ({
+                url: '/users',
+                method: 'GET',
+            }),
+            providesTags: ['User']
+        }),
+        makeAdmin: builder.mutation({
+            query: (userId) => ({
+                url: `/users/${userId}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['User']
+        }),
+        deleteUser: builder.mutation({
+            query: (userId) => {
+                console.log('getting the userId in rtk query:', userId);
+                return {
+                    url: `/users/${userId}`,
+                    method: 'DELETE',
+                }
+            },
+            invalidatesTags: ['User']
+        }),
     })
 })
 
-export const { useLoginMutation, useSignupMutation, useGetUserDetailsQuery, useUpdateUserDetailsMutation } = authApi;
+export const {
+    useLoginMutation,
+    useSignupMutation,
+    useGetUserDetailsQuery,
+    useUpdateUserDetailsMutation,
+    useGetAllUsersQuery,
+    useDeleteUserMutation,
+    useMakeAdminMutation
+} = authApi;

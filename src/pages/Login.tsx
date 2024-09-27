@@ -15,7 +15,7 @@ export default function Login() {
         password: ''
     }
     const [loginData, setLoginData] = useState(loginState);
-    const [login, { data, error }] = useLoginMutation();
+    const [login] = useLoginMutation();
 
     // redux states
     const dispatch = useAppDispatch();

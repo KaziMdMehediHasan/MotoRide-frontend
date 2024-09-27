@@ -9,6 +9,7 @@ import { services, testimonials } from '../utils/data';
 import WhyChooseUsCard from '../components/WhyChooseUsCard';
 import Coupon from '../components/ui/Coupon';
 import ContactUs from '../components/ui/ContactUs';
+import ProductCard from '../components/ProductCard';
 
 export default function HomePage() {
     const { data: bikeData, isLoading } = useGetBikesQuery({});
@@ -22,13 +23,13 @@ export default function HomePage() {
             <div className="font-pop bg-gray-200">
                 <section className="relative bg-cover bg-center h-screen flex items-center justify-center shadow-xl" style={{ backgroundImage: `url(${homepageCover})` }}>
                     <div className="bg-slate-100 opacity-15 w-full h-full absolute top-0 left-0"></div>
-                    <div className="text-center text-white p-10 lg:p-20 bg-primary backdrop-blur-md rounded-lg bg-opacity-40">
+                    <div className="text-center text-white p-10 lg:p-20 bg-dark backdrop-blur-md rounded-lg bg-opacity-40">
                         <h1 className="text-4xl font-bold mb-4">Best Bikes for You</h1>
                         <p className="text-xl mb-8">Find your perfect ride from our wide selection of top brands.</p>
                         <input
                             type="text"
                             placeholder="Search for bikes..."
-                            className="p-2 rounded-md text-gray-800 w-72 focus:outline-teal-500 border-0"
+                            className="p-2 rounded-md text-gray-800 w-72 focus:outline-none border-0 focus:shadow-2xl transition-all duration-500"
                         />
                         <button className="lg:ml-2 mt-4 lg:mt-0 p-2 bg-teal-500 hover:bg-teal-600 rounded-md text-white">Search</button>
                     </div>
@@ -40,20 +41,13 @@ export default function HomePage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {isLoading && (<Loader />)}
                         {bikeData?.data.slice(0, 4).map((bike: TBike) => (
-                            <div key={bike._id} className="border border-teal-400 rounded-lg p-4 relative bg-gray-50 shadow-xl">
-                                <span className="absolute top-2 left-2 bg-pink-500 text-white text-xs px-2 py-1 rounded">Discount</span>
-                                <img
-                                    src={bike.img as string || ''}
-                                    alt={bike.name}
-                                    className="w-full h-40 object-cover mb-4 rounded-lg"
-                                />
-                                <h3 className="text-lg font-semibold mb-2 text-gray-600">{bike.name}</h3>
-                                <p className="text-sm line-through text-gray-400">${Number(bike.pricePerHour) + 10}</p>
-                                <p className="text-xl font-semibold text-gray-600">${bike.pricePerHour}</p>
-                                <Link to={`bikes/bike/${bike._id}`}>
-                                    <p className="text-sm mt-2 font-semibold text-teal-500 hover:text-teal-600">See Details</p>
-                                </Link>
-                            </div>
+                            <ProductCard
+                                _id={bike?._id}
+                                name={bike?.name}
+                                pricePerHour={bike?.pricePerHour}
+                                img={bike?.img}
+                                isHomePage={true}
+                            />
                         ))}
                     </div>
                     <div>

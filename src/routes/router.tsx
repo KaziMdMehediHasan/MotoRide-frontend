@@ -11,7 +11,9 @@ import MyRentals from "../pages/MyRentals";
 import BikeDetails from "../pages/BikeDetails";
 import ProtectedRoutes from "../components/layout/ProtectedRoutes";
 import ManageBikes from "../pages/ManageBikes";
+import ManageUsers from "../pages/ManageUsers";
 
+const isFromDashboard = true;
 
 const router = createBrowserRouter([
     {
@@ -52,11 +54,11 @@ const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/bikes',
-                element: <Bikes />
+                element: <Bikes isFromDashboard={isFromDashboard} />
             },
             {
                 path: '/dashboard/bikes/bike/:bikeId',
-                element: <BikeDetails />
+                element: <BikeDetails isFromDashboard={isFromDashboard} />
             },
             // {
             //     path: '/dashboard/bikes/bike/:bikeId',
@@ -65,6 +67,10 @@ const router = createBrowserRouter([
             {
                 path: '/dashboard/manage-bikes',
                 element: <ManageBikes />
+            },
+            {
+                path: '/dashboard/manage-users',
+                element: <ManageUsers />
             },
             {
                 path: '/dashboard/rent',

@@ -22,7 +22,7 @@ const ContactUs = () => {
                             <input
                                 type="text"
                                 id="name"
-                                className="w-full p-3 border rounded-md focus:outline-primary"
+                                className="w-full p-3 border rounded-md focus:outline-none focus:shadow-2xl transition-all duration-500"
                                 placeholder="Your Name"
                             />
                         </div>
@@ -31,7 +31,7 @@ const ContactUs = () => {
                             <input
                                 type="email"
                                 id="email"
-                                className="w-full p-3 border rounded-md focus:outline-primary"
+                                className="w-full p-3 border rounded-md focus:outline-none focus:shadow-2xl transition-all duration-500"
                                 placeholder="Your Email"
                             />
                         </div>
@@ -39,13 +39,13 @@ const ContactUs = () => {
                             <label className="block text-xl font-light mb-2 text-gray-600" htmlFor="message">Message</label>
                             <textarea
                                 id="message"
-                                className="w-full p-4 border rounded-md focus:outline-primary"
+                                className="w-full p-4 border rounded-md focus:outline-none focus:shadow-2xl transition-all duration-500"
                                 placeholder="Your Message"
                             />
                         </div>
                         <div className='justify-self-center'>
 
-                            <button type="submit" className="flex justify-between items-center gap-2 text-sm p-2 bg-secondary hover:bg-dark rounded-md text-white">
+                            <button type="submit" className="flex justify-between items-center gap-2 text-sm p-2 bg-secondary hover:bg-dark rounded-md text-white transition-all duration-300">
                                 <GrSend /> Send Message
                             </button>
                         </div>

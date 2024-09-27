@@ -1,38 +1,31 @@
 import { Link } from "react-router-dom";
 import { TBike } from "../utils/Types";
 
-export default function ProductCard({ name, description, cc, _id, pricePerHour, img }: TBike) {
+export const ProductCard = ({ name, description, _id, pricePerHour, img, isHomePage, isAvailable }: TBike) => {
     return (
         <>
-            <div className="max-w-sm md:max-w-md lg:w-80 xl:w-72 2xl:w-[23rem] mx-auto bg-gray-100 rounded-lg shadow-md overflow-hidden">
-                <div className="relative h-40 overflow-hidden">
-                    <img
-                        src={img as string || ''}
-                        alt="Product"
-                        className="w-full object-cover"
-                    />
-                    <div className="absolute top-0 left-0 bg-black text-white text-sm font-bold rounded-full p-2 mt-2 ml-2">
-                        ${pricePerHour}
-                    </div>
-                </div>
-                <div className="p-4">
-                    <h2 className="text-xl md:text-2xl font-bold text-gray-600">
-                        {name?.slice(0, 20)}
-                    </h2>
-                    <p className="mt-2 text-gray-600 text-sm">
-                        {description?.slice(0, 30)}
-                    </p>
-                    <p className="mt-2 text-gray-400 font-semibold text-lg">
-                        {cc} CC
-                    </p>
-                    <Link to={`bike/${_id}`}>
-                        <button className="mt-4 w-full bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-all">
-                            View Details
-                        </button>
-                    </Link>
+            <div key={_id} className="border border-teal-400 w-80 rounded-lg p-4 relative bg-gray-50 shadow-xl justify-self-center hover:scale-105 hover:shadow-2xl cursor-pointer transition-all duration-300">
+                {
+                    isHomePage && (<span className="absolute top-2 left-2 bg-pink-500 text-white text-xs px-2 py-1 rounded">Discount</span>)
+                }
+                {
+                    !isHomePage && (<span className={`absolute top-2 left-2 ${isAvailable ? 'bg-secondary' : 'bg-pink-500'}  text-white text-xs px-2 py-1 rounded`}>{isAvailable ? 'Available' : 'Not Available'}</span>)
+                }
+                <img
+                    src={img as string || ''}
+                    alt={name}
+                    className="w-full h-40 object-cover mb-4 rounded-lg"
+                />
+                <h3 className="text-lg font-semibold mb-2 text-gray-600">{name}</h3>
+                {!isHomePage && (<p className="text-sm text-gray-600">{description?.slice(0, 50)}...</p>)}
 
-                </div>
+                <p className="text-sm line-through text-gray-400">${Number(pricePerHour) + 10}</p>
+                <p className="text-xl font-semibold text-gray-600">${pricePerHour}</p>
+                <Link to={isHomePage ? `bikes/bike/${_id}` : `bike/${_id}`}>
+                    <p className="text-sm mt-2 font-semibold text-teal-500 hover:text-teal-600">See Details</p>
+                </Link>
             </div>
         </>
     )
 }
+export default ProductCard;

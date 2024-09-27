@@ -14,6 +14,8 @@ export type TRegisterData = {
 
 //authentication data type
 export type TUserInfo = {
+    _id?: string,
+    role?: string,
     name?: string;
     email?: string;
     phone?: string;
@@ -78,6 +80,7 @@ export type TBike = {
     pricePerHour?: number;
     year?: number,
     img?: unknown;
+    isHomePage?: boolean;
 }
 
 export type TUpdateBike = {

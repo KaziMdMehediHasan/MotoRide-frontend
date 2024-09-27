@@ -7,14 +7,16 @@ import { useState } from "react";
 import FormSubmission from "./FormSubmission";
 import DateTimePicker from "../components/ui/DateTimePicker";
 import Payment from "./Payment";
+import Navbar from "../components/ui/Navbar";
 
 interface props {
     setIsDetailModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
     bikeData?: TUpdateBike,
     isDetailModalOpen?: true | false
+    isFromDashboard?: boolean;
 }
 
-export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailModalOpen }: props) {
+export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailModalOpen, isFromDashboard }: props) {
     // codes for opening the component as a modal on manage bikes page
     let idFromManagePage: string = '';
     if (isDetailModalOpen) {
@@ -54,6 +56,7 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
 
     return (
         <>
+            {!isFromDashboard && (<Navbar />)}
             <div className="max-w-4xl mx-auto p-6">
                 {/* modal close button section starts*/}
                 {
@@ -69,25 +72,6 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
                     )
                 }
                 {/* modal close button section ends*/}
-
-                {/* Breadcrumbs */}
-                {/* <nav className="text-gray-600 text-sm">
-                    <ol className="list-reset flex">
-                        <li>
-                            <a href="#" className="text-blue-600">Bike Models</a>
-                        </li>
-                        <li>
-                            <span className="mx-2">/</span>
-                        </li>
-                        <li>
-                            <a href="#" className="text-blue-600">Yamaha</a>
-                        </li>
-                        <li>
-                            <span className="mx-2">/</span>
-                        </li>
-                        <li>{name}</li>
-                    </ol>
-                </nav> */}
                 {
                     (!isDetailModalOpen && role === 'admin') &&
                     (

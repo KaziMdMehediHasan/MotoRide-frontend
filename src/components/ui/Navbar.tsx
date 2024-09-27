@@ -8,24 +8,22 @@ export default function Navbar() {
     const dispatch = useAppDispatch();
     const user: TLoggedInUser | null = useAppSelector((state) => state.auth.user);
     let role: string = '';
-    let userEmail: string = '';
 
     console.log(user);
 
     if (user !== null) {
         role = user?.role as string;
-        userEmail = user?.userEmail as string;
     }
 
     return (
         <nav className="bg-gray-200 px-20 flex justify-between items-center font-pop shadow-xl sticky top-0 z-50">
             {/* Logo */}
-            <div className="font-bold text-xl text-teal-500">
+            <div className="font-bold text-xl text-primary">
                 <Link to="/">
                     <div className='flex justify-center items-center gap-2'>
                         {/* <img className='w-10 h-10 shadow-xl rounded-full' src={motorent} alt="motorent logo" /> */}
-                        <h1 className="text-2xl bg-gradient-to-r from-teal-500 to-indigo-500 bg-clip-text text-transparent">MotoRent</h1>
-                        <FaMotorcycle size={70} />
+                        <h1 className="text-2xl bg-gradient-to-r from-primary to-indigo-500 bg-clip-text text-transparent">MotoRent</h1>
+                        <FaMotorcycle size={60} />
                     </div>
                 </Link>
             </div>

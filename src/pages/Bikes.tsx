@@ -2,8 +2,12 @@ import ProductCard from "../components/ProductCard";
 import { useGetBikesQuery } from "../redux/features/bikes/bikeApi";
 import Loader from "../components/ui/Loader";
 import { TBike } from "../utils/Types";
+import Navbar from "../components/ui/Navbar";
 
-export default function Bikes() {
+interface props {
+    isFromDashboard?: boolean;
+}
+export default function Bikes({ isFromDashboard }: props) {
 
     let bikeData: TBike[] = [];
 
@@ -20,7 +24,10 @@ export default function Bikes() {
     console.log(bikeData);
     return (
         <>
-            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 font-pop gap-4 2xl:gap-6 items-center'>
+            {
+                !isFromDashboard && (<Navbar />)
+            }
+            <div className={`grid grid-cols-1 ${isFromDashboard ? 'w-full' : 'w-[70%] mx-auto mt-8'} md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 font-pop gap-4 2xl:gap-6 items-center`}>
                 {
                     bikeData.map((item) => (
                         <ProductCard
@@ -31,6 +38,7 @@ export default function Bikes() {
                             _id={item?._id}
                             pricePerHour={item?.pricePerHour}
                             img={item?.img}
+                            isAvailable={item?.isAvailable}
                         />
                     ))
                 }
