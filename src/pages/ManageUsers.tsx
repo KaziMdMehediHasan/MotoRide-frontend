@@ -93,7 +93,7 @@ const ManageUsers = () => {
                     </table>
                 </div>
             </div>
-            {/* update modal */}
+            {/* delete modal */}
             {
                 openConfirmationModal && (
                     <>

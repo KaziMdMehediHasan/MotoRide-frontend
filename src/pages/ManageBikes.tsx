@@ -1,5 +1,5 @@
 import Loader from "../components/ui/Loader";
-import { useDeleteBikeMutation, useGetBikesQuery } from "../redux/features/bikes/bikeApi";
+import { useGetBikesQuery } from "../redux/features/bikes/bikeApi";
 import { TUpdateBike } from "../utils/Types";
 import { LuClipboardEdit } from "react-icons/lu";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -7,16 +7,20 @@ import { MdOpenInBrowser } from "react-icons/md";
 import { useState } from "react";
 import FormSubmission from "./FormSubmission";
 import BikeDetails from "./BikeDetails";
+import ConfirmationModal from "../components/ui/ConfirmationModal";
 
 const ManageBikes = () => {
 
     const { data: bikes, isLoading } = useGetBikesQuery({});
+    const [openConfirmationModal, setOpenConfirmationModal] = useState<boolean>(false);
+    const [bikeId, setBikeId] = useState('');
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isDetailModalOpen, setIsDetailModalOpen] = useState<boolean>(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
     const [singleBikeData, setSingleBikeData] = useState<TUpdateBike>({});
+    const isFromDashboard = true;
 
-    const [deleteBike, { isLoading: bikeDeleteLoader }] = useDeleteBikeMutation();
+    // const [deleteBike, { isLoading: bikeDeleteLoader }] = useDeleteBikeMutation();
     if (isLoading) {
         return <Loader />
     }
@@ -75,19 +79,15 @@ const ManageBikes = () => {
                                             className="bg-indigo-500 text-white px-2 py-1 rounded-md hover:bg-indigo-600 mx-1">
                                             <LuClipboardEdit size={18} />
                                         </button>
-                                        {
-                                            !bikeDeleteLoader && (<button
-                                                onClick={() => deleteBike(bike._id)}
-                                                className="bg-pink-500 text-white px-2 py-1 rounded-md hover:bg-red-600 mx-1">
-                                                <FaRegTrashCan size={18} />
-                                            </button>)
-                                        }
-                                        {
-                                            bikeDeleteLoader && (
-                                                <Loader />
-                                            )
-                                        }
-
+                                        <button
+                                            onClick={() => {
+                                                // deleteBike(bike._id);
+                                                setBikeId(bike._id as string);
+                                                setOpenConfirmationModal(true);
+                                            }}
+                                            className="bg-pink-500 text-white px-2 py-1 rounded-md hover:bg-red-600 mx-1">
+                                            <FaRegTrashCan size={18} />
+                                        </button>
                                         <button
                                             onClick={() => {
                                                 setIsDetailModalOpen(true);
@@ -141,10 +141,24 @@ const ManageBikes = () => {
                                 <BikeDetails
                                     bikeData={singleBikeData}
                                     isDetailModalOpen={isDetailModalOpen}
+                                    isFromDashboard={isFromDashboard}
                                     setIsDetailModalOpen={setIsDetailModalOpen}
                                 />
                             </div>
                         </div>
+                    </>
+                )
+            }
+            {/* delete modal */}
+            {
+                openConfirmationModal && (
+                    <>
+                        {/* background layout */}
+                        <div
+                            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"
+                            onClick={() => setOpenConfirmationModal(false)}
+                        ></div>
+                        <ConfirmationModal setOpenConfirmationModal={setOpenConfirmationModal} bikeId={bikeId} />
                     </>
                 )
             }

@@ -72,14 +72,17 @@ export default function Dashboard() {
                         className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
                     // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                     >
-                        Rent A Bike
+                        Rental Management
                     </Link>
-                    <Link to="/dashboard/myrentals"
+                    {role === 'user' && (<Link to="/dashboard/myrentals"
                         className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
                     // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                     >
                         My Rentals
-                    </Link>
+                    </Link>)
+
+                    }
+
                     <Link to='/'
                         className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
                     >Home</Link>
