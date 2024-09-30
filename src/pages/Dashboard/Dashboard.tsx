@@ -59,21 +59,26 @@ export default function Dashboard() {
                     }
                     {
                         role === 'admin' && (
-                            <Link to="/dashboard/manage-users"
-                                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
-                            // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                            >
-                                Manage Users
-                            </Link>
+                            <>
+                                <Link to="/dashboard/manage-users"
+                                    className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                                // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                                >
+                                    Manage Users
+                                </Link>
+                                <Link to="/dashboard/rentalManagement"
+                                    className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                                // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                                >
+                                    Rental Management
+                                </Link>
+                            </>
+
+
                         )
                     }
 
-                    <Link to="/dashboard/rent"
-                        className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
-                    // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    >
-                        Rental Management
-                    </Link>
+
                     {role === 'user' && (<Link to="/dashboard/myrentals"
                         className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
                     // onClick={() => setIsSidebarOpen(!isSidebarOpen)}

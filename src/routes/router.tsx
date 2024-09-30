@@ -12,6 +12,8 @@ import BikeDetails from "../pages/BikeDetails";
 import ProtectedRoutes from "../components/layout/ProtectedRoutes";
 import ManageBikes from "../pages/ManageBikes";
 import ManageUsers from "../pages/ManageUsers";
+import RentalManagement from "../pages/RentalManagement";
+
 
 const isFromDashboard = true;
 
@@ -78,7 +80,11 @@ const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/myrentals',
-                element: <MyRentals />
+                element: <MyRentals />,
+            },
+            {
+                path: '/dashboard/rentalManagement',
+                element: <RentalManagement />,
             },
 
         ]

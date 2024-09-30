@@ -2,12 +2,26 @@ import { baseApi } from "../../api/baseApi";
 
 const rentApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
+        getAllRentals: builder.query({
+            query: () => ({
+                url: '/rentals/all',
+                method: 'GET',
+            }),
+            providesTags: ['Rents']
+        }),
         getRentals: builder.query({
             query: () => ({
                 url: '/rentals',
                 method: 'GET',
             }),
             providesTags: ['Rents', 'Bikes']
+        }),
+        deleteRental: builder.mutation({
+            query: (rentalId) => ({
+                url: `/rentals/${rentalId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Rents']
         }),
         createRent: builder.mutation({
             query: (rentInfo) => {
@@ -19,6 +33,17 @@ const rentApi = baseApi.injectEndpoints({
                 }
             },
             invalidatesTags: ['Rents', 'Bikes']
+        }),
+        returnBikeByAdmin: builder.mutation({
+            query: (returnInfo) => {
+                console.log('from rtk query', returnInfo)
+                return {
+                    url: `rentals/${returnInfo.rentalId}/admin/return`,
+                    method: 'PUT',
+                    body: returnInfo
+                }
+            },
+            invalidatesTags: ['Rents']
         }),
         bikeReturn: builder.mutation({
             query: (returnInfo) => {
@@ -36,4 +61,11 @@ const rentApi = baseApi.injectEndpoints({
     overrideExisting: true,
 });
 
-export const { useCreateRentMutation, useGetRentalsQuery, useBikeReturnMutation } = rentApi;
+export const {
+    useCreateRentMutation,
+    useGetRentalsQuery,
+    useGetAllRentalsQuery,
+    useBikeReturnMutation,
+    useDeleteRentalMutation,
+    useReturnBikeByAdminMutation
+} = rentApi;

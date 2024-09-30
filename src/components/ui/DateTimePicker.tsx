@@ -77,7 +77,8 @@ const DateTimePicker = ({ setIsBookingModalOpen, setIsPaymentModalOpen, setFinal
             {
                 isSuccess && (<h1 className="text-xl font-semibold mb-4 text-center text-green-500">Booking Successful</h1>)
             } */}
-            <h2 className="text-xl font-semibold mb-4 text-center">Select Date and Time</h2>
+            <h2 className="text-2xl text-gray-700 font-semibold mb-4 text-center">Select Date and Time</h2>
+            <h1 className='text-sky-600 text-center my-2'>Time Picker is a 24hr clock where PM values are greater than 12</h1>
             {/* modal close button */}
             <span
                 className='absolute top-2 right-4 cursor-pointer text-xl text-gray-600 bg-gray-300 py-1 px-3 rounded-md hover:bg-red-400 hover:text-white'
@@ -100,11 +101,12 @@ const DateTimePicker = ({ setIsBookingModalOpen, setIsPaymentModalOpen, setFinal
 
             {/* Time Picker */}
             <div className="flex justify-center items-center space-x-4">
+
                 <div className="flex items-center">
                     <input
                         type="number"
-                        min="0"
-                        max="23"
+                        min={0}
+                        max={23}
                         value={time.hours}
                         onChange={(e) => handleTimeChange("hours", e.target.value)}
                         className="w-20 h-12 text-3xl text-center border border-gray-300 focus:outline-teal-500 rounded-md"
@@ -112,8 +114,8 @@ const DateTimePicker = ({ setIsBookingModalOpen, setIsPaymentModalOpen, setFinal
                     <span className="mx-1 font-semibold text-xl">:</span>
                     <input
                         type="number"
-                        min="0"
-                        max="59"
+                        min={0}
+                        max={59}
                         value={time.minutes}
                         onChange={(e) => handleTimeChange("minutes", e.target.value)}
                         className="w-20 h-12 text-3xl text-center border border-gray-300 focus:outline-teal-500 rounded-md"

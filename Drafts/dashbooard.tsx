@@ -345,3 +345,13 @@
 //     </div>
 // </div>
 // </>
+
+// dashboard/rentalManagement
+{/* <td 
+    onClick={() => setRevealId(!revealId)}
+    className="py-3 px-6 text-center cursor-pointer">{revealId ? `${bike.advancePaymentId}` : `${bike.advancePaymentId.slice(0, 5)}...`}
+</td>
+<td
+  onClick={() => setRevealId(!revealId)}
+  className="py-3 px-6 text-center">{revealId ? `${bike.finalPaymentId}` : `${bike.finalPaymentId.slice(0, 5)}...`}
+</td> */}

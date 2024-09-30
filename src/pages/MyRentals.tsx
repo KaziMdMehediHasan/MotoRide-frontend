@@ -5,9 +5,12 @@ import { TBikeReturnData, TRent } from "../utils/Types";
 import Payment from "./Payment";
 import { convertDateToBDTimeZone } from "../utils/convertDate";
 
+
 export default function MyRentals() {
     const { data, isLoading } = useGetRentalsQuery({});
-    const [revealId, setRevealId] = useState(false);
+    const [paidRentalData, setPaidRentalData] = useState<TRent[]>([])
+    const [unpaidRentalData, setUnpaidRentalData] = useState<TRent[]>([])
+    // const [revealId, setRevealId] = useState(false);
     const [returnData, setReturnData] = useState<TBikeReturnData>({
         returnTime: '',
         totalCost: 0,
@@ -18,14 +21,42 @@ export default function MyRentals() {
     if (isLoading) {
         return <Loader />
     }
-    const bikes = data?.data;
-    console.log(returnData);
+    let rentals = data?.data;
+    // console.log(rentals);
+    const paidRentals = rentals.filter((rent: TRent) => rent.finalPaymentId !== '');
+    const unpaidRentals = rentals.filter((rent: TRent) => rent.finalPaymentId === '');
+
+    if (paidRentalData.length !== 0) rentals = [...paidRentals];
+    if (unpaidRentalData.length !== 0) rentals = [...unpaidRentals];
+
+    console.log('newly set data', rentals);
     return (
         <>
             <div className="container mx-auto p-4">
                 {/* Header section */}
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-center items-center mb-4">
                     <h1 className="text-xl font-semibold text-gray-600">User Rental Management</h1>
+                </div>
+                <div className="flex flex-col justify-center items-center">
+                    <div>
+                        <button
+                            onClick={() => {
+                                setPaidRentalData([...paidRentals]);
+                                setUnpaidRentalData([]);
+                            }}
+                            className="px-2 py-2 w-16 mr-4 my-2 text-sm bg-secondary hover:bg-dark text-white rounded-md">
+                            Paid
+                        </button>
+                        <button
+                            onClick={() => {
+                                setUnpaidRentalData([...unpaidRentals]);
+                                setPaidRentalData([]);
+                            }}
+                            className="px-2 py-2 w-16 text-sm bg-pink-400 hover:bg-pink-500 text-white rounded-md">
+                            Unpaid
+                        </button>
+                    </div>
+
                 </div>
 
                 {/* Table section */}
@@ -36,8 +67,6 @@ export default function MyRentals() {
                             <tr>
                                 <th className="py-3 px-6 text-left">Bike Name</th>
                                 <th className="py-3 px-6 text-center">Returned</th>
-                                {/* <th className="py-3 px-6 text-center">Adv. Payment ID</th> */}
-                                {/* <th className="py-3 px-6 text-center">Final Payment ID</th> */}
                                 <th className="py-3 px-6 text-center">Start Time</th>
                                 <th className="py-3 px-6 text-center">Return Time</th>
                                 <th className="py-3 px-6 text-center">Payable</th>
@@ -47,7 +76,7 @@ export default function MyRentals() {
                         <tbody className="text-gray-600 text-sm font-light">
                             {isLoading && <Loader />}
                             {
-                                bikes?.map((bike: TRent) => (
+                                rentals?.map((bike: TRent) => (
                                     <tr
                                         key={bike._id}
                                         className="border-b border-gray-200 hover:bg-gray-100 transition-colors"
@@ -63,14 +92,7 @@ export default function MyRentals() {
                                                 {bike.isReturned ? 'Yes' : 'No'}
                                             </span>
                                         </td>
-                                        <td
-                                            onClick={() => setRevealId(!revealId)}
-                                            className="py-3 px-6 text-center cursor-pointer">{revealId ? `${bike.advancePaymentId}` : `${bike.advancePaymentId.slice(0, 5)}...`}
-                                        </td>
-                                        <td
-                                            onClick={() => setRevealId(!revealId)}
-                                            className="py-3 px-6 text-center">{revealId ? `${bike.finalPaymentId}` : `${bike.finalPaymentId.slice(0, 5)}...`}
-                                        </td>
+
                                         <td className="py-3 px-6 text-center">{`${bike.startTime.slice(0, 10)} at ${bike.startTime.slice(11, 16)}`}</td>
                                         <td className="py-3 px-6 text-center">{bike.returnTime ? `${bike.returnTime.slice(0, 10)} at ${bike.startTime.slice(11, 16)}` : 'Not Returned Yet'}</td>
                                         <td className="py-3 px-6 text-center">{bike.returnTime ? `${bike.totalCost}` : 'Yet to calculate'}</td>
@@ -109,6 +131,7 @@ export default function MyRentals() {
                     </table>
                 </div>
             </div>
+            {/* showing the nested routes */}
             {
                 isPaymentModalOpen && (
                     <>
