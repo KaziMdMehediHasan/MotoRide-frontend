@@ -11,12 +11,13 @@ interface props {
     pricePerHour?: number;
     finalDateTime?: string;
     bikeId?: string; //this one comes from the bike details page when trying to rent a bike
-    isReturning?: boolean; //comes from the return page
-    returnData?: TBikeReturnData //comes from the return page
+    // isReturning?: boolean; //comes from the return page
+    returnData?: Partial<TBikeReturnData> //comes from the return page
+    customerPayment?: boolean;
 }
-const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturning, returnData, bikeId }: props) => {
+const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, returnData, bikeId, customerPayment }: props) => {
     // create rent request send through redux toolkit
-    console.log('coming from bike return page:', isReturning);
+    console.log('coming from bike return page:', customerPayment);
     const [isProcessing, setIsProcessing] = useState(false);
     const [message, setMessage] = useState('');
     const [isPaymentSuccess, setIsPaymentSuccess] = useState(false);
@@ -71,9 +72,9 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
     const returnBike = async () => {
         const returnInfo = {
             rentalId: returnData?.rentalId,
-            totalCost: returnData?.totalCost,
-            returnTime: returnData?.returnTime,
-            isReturned: true,
+            // totalCost: returnData?.totalCost,
+            // returnTime: returnData?.returnTime,
+            // isReturned: true,
             finalPaymentId: finalPaymentId,
         }
         console.log('from returnBike function:', returnInfo);
@@ -102,7 +103,7 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
             // step1: create a payment intent by calling the create payment redux function
             let paymentCreationResult;
             // checking whether user is returning or booking a bike
-            if (isReturning) {
+            if (customerPayment) {
                 paymentCreationResult = await createPayment({ amount: Number(returnData?.totalCost) - 10 }).unwrap();
             } else {
                 paymentCreationResult = await createPayment({ amount: 10 }).unwrap();
@@ -114,7 +115,7 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
             console.log(clientSecretKey);
 
             // checking whether it's the final payment or the advance payment
-            if (isReturning) {
+            if (customerPayment) {
                 finalPaymentId = paymentCreationResult?.paymentId;
             } else {
                 advancePaymentId = paymentCreationResult?.paymentId;
@@ -144,7 +145,8 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
                 setIsProcessing(false);
             }
 
-            if (isReturning) {
+            // the below lines of code is only necessary when user makes the return
+            if (customerPayment) {
                 await returnBike();
             } else {
                 await rentBike();
@@ -217,13 +219,13 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
                     <div className="bg-white p-8 shadow-lg rounded-lg max-w-md w-full">
                         <ul className="mb-4 space-y-2">
                             <li className="flex justify-between">
-                                <span className="text-gray-700">{isReturning ? 'Final Payment' : 'Advance Payment'}</span>
-                                <span className="text-green-500">${returnData?.totalCost || 10}</span>
+                                <span className="text-gray-700">{customerPayment ? 'Final Payment' : 'Advance Payment'}</span>
+                                <span className="text-red-500">${returnData?.totalCost || 10}</span>
                             </li>
-                            {isReturning && (
+                            {customerPayment && (
                                 <li className="flex justify-between">
                                     <span className="text-gray-700">Paid</span>
-                                    <span className="text-red-500">-${10}</span>
+                                    <span className="text-green-500">-${10}</span>
                                 </li>
                             )}
 
@@ -233,9 +235,9 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, isReturni
                             </li>
                         </ul>
                         <hr className="mb-4" />
-                        <div className="flex justify-between text-gray-600 text-lg font-bold">
+                        <div className="flex justify-between text-gray-600 text-lg font-semibold">
                             <span>Total</span>
-                            <span className=''>${Number(returnData?.totalCost.toFixed(2)) - 10 || 10}</span>
+                            <span className='text-sky-600'>${Number(returnData?.totalCost) - 10 || 10}</span>
                         </div>
                     </div>
                 </div>)

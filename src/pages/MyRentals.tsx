@@ -11,8 +11,8 @@ export default function MyRentals() {
     const [paidRentalData, setPaidRentalData] = useState<TRent[]>([])
     const [unpaidRentalData, setUnpaidRentalData] = useState<TRent[]>([])
     // const [revealId, setRevealId] = useState(false);
-    const [returnData, setReturnData] = useState<TBikeReturnData>({
-        returnTime: '',
+    const [returnData, setReturnData] = useState<Partial<TBikeReturnData>>({
+        // returnTime: '',
         totalCost: 0,
         rentalId: '',
         pricePerHour: 0,
@@ -22,7 +22,7 @@ export default function MyRentals() {
         return <Loader />
     }
     let rentals = data?.data;
-    // console.log(rentals);
+    console.log('return data:', returnData);
     const paidRentals = rentals.filter((rent: TRent) => rent.finalPaymentId !== '');
     const unpaidRentals = rentals.filter((rent: TRent) => rent.finalPaymentId === '');
 
@@ -76,28 +76,28 @@ export default function MyRentals() {
                         <tbody className="text-gray-600 text-sm font-light">
                             {isLoading && <Loader />}
                             {
-                                rentals?.map((bike: TRent) => (
+                                rentals?.map((rent: TRent) => (
                                     <tr
-                                        key={bike._id}
+                                        key={rent._id}
                                         className="border-b border-gray-200 hover:bg-gray-100 transition-colors"
                                     >
                                         <td className="py-3 px-6 text-left whitespace-nowrap">
-                                            <span className="font-medium">{bike.bikeId.name}</span>
+                                            <span className="font-medium">{rent.bikeId.name}</span>
                                         </td>
                                         <td className="py-3 px-6 text-center">
                                             <span
-                                                className={`px-2 py-1 font-semibold leading-tight rounded-full ${bike.isReturned ? 'bg-green-200 text-green-700' : 'bg-pink-200 text-pink-700'
+                                                className={`px-2 py-1 font-semibold leading-tight rounded-full ${rent.isReturned ? 'bg-green-200 text-green-700' : 'bg-pink-200 text-pink-700'
                                                     }`}
                                             >
-                                                {bike.isReturned ? 'Yes' : 'No'}
+                                                {rent.isReturned ? 'Yes' : 'No'}
                                             </span>
                                         </td>
 
-                                        <td className="py-3 px-6 text-center">{`${bike.startTime.slice(0, 10)} at ${bike.startTime.slice(11, 16)}`}</td>
-                                        <td className="py-3 px-6 text-center">{bike.returnTime ? `${bike.returnTime.slice(0, 10)} at ${bike.startTime.slice(11, 16)}` : 'Not Returned Yet'}</td>
-                                        <td className="py-3 px-6 text-center">{bike.returnTime ? `${bike.totalCost}` : 'Yet to calculate'}</td>
+                                        <td className="py-3 px-6 text-center">{`${rent.startTime.slice(0, 10)} at ${rent.startTime.slice(11, 16)}`}</td>
+                                        <td className="py-3 px-6 text-center">{rent.returnTime ? `${rent.returnTime.slice(0, 10)} at ${rent.startTime.slice(11, 16)}` : 'Not Returned Yet'}</td>
+                                        <td className="py-3 px-6 text-center">{rent.returnTime ? `${rent.totalCost}` : 'Yet to calculate'}</td>
                                         <td className="py-3 px-6 text-center">
-                                            <button
+                                            {/* <button
                                                 onClick={() => {
                                                     setIsPaymentModalOpen(!isPaymentModalOpen);
                                                     const startDateMilliSeconds = Date.parse(bike.startTime); //getting the time in milliseconds
@@ -121,8 +121,21 @@ export default function MyRentals() {
                                                 disabled={bike.isReturned}
                                                 className={`${bike.isReturned ? 'cursor-not-allowed bg-gray-300 hover:bg-gray-400' : 'cursor-pointer'} bg-teal-500 text-white px-2 py-1 rounded-md hover:bg-teal-600 mx-1`}>
                                                 {/* <LuClipboardEdit size={18} /> */}
-                                                Return Bike
-                                            </button>
+                                            {/* Return Bike */}
+                                            {/* </button> */}
+                                            {
+                                                rent?.finalPaymentId !== '' ? (
+                                                    <span className='bg-green-200 text-green-700 font-semibold py-1 px-2 rounded-full'>Paid</span>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => {
+                                                            setReturnData({ ...returnData, totalCost: rent.totalCost, rentalId: rent._id as string, pricePerHour: rent.bikeId.pricePerHour });
+                                                            setIsPaymentModalOpen(true);
+                                                        }}
+                                                        className='bg-teal-500 text-white px-2 py-1 rounded-md hover:bg-teal-600 mx-1'>
+                                                        Pay
+                                                    </button>)
+                                            }
                                         </td>
                                     </tr>
                                 ))
@@ -140,7 +153,10 @@ export default function MyRentals() {
                             className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"
                         ></div>
                         <div className="fixed inert inset-0 flex items-center justify-center">
-                            <Payment setIsPaymentModalOpen={setIsPaymentModalOpen} returnData={returnData} isReturning={true} />
+                            <Payment
+                                setIsPaymentModalOpen={setIsPaymentModalOpen}
+                                returnData={returnData}
+                                customerPayment={true} />
                         </div>
                     </>
                 )
