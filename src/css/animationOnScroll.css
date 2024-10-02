@@ -1,0 +1,49 @@
+@keyframes appearOnScroll {
+    from {
+        opacity: 0;
+        scale: 0.5
+    }
+
+    to {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0%;
+        transform: translate(-100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(0px);
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0%;
+        transform: translateX(100px);
+    }
+
+    to {
+        opacity: 100%;
+        transform: translateX(0px);
+    }
+}
+
+.element {
+    animation: appearOnScroll linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+}
+
+.hero {
+    animation: slideInFromLeft 0.5s linear;
+}
+
+.popup {
+    animation: appearOnScroll 0.8s linear;
+}
