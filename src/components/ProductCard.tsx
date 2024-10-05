@@ -19,6 +19,7 @@ export const ProductCard = ({ name, description, _id, pricePerHour, img, isHomeP
                 <h3 className="text-lg font-semibold mb-2 text-gray-600">{name}</h3>
                 {!isHomePage && (<p className="text-sm text-gray-600">{description?.slice(0, 50)}...</p>)}
 
+                <span className="text-gray-600">Hourly Rate</span>
                 <p className="text-sm line-through text-gray-400">${Number(pricePerHour) + 10}</p>
                 <p className="text-xl font-semibold text-gray-600">${pricePerHour}</p>
                 <Link to={isHomePage ? `bikes/bike/${_id}` : `bike/${_id}`}>

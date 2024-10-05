@@ -11,12 +11,21 @@ import Coupon from '../components/ui/Coupon';
 import ContactUs from '../components/ui/ContactUs';
 import ProductCard from '../components/ProductCard';
 import '../css/animationOnScroll.css';
+import { useEffect } from 'react';
+import { animateOnScroll } from '../utils/animateOnScroll';
 
-export default function HomePage() {
+
+const HomePage = () => {
     const { data: bikeData, isLoading } = useGetBikesQuery({});
+    useEffect(() => {
+        animateOnScroll('element', '.item');
+    }, [])
+
     if (isLoading) {
         return <Loader />
     }
+
+
     return (
         <>
             <Navbar />
@@ -29,7 +38,7 @@ export default function HomePage() {
                         <p className="text-xl mb-8">Find your perfect ride from our wide selection of top brands.</p>
                         <input
                             type="text"
-                            placeholder="Search for bikes..."
+                            placeholder="Search bikes by name..."
                             className="p-2 rounded-md text-gray-800 w-72 focus:outline-none border-0 focus:shadow-2xl transition-all duration-500"
                         />
                         <button className="lg:ml-2 mt-4 lg:mt-0 p-2 bg-teal-500 hover:bg-teal-600 rounded-md text-white">Search</button>
@@ -37,7 +46,7 @@ export default function HomePage() {
                 </section>
                 {/* // hero section ends */}
                 {/* // featured section starts */}
-                <section className="element container mx-auto px-8 mt-12 flex flex-col items-center gap-8">
+                <section className="item container mx-auto px-8 mt-12 flex flex-col items-center gap-8">
                     <h1 className="text-3xl font-bold text-gray-600 text-center mb-6">Ride The Hottest Bikes Now</h1>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {isLoading && (<Loader />)}
@@ -99,4 +108,6 @@ export default function HomePage() {
         </>
     );
 };
+
+export default HomePage;
 

@@ -206,3 +206,34 @@
                         <li>{name}</li>
                     </ol>
                 </nav> */}
+
+// about us page backup
+{/* Team Member 1 */ }
+// {/* <div className="text-center">
+//     <div className="w-40 h-40 mx-auto rounded-full bg-gray-300 mb-4">
+//         {/* Replace with dynamic image */}
+//         <img src="/path/to/team-member1.jpg" alt="Team Member 1" className="w-full h-full object-cover rounded-full" />
+//     </div>
+//     <h3 className="text-xl font-semibold">John Doe</h3>
+//     <p className="text-gray-600">CEO & Founder</p>
+//     <p className="mt-2">John is a passionate biker and entrepreneur with over 10 years of experience in the industry.</p>
+// </div>
+// {/* Repeat for other team members */ }
+//                             <div className="text-center">
+//                                 <div className="w-40 h-40 mx-auto rounded-full bg-gray-300 mb-4">
+//                                     {/* Replace with dynamic image */}
+//                                     <img src="/path/to/team-member2.jpg" alt="Team Member 2" className="w-full h-full object-cover rounded-full" />
+//                                 </div>
+//                                 <h3 className="text-xl font-semibold">Jane Smith</h3>
+//                                 <p className="text-gray-600">COO</p>
+//                                 <p className="mt-2">Jane brings a wealth of operational expertise and a love for biking to the team.</p>
+//                             </div>
+//                             <div className="text-center">
+//                                 <div className="w-40 h-40 mx-auto rounded-full bg-gray-300 mb-4">
+//                                     {/* Replace with dynamic image */}
+//                                     <img src="/path/to/team-member3.jpg" alt="Team Member 3" className="w-full h-full object-cover rounded-full" />
+//                                 </div>
+//                                 <h3 className="text-xl font-semibold">Mike Johnson</h3>
+//                                 <p className="text-gray-600">CTO</p>
+//                                 <p className="mt-2">Mike leads our technology development with a passion for innovation in the biking industry.</p>
+//                             </div> */}

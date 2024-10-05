@@ -35,9 +35,9 @@
 }
 
 .element {
-    animation: appearOnScroll linear;
-    animation-timeline: view();
-    animation-range: entry 0% cover 40%;
+    animation: appearOnScroll 0.5s linear;
+    /* animation-timeline: view();
+    animation-range: entry 0% cover 40%; */
 }
 
 .hero {

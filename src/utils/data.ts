@@ -4,6 +4,12 @@ import john from '../assets/john-doe.jpg'
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { RiMotorbikeLine } from "react-icons/ri";
 import { MdOutlineWorkspacePremium } from "react-icons/md";
+import member1 from '../assets/Team Images/member-1.jpg';
+import member6 from '../assets/Team Images/member-6.jpg';
+import member2 from '../assets/Team Images/member-2.jpg';
+import member3 from '../assets/Team Images/member-3.jpg';
+import member4 from '../assets/Team Images/member-4.jpg';
+import member5 from '../assets/Team Images/member-5.jpg';
 
 export const testimonials = [
     {
@@ -49,4 +55,37 @@ export const services = [
         description: "We use only the highest quality materials in our products."
     },
 
+]
+
+export const teamCardData = [
+    {
+        image: member1,
+        title: 'John Doe',
+        role: 'CEO',
+    },
+    {
+        image: member2,
+        title: 'Michael Jordan',
+        role: 'Operations Manager',
+    },
+    {
+        image: member3,
+        title: 'Joseph Smith',
+        role: 'Executive Director',
+    },
+    {
+        image: member4,
+        title: 'Henry Banks',
+        role: 'Managing Director',
+    },
+    {
+        image: member5,
+        title: 'Alex Goot',
+        role: 'Team Leader',
+    },
+    {
+        image: member6,
+        title: 'Seth Moeller',
+        role: 'Coordinator',
+    },
 ]

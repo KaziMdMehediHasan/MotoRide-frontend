@@ -1,0 +1,30 @@
+.banner-wrapper {
+    width: 100%;
+    overflow: hidden;
+}
+
+.banner-wrapper .wrapper {
+    display: flex;
+    gap: 1rem;
+}
+
+.banner-wrapper .wrapper .images {
+    display: flex;
+    gap: 1rem;
+    animation: swipe 20s linear infinite;
+}
+
+.banner-wrapper:hover .wrapper .images {
+    animation-play-state: paused;
+    cursor: pointer;
+}
+
+@keyframes swipe {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
