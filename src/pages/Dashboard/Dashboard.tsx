@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { FaBars } from "react-icons/fa6";
-import motorent from '../../assets/motorent.jpeg'
-import { Link, Outlet } from "react-router-dom";
+import motorent from '../../assets/motorent.jpeg';
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { TLoggedInUser } from "../../utils/Types";
 import { useAppSelector } from "../../redux/hooks";
+import Welcome from "../Welcome";
 
 export default function Dashboard() {
+    const activeLink = "block py-2.5 px-4 rounded transition duration-200 bg-teal-100";
+    const location = useLocation();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const user: TLoggedInUser | null = useAppSelector((state) => state.auth.user);
@@ -36,42 +39,45 @@ export default function Dashboard() {
                 {/* Navigation */}
                 <h1 className="py-2.5 mt-6 px-4 text-2xl">Dashboard</h1>
                 <nav className="mt-6">
-                    <Link to="/dashboard/profile" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                    <NavLink
+                        to="/dashboard/profile"
+                        className={({ isActive }) => isActive ? activeLink : "block py-2.5 px-4 rounded hover:bg-gray-300"}
                     // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+
                     >
                         Profile
-                    </Link>
-                    <Link to="/dashboard/bikes"
-                        className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                    </NavLink>
+                    <NavLink to="/dashboard/bikes"
+                        className={({ isActive }) => isActive ? activeLink : "block py-2.5 px-4 rounded hover:bg-gray-300"}
                     // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                     >
                         Bikes
-                    </Link>
+                    </NavLink>
                     {
                         role === 'admin' && (
-                            <Link to="/dashboard/manage-bikes"
-                                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                            <NavLink to="/dashboard/manage-bikes"
+                                className={({ isActive }) => isActive ? activeLink : "block py-2.5 px-4 rounded hover:bg-gray-300"}
                             // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                             >
                                 Manage Bikes
-                            </Link>
+                            </NavLink>
                         )
                     }
                     {
                         role === 'admin' && (
                             <>
-                                <Link to="/dashboard/manage-users"
-                                    className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                                <NavLink to="/dashboard/manage-users"
+                                    className={({ isActive }) => isActive ? activeLink : "block py-2.5 px-4 rounded hover:bg-gray-300"}
                                 // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                                 >
                                     Manage Users
-                                </Link>
-                                <Link to="/dashboard/rentalManagement"
-                                    className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                                </NavLink>
+                                <NavLink to="/dashboard/rentalManagement"
+                                    className={({ isActive }) => isActive ? activeLink : "block py-2.5 px-4 rounded hover:bg-gray-300"}
                                 // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                                 >
                                     Rental Management
-                                </Link>
+                                </NavLink>
                             </>
 
 
@@ -79,18 +85,18 @@ export default function Dashboard() {
                     }
 
 
-                    {role === 'user' && (<Link to="/dashboard/myrentals"
-                        className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
+                    {role === 'user' && (<NavLink to="/dashboard/myrentals"
+                        className={({ isActive }) => isActive ? activeLink : "block py-2.5 px-4 rounded hover:bg-gray-300"}
                     // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                     >
                         My Rentals
-                    </Link>)
+                    </NavLink>)
 
                     }
 
-                    <Link to='/'
-                        className="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-100"
-                    >Home</Link>
+                    <NavLink to='/'
+                        className={({ isActive }) => isActive ? activeLink : "block py-2.5 px-4 rounded hover:bg-gray-300"}
+                    >Home</NavLink>
                 </nav>
             </div>
 
@@ -126,9 +132,9 @@ export default function Dashboard() {
                 {/* Content */}
                 <div className="mt-6 bg-white border border-dashed border-gray-300 p-6 rounded-lg flex items-center justify-center">
                     {/* <span className="text-gray-400">Dashboard content goes here...</span> */}
-                    <Outlet />
+                    {location.pathname === '/dashboard' ? <Welcome /> : <Outlet />}
                 </div>
             </div>}
         </div>
-    )
+    );
 }

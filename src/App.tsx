@@ -1,4 +1,4 @@
-import Navbar from "./components/ui/Navbar"
+import Navbar from "./components/ui/Navbar";
 function App() {
   return (
     <>
@@ -9,7 +9,7 @@ function App() {
       {/* <Login /> */}
       {/* <AboutUs /> */}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

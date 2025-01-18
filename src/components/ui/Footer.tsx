@@ -1,79 +1,69 @@
-import {
-    FaFacebookF,
-    FaTwitter,
-    FaInstagram,
-    FaLinkedinIn,
-} from 'react-icons/fa'
-
-export const Footer: React.FC = () => {
+const Footer = () => {
     return (
-        <>
-            <footer className="bg-emerald-600 text-white py-6">
-                <div className="container mx-auto px-4">
-                    {/* Footer Grid */}
-                    <div className="flex flex-wrap justify-between">
-                        {/* Social Media Icons */}
-                        <div className="w-full md:w-1/3 mb-4 md:mb-0">
-                            <h5 className="text-lg font-semibold mb-3">Follow Us</h5>
-                            <div className="flex space-x-4">
-                                <a
-                                    href="#"
-                                    className="p-2 rounded-full bg-white text-emerald-600 hover:bg-emerald-800 transition-colors"
-                                >
-                                    <FaFacebookF />
-                                </a>
-                                <a
-                                    href="#"
-                                    className="p-2 rounded-full bg-white text-emerald-600 hover:bg-emerald-800 transition-colors"
-                                >
-                                    <FaTwitter />
-                                </a>
-                                <a
-                                    href="#"
-                                    className="p-2 rounded-full bg-white text-emerald-600 hover:bg-emerald-800 transition-colors"
-                                >
-                                    <FaInstagram />
-                                </a>
-                                <a
-                                    href="#"
-                                    className="p-2 rounded-full bg-white text-emerald-600 hover:bg-emerald-800 transition-colors"
-                                >
-                                    <FaLinkedinIn />
-                                </a>
+        <footer className="bg-gray-200 text-gray-700 py-8 font-pop">
+            <div className="container mx-auto px-6">
+                {/* Footer Content */}
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    {/* Brand Section */}
+                    <div className="mb-8 md:mb-0">
+                        <h2 className="text-2xl font-bold mb-4">MotoRent</h2>
+                        <p className="text-gray-600">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eu eleifend lectus, non varius tortor.
+                        </p>
+                    </div>
+
+                    {/* Hot Links Section */}
+                    <div className="mb-8 md:mb-0">
+                        <h3 className="text-xl font-semibold mb-4">Hot links</h3>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <ul className="space-y-2">
+                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">Home</a></li>
+                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">Show</a></li>
+                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">Blog</a></li>
+                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">Contact</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul className="space-y-2">
+                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">More info</a></li>
+                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">How it works</a></li>
+                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">About us</a></li>
+                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">Sustainability</a></li>
+                                </ul>
                             </div>
                         </div>
-
-                        {/* Website Links */}
-                        <div className="w-full md:w-1/3 mb-4 md:mb-0">
-                            <h5 className="text-lg font-semibold mb-3">Quick Links</h5>
-                            <ul className="space-y-2">
-                                <li>
-                                    <a href="#" className="hover:text-emerald-300">
-                                        Privacy Policy
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="hover:text-emerald-300">
-                                        Terms of Service
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="hover:text-emerald-300">
-                                        Contact Us
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
 
-                    {/* Footer Bottom */}
-                    <div className="text-center mt-6">
-                        <p className="text-sm">&copy; 2024 YourCompany. All rights reserved.</p>
+                    {/* Customer Care Section */}
+                    <div className="mb-8 md:mb-0">
+                        <h3 className="text-xl font-semibold mb-4">Customer care</h3>
+                        <ul className="space-y-2">
+                            <li><a href="#" className="text-gray-600 hover:text-teal-500">FAQ</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-teal-500">Terms of use</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-teal-500">Privacy Policy</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-teal-500">Discount system</a></li>
+                        </ul>
+                    </div>
+
+                    {/* Terms & Conditions Section */}
+                    <div>
+                        <h3 className="text-xl font-semibold mb-4">Legal</h3>
+                        <ul className="space-y-2">
+                            <li><a href="#" className="text-gray-600 hover:text-teal-500">Terms & Conditions</a></li>
+                        </ul>
                     </div>
                 </div>
-            </footer>
-        </>
-    )
 
+                {/* Copyright Section */}
+                <div className="border-t border-gray-800 mt-8 pt-8 text-center">
+                    <p className="text-gray-600">
+                        © Kazi Mehedi Hasan All Rights Reserved 2025
+                    </p>
+                </div>
+            </div>
+        </footer>
+    );
+};
 
-}
+export default Footer;

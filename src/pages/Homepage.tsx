@@ -13,16 +13,17 @@ import ProductCard from '../components/ProductCard';
 import '../css/animationOnScroll.css';
 import { useEffect } from 'react';
 import { animateOnScroll } from '../utils/animateOnScroll';
+import Footer from '../components/ui/Footer';
 
 
 const HomePage = () => {
     const { data: bikeData, isLoading } = useGetBikesQuery({});
     useEffect(() => {
         animateOnScroll('element', '.item');
-    }, [])
+    }, []);
 
     if (isLoading) {
-        return <Loader />
+        return <Loader />;
     }
 
 
@@ -104,7 +105,7 @@ const HomePage = () => {
                 </section>
                 {/* contact us section ends */}
             </div>
-
+            <Footer />
         </>
     );
 };
