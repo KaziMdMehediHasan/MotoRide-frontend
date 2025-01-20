@@ -52,12 +52,13 @@ const authApi = baseApi.injectEndpoints({
                 return {
                     url: `/users/${userId}`,
                     method: 'DELETE',
-                }
+                };
             },
             invalidatesTags: ['User']
         }),
-    })
-})
+    }),
+    overrideExisting: true
+});
 
 export const {
     useLoginMutation,

@@ -26,7 +26,6 @@ const HomePage = () => {
         return <Loader />;
     }
 
-
     return (
         <>
             <Navbar />
@@ -49,7 +48,7 @@ const HomePage = () => {
                 {/* // featured section starts */}
                 <section className="item container mx-auto px-8 mt-12 flex flex-col items-center gap-8">
                     <h1 className="text-3xl font-bold text-gray-600 text-center mb-6">Ride The Hottest Bikes Now</h1>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 xl:grid-cols-3 2xl:grid-cols-4">
                         {isLoading && (<Loader />)}
                         {bikeData?.data.slice(0, 4).map((bike: TBike) => (
                             <ProductCard

@@ -8,8 +8,8 @@ import { convertDateToBDTimeZone } from "../utils/convertDate";
 
 export default function MyRentals() {
     const { data, isLoading } = useGetRentalsQuery({});
-    const [paidRentalData, setPaidRentalData] = useState<TRent[]>([])
-    const [unpaidRentalData, setUnpaidRentalData] = useState<TRent[]>([])
+    const [paidRentalData, setPaidRentalData] = useState<TRent[]>([]);
+    const [unpaidRentalData, setUnpaidRentalData] = useState<TRent[]>([]);
     // const [revealId, setRevealId] = useState(false);
     const [returnData, setReturnData] = useState<Partial<TBikeReturnData>>({
         // returnTime: '',
@@ -19,12 +19,12 @@ export default function MyRentals() {
     });
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
     if (isLoading) {
-        return <Loader />
+        return <Loader />;
     }
     let rentals = data?.data;
     console.log('return data:', returnData);
-    const paidRentals = rentals.filter((rent: TRent) => rent.finalPaymentId !== '');
-    const unpaidRentals = rentals.filter((rent: TRent) => rent.finalPaymentId === '');
+    const paidRentals = rentals?.filter((rent: TRent) => rent.finalPaymentId !== '') || [];
+    const unpaidRentals = rentals?.filter((rent: TRent) => rent.finalPaymentId === '') || [];
 
     if (paidRentalData.length !== 0) rentals = [...paidRentals];
     if (unpaidRentalData.length !== 0) rentals = [...unpaidRentals];
@@ -32,12 +32,12 @@ export default function MyRentals() {
     console.log('newly set data', rentals);
     return (
         <>
-            <div className="container mx-auto p-4">
+            <div className="container mx-auto lg:p-4">
                 {/* Header section */}
-                <div className="flex justify-center items-center mb-4">
-                    <h1 className="text-xl font-semibold text-gray-600">User Rental Management</h1>
+                <div className="flex justify-center flex-col items-center mb-4 gap-4">
+                    <h1 className="text-xl font-semibold text-gray-600 text-center">User Rental Management</h1>
                 </div>
-                <div className="flex flex-col justify-center items-center">
+                <div className="flex flex-col justify-center items-center mb-4">
                     <div>
                         <button
                             onClick={() => {
@@ -59,8 +59,10 @@ export default function MyRentals() {
 
                 </div>
 
+                <p className="font-normal text-sm text-gray-500 text-center mb-5">Swipe to view more information</p>
+
                 {/* Table section */}
-                <div className="overflow-x-auto">
+                <div className="overflow-x-scroll">
                     {/* {isLoading && (<Loader />)} */}
                     <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
                         <thead className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -162,5 +164,5 @@ export default function MyRentals() {
                 )
             }
         </>
-    )
+    );
 }

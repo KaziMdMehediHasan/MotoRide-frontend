@@ -4,15 +4,17 @@ import { RootState } from "../store";
 export const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:5000/api',
+        baseUrl: 'https://bike-rental-backend-theta.vercel.app/api',
         prepareHeaders: (headers, { getState }) => {
             const token = (getState() as RootState).auth.token;
             if (token) {
-                headers.set('authorization', `Bearer ${token}`)
+                headers.set('authorization', `Bearer ${token}`);
                 return headers;
             }
         }
     }),
     tagTypes: ['User', 'Bikes', 'Rents'],
     endpoints: () => ({})
-})
+});
+
+// https://bike-rental-backend-theta.vercel.app/api

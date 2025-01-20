@@ -14,7 +14,7 @@ export default function Bikes({ isFromDashboard }: props) {
     const { data, isLoading } = useGetBikesQuery({});
     // loader placed if data is still not fetched properly
     if (isLoading) {
-        return <Loader />
+        return <Loader />;
     }
 
     // using the type guard
@@ -44,5 +44,5 @@ export default function Bikes({ isFromDashboard }: props) {
                 }
             </div>
         </>
-    )
+    );
 }

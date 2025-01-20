@@ -1,6 +1,6 @@
 
 import Loader from "../components/ui/Loader";
-import { useGetAllRentalsQuery } from "../redux/features/rent/rentApi"
+import { useGetAllRentalsQuery } from "../redux/features/rent/rentApi";
 import { TRent } from "../utils/Types";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { useState } from "react";
@@ -16,7 +16,7 @@ const RentalManagement = () => {
     const [selectedRent, setSelectedRent] = useState({ rentId: '', startTime: '', pricePerHour: 0 });
     const [rentalId, setRentalId] = useState('');
     if (isLoading) {
-        return <Loader />
+        return <Loader />;
     }
     console.log(rentals?.data);
     return (
@@ -116,7 +116,7 @@ const RentalManagement = () => {
             {/* bike return modal ends */}
         </>
 
-    )
-}
+    );
+};
 
-export default RentalManagement
+export default RentalManagement;

@@ -13,7 +13,7 @@ const initialUpdateData = {
     model: '',
     brand: '',
     year: 0,
-}
+};
 
 interface props {
     setIsModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -40,7 +40,7 @@ const FormSubmission = ({ setIsModalOpen, setIsCreateModalOpen, bikeData, fromBi
             setError('Please select a compatible image file (.jpg, .png or .jpeg).');
             return;
         }
-        const file = e.target.files[0]
+        const file = e.target.files[0];
 
         if (file && file.type.startsWith('image/')) {
             console.log('compatible file');
@@ -53,7 +53,7 @@ const FormSubmission = ({ setIsModalOpen, setIsCreateModalOpen, bikeData, fromBi
         }
         // watch which file is selected
         console.log('selected image:', selectedFile);
-    }
+    };
 
     // Function to handle form submission
     const uploadFile = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -94,7 +94,7 @@ const FormSubmission = ({ setIsModalOpen, setIsCreateModalOpen, bikeData, fromBi
     return (
         <>
             <div className="fixed inset-0 flex items-center justify-center">
-                <div className='p-4 md:p-6 w-1/2 mx-auto bg-gray-100 absolute shadow-lg border rounded-lg transform transition-all duration-300 ease-out scale-100'>
+                <div className='p-4 md:p-6 w-11/12 md:w-1/2 mx-auto bg-gray-100 absolute shadow-lg border rounded-lg transform transition-all duration-300 ease-out scale-100'>
                     {
                         isLoading && (
                             <Loader />
@@ -229,7 +229,7 @@ const FormSubmission = ({ setIsModalOpen, setIsCreateModalOpen, bikeData, fromBi
                                     onClick={(e) => {
                                         console.log(e.currentTarget.checked);
                                         if (e.currentTarget.checked) {
-                                            setUpdateData({ ...updateData, isAvailable: 'true' })
+                                            setUpdateData({ ...updateData, isAvailable: 'true' });
                                         }
                                     }}
                                     className="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500" />

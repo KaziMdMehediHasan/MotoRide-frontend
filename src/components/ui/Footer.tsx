@@ -1,3 +1,7 @@
+import { FaSquareFacebook } from "react-icons/fa6";
+import { SlSocialInstagram } from "react-icons/sl";
+import { FaSquareXTwitter } from "react-icons/fa6";
+import { AiFillTikTok } from "react-icons/ai";
 const Footer = () => {
     return (
         <footer className="bg-gray-200 text-gray-700 py-8 font-pop">
@@ -14,24 +18,32 @@ const Footer = () => {
 
                     {/* Hot Links Section */}
                     <div className="mb-8 md:mb-0">
-                        <h3 className="text-xl font-semibold mb-4">Hot links</h3>
+                        <h3 className="text-xl font-semibold mb-4">Social links</h3>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <ul className="space-y-2">
-                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">Home</a></li>
-                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">Show</a></li>
-                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">Blog</a></li>
-                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">Contact</a></li>
+                                    <li className="flex justify-start items-center md:w-[7rem] md:justify-between gap-4">
+                                        <a href="#" className="text-gray-600 hover:text-teal-500">Facebook</a>
+                                        <FaSquareFacebook size={20} />
+                                    </li>
+                                    <li className="flex justify-start items-center md:w-[7rem] md:justify-between gap-4">
+                                        <a href="#" className="text-gray-600 hover:text-teal-500">X</a>
+                                        <FaSquareXTwitter size={20} />
+                                    </li>
+                                    <li className="flex justify-start items-center md:w-[7rem] md:justify-between gap-4">
+                                        <a href="#" className="text-gray-600 hover:text-teal-500">TikTok</a>
+                                        <AiFillTikTok size={20} />
+                                    </li>
                                 </ul>
                             </div>
-                            <div>
+                            {/* <div>
                                 <ul className="space-y-2">
                                     <li><a href="#" className="text-gray-600 hover:text-teal-500">More info</a></li>
                                     <li><a href="#" className="text-gray-600 hover:text-teal-500">How it works</a></li>
                                     <li><a href="#" className="text-gray-600 hover:text-teal-500">About us</a></li>
                                     <li><a href="#" className="text-gray-600 hover:text-teal-500">Sustainability</a></li>
                                 </ul>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 
