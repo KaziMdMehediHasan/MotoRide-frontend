@@ -25,7 +25,7 @@ export default function Profile() {
     const { data, isLoading } = useGetUserDetailsQuery({});
     console.log('user data fetching', data);
     // updating user data with the help of redux
-    const [updateUserDetails, { data: userUpdateData, isLoading: updateActionLoading, error: userUpdateError }] = useUpdateUserDetailsMutation();
+    const [updateUserDetails, { data: userUpdateData, isLoading: updateActionLoading, }] = useUpdateUserDetailsMutation();
 
     console.log(userUpdateData);
 
@@ -40,13 +40,13 @@ export default function Profile() {
 
     //update userInfo functions and states
 
-    const validateEmail = (email: string) => {
-        return String(email)
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-            );
-    };
+    // const validateEmail = (email: string) => {
+    //     return String(email)
+    //         .toLowerCase()
+    //         .match(
+    //             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    //         );
+    // };
 
     // converting image file to base64 string
     const convertImgToBase64 = (file: File) => {

@@ -23,11 +23,17 @@ interface props {
     isCreateBike?: true | false,
 }
 
-const FormSubmission = ({ setIsModalOpen, setIsCreateModalOpen, bikeData, fromBikeManage, isCreateBike }: props) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// fromBikeManage
+const FormSubmission = ({ setIsModalOpen, setIsCreateModalOpen, bikeData, isCreateBike }: props) => {
     const bikeId = bikeData?._id;
-    const [createBike, { isLoading: bikeCreationLoading, error: bikeCreationError }] = useCreateBikeMutation();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // error: bikeCreationError
+    const [createBike, { isLoading: bikeCreationLoading }] = useCreateBikeMutation();
     // update bike rtk query mutation function
-    const [updateBikeData, { data: updatedBikeData, isLoading, isSuccess, error: bikeUpdateError }] = useUpdateBikeDataMutation();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // { data: updatedBikeData, isLoading, isSuccess, error: bikeUpdateError; }
+    const [updateBikeData, { isLoading }] = useUpdateBikeDataMutation();
     const [selectedFile, setSelectedFile] = useState<File | null>(null); // Make the type explicit
     const [updateData, setUpdateData] = useState<TUpdateBike>(initialUpdateData);
     const [error, setError] = useState('');

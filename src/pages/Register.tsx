@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import register from '../assets/register.jpeg';
 import { useSignupMutation } from '../redux/features/auth/authApi';
 import Loader from '../components/ui/Loader';
@@ -27,7 +27,7 @@ export default function Register() {
     const [visibility, setVisibility] = useState(false);
     const navigate = useNavigate();
     // signup mutation function 
-    const [signup, { isLoading, isSuccess }] = useSignupMutation();
+    const [signup, { isLoading }] = useSignupMutation();
 
     // Handle input change
     const handleChange = (

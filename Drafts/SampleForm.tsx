@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useGetSingleBikeQuery, useUpdateBikeDataMutation } from "../src/redux/features/bikes/bikeApi";
+import { useUpdateBikeDataMutation } from "../src/redux/features/bikes/bikeApi";
 import { useParams } from 'react-router-dom';
 
 type TUpdateBike = {
@@ -12,12 +12,12 @@ type TUpdateBike = {
     name?: string;
     pricePerHour?: number;
     year?: number,
-}
+};
 
 const SampleForm = () => {
     const { bikeId } = useParams();
     console.log(bikeId);
-    const [updateBikeData, { data: updatedBikeData, error: bikeUpdateError }] = useUpdateBikeDataMutation();
+    const [updateBikeData] = useUpdateBikeDataMutation();
     const [selectedFile, setSelectedFile] = useState(null);
     const [updateData, setUpdateData] = useState<TUpdateBike>({});
     console.log(updateData);
@@ -45,7 +45,7 @@ const SampleForm = () => {
                 type="text"
                 id="name"
                 name="name"
-                onChange={(e) => { setUpdateData({ ...updateData, name: e.target.value }) }}
+                onChange={(e) => { setUpdateData({ ...updateData, name: e.target.value }); }}
                 // Update state when file is selected
                 required
             />

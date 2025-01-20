@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useBikeReturnMutation, useCreateRentMutation } from "../redux/features/rent/rentApi";
 import { CardCvcElement, CardExpiryElement, CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js";
@@ -12,7 +13,7 @@ interface props {
     finalDateTime?: string;
     bikeId?: string; //this one comes from the bike details page when trying to rent a bike
     // isReturning?: boolean; //comes from the return page
-    returnData?: Partial<TBikeReturnData> //comes from the return page
+    returnData?: Partial<TBikeReturnData>; //comes from the return page
     customerPayment?: boolean;
 }
 const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, returnData, bikeId, customerPayment }: props) => {
@@ -27,10 +28,10 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, returnDat
     const stripe = useStripe(); //hook provided by stripe
     const elements = useElements(); //elements hook
     // redux functions
-    const [createRent, { isLoading, isSuccess }] = useCreateRentMutation();
-    const [createPayment, { data: clientSecret, isLoading: paymentLoader, isError: isPaymentError, error: paymentError }] = useCreatePaymentMutation();
+    const [createRent, { isLoading }] = useCreateRentMutation();
+    const [createPayment, { data: clientSecret }] = useCreatePaymentMutation();
 
-    const [bikeReturn, { isLoading: bikeReturnLoader, isSuccess: bikeReturnSuccess }] = useBikeReturnMutation();
+    const [bikeReturn, { isLoading: bikeReturnLoader }] = useBikeReturnMutation();
 
     // card form validation state
     const [isCardComplete, setIsCardComplete] = useState({
@@ -58,7 +59,7 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, returnDat
             bikeId: bikeId,
             startTime: finalDateTime,
             advancePaymentId: advancePaymentId,
-        }
+        };
         console.log('from rentBike function:', rentInfo);
         try {
             await createRent(rentInfo).unwrap();
@@ -67,7 +68,7 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, returnDat
             console.log(error);
         }
 
-    }
+    };
 
     const returnBike = async () => {
         const returnInfo = {
@@ -76,14 +77,14 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, returnDat
             // returnTime: returnData?.returnTime,
             // isReturned: true,
             finalPaymentId: finalPaymentId,
-        }
+        };
         console.log('from returnBike function:', returnInfo);
         try {
             await bikeReturn(returnInfo);
         } catch (error) {
             console.log(error);
         }
-    }
+    };
     console.log('Created payment intent:', clientSecret);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -262,7 +263,7 @@ const Payment = ({ setIsPaymentModalOpen, pricePerHour, finalDateTime, returnDat
                 </>
             }
         </>
-    )
-}
+    );
+};
 
-export default Payment
+export default Payment;

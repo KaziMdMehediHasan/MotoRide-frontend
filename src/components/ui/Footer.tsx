@@ -1,7 +1,7 @@
 import { FaSquareFacebook } from "react-icons/fa6";
-import { SlSocialInstagram } from "react-icons/sl";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { AiFillTikTok } from "react-icons/ai";
+import { Link } from "react-router-dom";
 const Footer = () => {
     return (
         <footer className="bg-gray-200 text-gray-700 py-8 font-pop">
@@ -23,27 +23,19 @@ const Footer = () => {
                             <div>
                                 <ul className="space-y-2">
                                     <li className="flex justify-start items-center md:w-[7rem] md:justify-between gap-4">
-                                        <a href="#" className="text-gray-600 hover:text-teal-500">Facebook</a>
+                                        <a href="https://www.facebook.com" className="text-gray-600 hover:text-teal-500">Facebook</a>
                                         <FaSquareFacebook size={20} />
                                     </li>
                                     <li className="flex justify-start items-center md:w-[7rem] md:justify-between gap-4">
-                                        <a href="#" className="text-gray-600 hover:text-teal-500">X</a>
+                                        <a href="https://x.com" className="text-gray-600 hover:text-teal-500">X</a>
                                         <FaSquareXTwitter size={20} />
                                     </li>
                                     <li className="flex justify-start items-center md:w-[7rem] md:justify-between gap-4">
-                                        <a href="#" className="text-gray-600 hover:text-teal-500">TikTok</a>
+                                        <a href="https://www.tiktok.com" className="text-gray-600 hover:text-teal-500">TikTok</a>
                                         <AiFillTikTok size={20} />
                                     </li>
                                 </ul>
                             </div>
-                            {/* <div>
-                                <ul className="space-y-2">
-                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">More info</a></li>
-                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">How it works</a></li>
-                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">About us</a></li>
-                                    <li><a href="#" className="text-gray-600 hover:text-teal-500">Sustainability</a></li>
-                                </ul>
-                            </div> */}
                         </div>
                     </div>
 
@@ -51,10 +43,17 @@ const Footer = () => {
                     <div className="mb-8 md:mb-0">
                         <h3 className="text-xl font-semibold mb-4">Customer care</h3>
                         <ul className="space-y-2">
-                            <li><a href="#" className="text-gray-600 hover:text-teal-500">FAQ</a></li>
-                            <li><a href="#" className="text-gray-600 hover:text-teal-500">Terms of use</a></li>
-                            <li><a href="#" className="text-gray-600 hover:text-teal-500">Privacy Policy</a></li>
-                            <li><a href="#" className="text-gray-600 hover:text-teal-500">Discount system</a></li>
+                            <li>
+                                <Link to="/faq" className="text-gray-600 hover:text-teal-500 text-decoration-none">FAQ</Link>
+                            </li>
+                            <li>
+                                <Link to="/terms" className="text-gray-600 hover:text-teal-500">Terms of use</Link>
+                            </li>
+                            <li>
+                                <Link to="/privacy-policy" className="text-gray-600 hover:text-teal-500 text-decoration-none">
+                                    Privacy Policy
+                                </Link>
+                            </li>
                         </ul>
                     </div>
 

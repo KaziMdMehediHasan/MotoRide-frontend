@@ -9,7 +9,6 @@ import { verifyToken } from '../utils/verifyToken';
 import Loader from '../components/ui/Loader';
 
 export default function Login() {
-    const testLog = true;
     // State for form fields and validation errors
     const navigate = useNavigate();
     const loginState: TLoginData = {

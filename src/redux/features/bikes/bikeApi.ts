@@ -3,10 +3,28 @@ import { baseApi } from "../../api/baseApi";
 const bikeApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getBikes: builder.query({
-            query: () => ({
-                url: '/bikes/',
-                method: 'GET',
-            }),
+            query: (filter) => {
+                console.log(filter);
+                // logic to handle multiple query filters in a single endpoint
+                const queryParams = [];
+                for (const key in filter) {
+                    const value = filter[key];
+                    if (value != null && value !== '') {
+                        queryParams.push(
+                            `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+                        );
+                    }
+                }
+                let urlRoute = '/bikes';
+                if (queryParams.length > 0) {
+                    urlRoute += `?${queryParams.join('&')}`;
+                }
+                console.log(urlRoute);
+                return {
+                    url: urlRoute,
+                    method: 'GET',
+                };
+            },
             providesTags: ['Bikes']
         }),
         getSingleBike: builder.query({
@@ -29,7 +47,7 @@ const bikeApi = baseApi.injectEndpoints({
                     url: '/bikes/',
                     method: 'POST',
                     body: bikeInfo
-                }
+                };
 
             },
             invalidatesTags: ['Bikes']
@@ -41,7 +59,7 @@ const bikeApi = baseApi.injectEndpoints({
                     url: `/bikes/${bikeId}`,
                     method: 'PUT',
                     body: bikeInfo,
-                }
+                };
             },
             invalidatesTags: ['Bikes'],
         }),
@@ -50,11 +68,12 @@ const bikeApi = baseApi.injectEndpoints({
                 return {
                     url: `/bikes/${bikeId}`,
                     method: 'DELETE',
-                }
+                };
             },
             invalidatesTags: ['Bikes']
         })
-    })
-})
+    }),
+    overrideExisting: true,
+});
 
 export const { useGetBikesQuery, useGetSingleBikeQuery, useUpdateBikeDataMutation, useDeleteBikeMutation, useCreateBikeMutation } = bikeApi;

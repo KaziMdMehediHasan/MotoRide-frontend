@@ -13,6 +13,10 @@ import ProtectedRoutes from "../components/layout/ProtectedRoutes";
 import ManageBikes from "../pages/ManageBikes";
 import ManageUsers from "../pages/ManageUsers";
 import RentalManagement from "../pages/RentalManagement";
+import { PrivacyPolicy } from "../pages/PrivacyPolicy";
+import Faq from "../pages/Faq";
+import Terms from "../pages/Terms";
+import NotFound from "../pages/NotFound";
 
 
 const isFromDashboard = true;
@@ -88,7 +92,23 @@ const router = createBrowserRouter([
             },
 
         ]
+    },
+    {
+        path: '/privacy-policy',
+        element: <PrivacyPolicy />
+    },
+    {
+        path: '/faq',
+        element: <Faq />
+    },
+    {
+        path: '/terms',
+        element: <Terms />
+    },
+    {
+        path: '*',
+        element: <NotFound />
     }
-])
+]);
 
 export default router;

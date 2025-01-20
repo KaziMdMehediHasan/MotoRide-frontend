@@ -3,6 +3,7 @@ import { useGetBikesQuery } from "../redux/features/bikes/bikeApi";
 import Loader from "../components/ui/Loader";
 import { TBike } from "../utils/Types";
 import Navbar from "../components/ui/Navbar";
+import Footer from "../components/ui/Footer";
 
 interface props {
     isFromDashboard?: boolean;
@@ -27,7 +28,7 @@ export default function Bikes({ isFromDashboard }: props) {
             {
                 !isFromDashboard && (<Navbar />)
             }
-            <div className={`grid grid-cols-1 ${isFromDashboard ? 'w-full' : 'w-[70%] mx-auto mt-8'} md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 font-pop gap-4 2xl:gap-6 items-center`}>
+            <div className={`grid grid-cols-1 ${isFromDashboard ? 'w-full' : 'w-[70%] mx-auto mt-8'} md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 font-pop gap-4 2xl:gap-6 items-center mb-8`}>
                 {
                     bikeData.map((item) => (
                         <ProductCard
@@ -43,6 +44,9 @@ export default function Bikes({ isFromDashboard }: props) {
                     ))
                 }
             </div>
+            {
+                !isFromDashboard && (<Footer />)
+            }
         </>
     );
 }

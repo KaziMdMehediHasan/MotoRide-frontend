@@ -30,7 +30,7 @@ export default function Dashboard() {
     }
 
     const closeMenu = () => setIsSidebarOpen(false);
-    const toggleMenu = () => setIsSidebarOpen(!isSidebarOpen);
+    // const toggleMenu = () => setIsSidebarOpen(!isSidebarOpen);
 
     return (
         <div className="flex flex-col lg:flex-row min-h-screen font-pop">
@@ -111,7 +111,7 @@ export default function Dashboard() {
 
                     {role === 'user' && (
                         <NavLink
-                            onClick={() => toggleMenu()}
+                            // onClick={() => toggleMenu()}
                             to="/dashboard/myrentals"
                             className={({ isActive }) => isActive ? activeLink : "block py-2.5 px-4 rounded hover:bg-gray-300"}
                         // onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -123,7 +123,7 @@ export default function Dashboard() {
                     }
 
                     <NavLink
-                        onClick={() => toggleMenu()}
+                        // onClick={() => toggleMenu()}
                         to='/'
                         className={({ isActive }) => isActive ? activeLink : "block py-2.5 px-4 rounded hover:bg-gray-300"}
                     >Home</NavLink>

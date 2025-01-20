@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom";
 import { useGetSingleBikeQuery } from "../redux/features/bikes/bikeApi";
 import Loader from "../components/ui/Loader";
 import { TLoggedInUser, TUpdateBike } from "../utils/Types";
@@ -12,7 +12,7 @@ import Navbar from "../components/ui/Navbar";
 interface props {
     setIsDetailModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
     bikeData?: TUpdateBike,
-    isDetailModalOpen?: true | false
+    isDetailModalOpen?: true | false;
     isFromDashboard?: boolean;
 }
 
@@ -36,7 +36,7 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
     // getting user role for customised buttons and layout
     const user: TLoggedInUser | null = useAppSelector((state) => state.auth.user);
     let role;
-    let _id, name, description, brand, isAvailable, model, pricePerHour, year, cc, img;
+    let _id = '', name = '', description = '', brand = '', isAvailable = false, model = '', pricePerHour = 0, year = '', cc = '', img = '';
 
     if (user !== null) {
         role = user?.role as string;
@@ -45,7 +45,7 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
 
     // loader for fetching Bike data from server
     if (isLoading) {
-        return <Loader />
+        return <Loader />;
     }
 
     // destructuring bike information 
@@ -117,10 +117,11 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
                             </li>
                         </ul>
                         <button
+                            className={`${isAvailable === true ? 'mt-6 w-full bg-teal-500 text-white font-bold py-2 px-4 text-sm rounded-md hover:bg-teal-600 transition duration-300' : 'mt-6 w-full bg-teal-500 text-white font-bold py-2 px-4 text-sm rounded-md opacity-50 cursor-not-allowed'}`}
                             onClick={() => {
                                 if (isAvailable) setIsBookingModalOpen(true);
                             }}
-                            className={`${isAvailable === true ? 'mt-6 w-full bg-teal-500 text-white font-bold py-2 px-4 text-sm rounded-md hover:bg-teal-600 transition duration-300' : 'mt-6 w-full bg-teal-500 text-white font-bold py-2 px-4 text-sm rounded-md opacity-50 cursor-not-allowed'} `}>
+                        >
                             Book Now
                         </button>
                     </div>
@@ -173,5 +174,5 @@ export default function BikeDetails({ setIsDetailModalOpen, bikeData, isDetailMo
                 )
             }
         </>
-    )
+    );
 }

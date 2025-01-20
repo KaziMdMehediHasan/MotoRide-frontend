@@ -3,7 +3,6 @@ import Loader from "../components/ui/Loader";
 import { useGetRentalsQuery } from "../redux/features/rent/rentApi";
 import { TBikeReturnData, TRent } from "../utils/Types";
 import Payment from "./Payment";
-import { convertDateToBDTimeZone } from "../utils/convertDate";
 
 
 export default function MyRentals() {

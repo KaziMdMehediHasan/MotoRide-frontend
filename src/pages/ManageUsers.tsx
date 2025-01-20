@@ -9,12 +9,12 @@ import ConfirmationModal from "../components/ui/ConfirmationModal";
 const ManageUsers = () => {
     const [openConfirmationModal, setOpenConfirmationModal] = useState<boolean>(false);
     const { data: allUserData, isLoading: userLoader } = useGetAllUsersQuery({});
-    const [makeAdmin, { isLoading: adminLoader }] = useMakeAdminMutation();
+    const [makeAdmin] = useMakeAdminMutation();
     const [userId, setUserId] = useState('');
     const [successMessage, showSuccessMessage] = useState(false);
 
     if (userLoader) {
-        return <Loader />
+        return <Loader />;
     }
 
     // custom alert function
@@ -22,8 +22,8 @@ const ManageUsers = () => {
         showSuccessMessage(true);
         setTimeout(() => {
             showSuccessMessage(false);
-        }, 3000)
-    }
+        }, 3000);
+    };
 
     return (
         <>
